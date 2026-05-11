@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPS-Z101-3 · Participation sociale · CSSDLJ CFGA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f1923;--ink2:#3a4556;--ink3:#7a8699;
+  --paper:#ffffff;--paper2:#f5f4ef;--paper3:#eceae0;
+  --bleu:#004983;--bleu2:#0066b3;--bleu-l:#e8f1fb;
+  --vert:#007a47;--vert-l:#e6f4ed;
+  --or:#9a6e00;--or-l:#fdf6e3;
+  --rouge:#c0221e;--rouge-l:#fdeaea;
+  --violet:#5b2d8e;--violet-l:#f0eaf9;
+  --ciel:#0077a8;--ciel-l:#e6f4f9;
+  --border:#e0ddd4;--border2:#c8c5b8;
+  --radius:8px;--radius-lg:14px;--radius-xl:20px;
+  --shadow:0 1px 4px rgba(15,25,35,.05),0 4px 16px rgba(15,25,35,.07);
+  --shadow-lg:0 8px 32px rgba(15,25,35,.12);
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'DM Sans',-apple-system,sans-serif;
+}
+body{font-family:var(--font-body);background:var(--paper2);color:var(--ink);min-height:100vh;font-size:15px;line-height:1.65}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{background:#1D3557;color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+
+.sidebar-brand{padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-logo{margin-bottom:.9rem;background:white;border-radius:6px;padding:.5rem .75rem;display:inline-block}
+.brand-logo img{height:40px;width:auto;display:block}
+.brand-title{font-family:var(--font-display);font-size:17px;line-height:1.25;color:#fff;margin-bottom:3px}
+.brand-sub{font-size:11px;color:rgba(255,255,255,.35);line-height:1.45}
+
+.nav-section{padding:1rem .75rem .5rem}
+.nav-section-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:.25rem .5rem .6rem;display:block}
+.nav-btn{width:100%;display:flex;align-items:center;gap:9px;padding:.55rem .75rem;border:none;background:transparent;color:rgba(255,255,255,.55);font-size:15px;font-family:var(--font-body);cursor:pointer;border-radius:6px;text-align:left;transition:all .14s;position:relative;line-height:1.3}
+.nav-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-btn.active{background:rgba(255,255,255,.13);color:#fff;font-weight:500}
+.nav-btn.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:18px;background:#F5C800;border-radius:0 2px 2px 0}
+.nav-ico{font-size:15px;width:22px;text-align:center;flex-shrink:0;opacity:.65}
+.sidebar-footer{margin-top:auto;padding:.9rem 1.25rem;font-size:10px;color:rgba(255,255,255,.22);line-height:1.65;border-top:1px solid rgba(255,255,255,.07)}
+
+/* MAIN */
+.main{overflow-x:hidden}
+.panel{display:none;min-height:100vh}
+.panel.active{display:block;animation:fadeIn .18s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE HERO */
+.page-hero{padding:2.5rem 2.75rem 2rem;background:var(--paper);border-bottom:1px solid var(--border)}
+.page-hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--bleu);margin-bottom:.5rem}
+.page-hero-title{font-family:var(--font-display);font-size:32px;font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:.65rem}
+.page-hero-sub{font-size:15px;color:var(--ink2);max-width:620px;line-height:1.65}
+.page-content{padding:2.25rem 2.75rem}
+
+/* CARDS */
+.card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.card-title{font-family:var(--font-display);font-size:18px;color:var(--ink);margin-bottom:.5rem}
+.card-body{font-size:14px;color:var(--ink2);line-height:1.7}
+
+/* CRITÈRES */
+.crit-grid{display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem}
+.crit-card{display:flex;gap:14px;padding:1.35rem 1.5rem;border-radius:var(--radius-lg);border:1px solid;align-items:flex-start}
+.crit-1{background:#eef4fc;border-color:#c2d5ed}
+.crit-2{background:#eaf4ef;border-color:#b8dfc9}
+.crit-3{background:#fdf8ee;border-color:#e0cc80}
+.crit-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;font-weight:700;flex-shrink:0;color:#fff}
+.cn1{background:var(--bleu)}.cn2{background:var(--vert)}.cn3{background:var(--or)}
+.crit-title{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:4px}
+.crit-desc{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:7px}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500}
+.tag-bleu{background:var(--bleu-l);color:var(--bleu)}
+.tag-vert{background:var(--vert-l);color:var(--vert)}
+.tag-or{background:var(--or-l);color:var(--or)}
+
+/* ACCORDION */
+.acc{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:8px;background:var(--paper)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:.95rem 1.25rem;cursor:pointer;font-size:14px;font-weight:500;color:var(--ink);background:var(--paper2);user-select:none;gap:12px}
+.acc-head:hover{background:var(--paper3)}
+.acc-chevron{font-size:10px;color:var(--ink3);transition:transform .18s;flex-shrink:0}
+.acc-chevron.open{transform:rotate(180deg)}
+.acc-body{padding:1.1rem 1.25rem;border-top:1px solid var(--border);font-size:14px;color:var(--ink2);line-height:1.72;display:none}
+.acc-body.open{display:block}
+
+/* SAVOIRS */
+.savoir-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem}
+.savoir-col{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;border-top:3px solid}
+.sc-bleu{border-top-color:var(--bleu)}.sc-vert{border-top-color:var(--vert)}.sc-or{border-top-color:var(--or)}
+.savoir-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.st-bleu{color:var(--bleu)}.st-vert{color:var(--vert)}.st-or{color:var(--or)}
+.savoir-item{font-size:13px;color:var(--ink2);padding:4px 0;display:flex;align-items:center;gap:7px}
+.savoir-item::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.si-bleu::before{background:var(--bleu)}.si-vert::before{background:var(--vert)}.si-or::before{background:var(--or)}
+
+/* CHAMPS */
+.field{margin-bottom:1.25rem}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink2);display:block;margin-bottom:5px}
+input[type=text],textarea,select{width:100%;padding:10px 13px;font-size:14px;font-family:var(--font-body);border:1px solid var(--border2);border-radius:var(--radius);background:var(--paper);color:var(--ink);outline:none;transition:border-color .14s,box-shadow .14s;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--bleu);box-shadow:0 0 0 3px rgba(0,73,131,.1)}
+textarea{min-height:90px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* BOUTONS */
+.btn{padding:10px 20px;font-size:14px;font-weight:500;border:1px solid var(--border2);border-radius:var(--radius);cursor:pointer;background:var(--paper);color:var(--ink);font-family:var(--font-body);transition:all .14s;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{background:var(--paper2)}
+.btn-primary{background:var(--bleu);color:#fff;border-color:var(--bleu)}.btn-primary:hover{background:var(--bleu2);border-color:var(--bleu2)}
+.btn-vert{background:var(--vert);color:#fff;border-color:var(--vert)}.btn-vert:hover{opacity:.9}
+.btn-or{background:#7a5800;color:#fff;border-color:#7a5800}.btn-or:hover{opacity:.9}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.25rem}
+.btn-sm{padding:6px 13px;font-size:12px}
+
+/* O-ÉL-2 */
+.oel-wrap{max-width:900px}
+.oel-section{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.oel-section-title{font-family:var(--font-display);font-size:19px;color:var(--ink);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px}
+.oel-section-num{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.oel-subtitle{font-size:14px;font-weight:600;color:var(--ink2);margin:.75rem 0 .6rem}
+.oel-instruction{font-size:13px;color:var(--ink3);font-style:italic;margin-bottom:1rem;padding:.65rem .9rem;background:var(--paper2);border-radius:6px;border-left:3px solid var(--border2);line-height:1.6}
+
+/* Tableau matières */
+.oel-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:1.25rem}
+.oel-table th{background:var(--bleu);color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:12px;letter-spacing:.03em}
+.oel-table th.center{text-align:center;font-size:11px}
+.oel-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.oel-table tr:hover td{background:var(--paper2)}
+.oel-table tr:last-child td{border-bottom:none}
+.oel-cb-cell{text-align:center}
+.oel-cb{width:20px;height:20px;accent-color:var(--bleu);cursor:pointer}
+.oel-cb-j{accent-color:var(--vert)}
+.oel-cb-r{accent-color:var(--bleu)}
+.oel-cb-n{accent-color:var(--ink3)}
+
+/* Intérêts généraux — grille Aucun/Un peu/Beaucoup */
+.oel-interests-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:1.25rem}
+.oel-interests-table th{background:var(--ink);color:#fff;padding:8px 10px;font-size:11px;font-weight:600;letter-spacing:.04em}
+.oel-interests-table th.dom{text-align:left}
+.oel-interests-table th.center{text-align:center;width:80px}
+.oel-interests-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.oel-interests-table tr:hover td{background:var(--paper2)}
+.int-radio-group{display:flex;justify-content:center;gap:6px}
+.int-radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:all .12s;color:var(--ink3)}
+.int-radio:hover{border-color:var(--bleu)}
+.int-radio.sel{color:#fff;border-color:transparent}
+.int-degre-0.sel{background:#ccc}
+.int-degre-1.sel{background:#4AB9E8}
+.int-degre-2.sel{background:#004983}
+
+/* Façons d'apprendre / mémoriser / montrer - table 3 colonnes */
+.oel-pref-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:1.25rem}
+.oel-pref-table th{background:var(--ink);color:#fff;padding:8px 12px;font-size:11px;font-weight:600}
+.oel-pref-table th.left{text-align:left}
+.oel-pref-table th.center{text-align:center;width:65px}
+.oel-pref-table td{padding:7px 12px;border-bottom:1px solid var(--border);font-size:15px;vertical-align:middle}
+.oel-pref-table .cat-row td{background:var(--paper2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);padding:8px 12px 5px}
+.oel-pref-table tr:hover td{background:var(--paper2)}
+.pref-radio-group{display:flex;justify-content:center;gap:4px}
+.pref-radio{width:28px;height:28px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:all .12s}
+.pref-radio:hover{border-color:var(--bleu)}
+.pref-radio.sel-0{background:#e0ddd4;border-color:#c8c5b8}
+.pref-radio.sel-1{background:#4AB9E8;border-color:#4AB9E8}
+.pref-radio.sel-2{background:#004983;border-color:#004983}
+
+/* Conditions — même style que prefs */
+.oel-cond-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:1.25rem}
+.oel-cond-table th{background:var(--ink);color:#fff;padding:8px 12px;font-size:11px;font-weight:600}
+.oel-cond-table th.left{text-align:left}
+.oel-cond-table th.center{text-align:center;width:65px}
+.oel-cond-table td{padding:7px 12px;border-bottom:1px solid var(--border);font-size:15px;vertical-align:middle}
+.oel-cond-table .cat-row td{background:var(--paper2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);padding:8px 12px 5px}
+.oel-cond-table tr:hover td{background:var(--paper2)}
+
+/* Portrait IA */
+.portrait-zone{background:linear-gradient(135deg,#eef4fc 0%,#f0eaf9 100%);border:1px solid #c2d0ef;border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-top:1.5rem}
+.portrait-title{font-family:var(--font-display);font-size:19px;color:var(--bleu);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.portrait-forces{background:#eaf4ef;border:1px solid #b8dfc9;border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1rem}
+.portrait-defis{background:#fdeaea;border:1px solid #f0b8b8;border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1rem}
+.portrait-text{background:white;border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;font-size:14px;line-height:1.75;color:var(--ink2);min-height:80px}
+.portrait-pistes{background:var(--or-l);border:1px solid #e0cc80;border-radius:var(--radius);padding:1.1rem 1.25rem;font-size:14px;color:#5a3e00;line-height:1.7}
+.force-chip{display:inline-block;background:var(--vert);color:#fff;font-size:12px;padding:4px 10px;border-radius:20px;margin:2px;cursor:pointer;transition:opacity .12s}
+.force-chip:hover{opacity:.85}
+.defi-chip{display:inline-block;background:var(--rouge);color:#fff;font-size:12px;padding:4px 10px;border-radius:20px;margin:2px;cursor:pointer;transition:opacity .12s}
+.loading-dots{display:inline-flex;gap:3px;vertical-align:middle}
+.loading-dots span{width:5px;height:5px;background:var(--bleu);border-radius:50%;animation:dot .8s infinite}
+.loading-dots span:nth-child(2){animation-delay:.15s}
+.loading-dots span:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* EL.2.14 */
+.cap-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:.75rem}
+.cap-table th{background:var(--ink);color:#fff;padding:8px 12px;font-size:11px;font-weight:600;text-align:left}
+.cap-table th.center{text-align:center}
+.cap-table td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.cap-table tr:hover td{background:var(--paper2)}
+.cap-slider{width:100px;accent-color:var(--bleu)}
+.cap-val{font-size:12px;font-weight:700;color:var(--bleu);text-align:right;min-width:30px}
+
+/* PROJETS + cours liés */
+.projet-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+.suggestion-zone{background:linear-gradient(135deg,#eef4fc,#f5f0fc);border:1px solid #c2d0ef;border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin-bottom:1.5rem}
+.suggestion-title{font-size:14px;font-weight:600;color:var(--bleu);margin-bottom:.75rem;display:flex;align-items:center;gap:7px}
+.suggestion-chips{display:flex;flex-wrap:wrap;gap:7px}
+.suggestion-chip{padding:6px 13px;background:var(--paper);border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--ink2);cursor:pointer;transition:all .14s;display:flex;align-items:center;gap:6px}
+.suggestion-chip:hover{border-color:var(--bleu);color:var(--bleu);background:var(--bleu-l)}
+.chip-code{font-size:10px;font-weight:700;color:var(--bleu);background:var(--bleu-l);padding:2px 6px;border-radius:4px}
+.cours-axe-group{margin-bottom:.75rem}
+.cours-axe-head{display:flex;align-items:center;gap:8px;padding:.7rem 1rem;border-radius:var(--radius);cursor:pointer;font-size:13px;font-weight:600;user-select:none;margin-bottom:4px}
+.cours-axe-body{display:none;padding-left:4px}
+.cours-axe-body.open{display:block}
+.cours-lien-item{display:flex;align-items:flex-start;gap:10px;padding:.7rem 1rem;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:5px;transition:all .14s;background:var(--paper)}
+.cours-lien-item:hover{border-color:var(--bleu);background:var(--bleu-l)}
+.cours-lien-item.active{border-color:var(--bleu);background:var(--bleu-l)}
+.cli-code{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink3);display:block}
+.cli-nom{font-size:13px;color:var(--ink);font-weight:500;line-height:1.3}
+.cli-gl{min-height:60px;margin-top:7px;display:none;font-size:13px}
+.cli-gl.show{display:block}
+
+/* 29 cours */
+.axe-filter{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.5rem}
+.axe-chip{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border2);font-size:13px;font-weight:500;cursor:pointer;transition:all .14s;color:var(--ink2);background:var(--paper)}
+.axe-chip:hover,.axe-chip.active{color:#fff;border-color:transparent}
+.cours-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.cours-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;cursor:pointer;transition:all .18s;border-left:4px solid}
+.cours-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.cours-code{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.cours-nom{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:7px}
+.cours-desc{font-size:13px;color:var(--ink2);line-height:1.6;display:none;margin-top:6px}
+.cours-desc.show{display:block}
+.cours-mots{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.cours-mot{font-size:10px;padding:2px 7px;background:var(--paper2);border-radius:10px;color:var(--ink3)}
+.cours-expand-btn{font-size:11px;color:var(--bleu);cursor:pointer;margin-top:7px;display:inline-flex;align-items:center;gap:3px;font-weight:500}
+
+/* PRODUCTIONS */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:1.5rem}
+.prod-card{background:var(--paper);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1rem;cursor:pointer;transition:all .18s;text-align:center}
+.prod-card:hover{border-color:var(--ciel);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.prod-card.active{border-color:var(--bleu);background:var(--bleu-l)}
+.prod-ico{font-size:28px;margin-bottom:8px}
+.prod-nom{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.prod-desc-short{font-size:12px;color:var(--ink2);line-height:1.4}
+.prod-detail{display:none;margin-top:1rem}
+.prod-detail.show{display:block}
+.prod-detail-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+.prod-detail-header{background:var(--ink);padding:1.35rem 1.75rem;color:#fff;display:flex;align-items:center;gap:14px}
+.prod-detail-ico{font-size:30px}
+.prod-detail-title{font-family:var(--font-display);font-size:21px}
+.prod-detail-sub{font-size:13px;opacity:.55;margin-top:2px}
+.prod-detail-body{padding:1.75rem}
+.prod-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.35rem}
+.prod-info-item{background:var(--paper2);border-radius:var(--radius);padding:.9rem 1.1rem}
+.prod-info-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:4px}
+.prod-info-value{font-size:14px;color:var(--ink2);line-height:1.5}
+.crit-exemples{margin-bottom:1.35rem}
+.crit-ex-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);margin-bottom:.85rem}
+.crit-ex-item{display:flex;gap:10px;margin-bottom:.75rem;padding:.9rem 1.1rem;border-radius:var(--radius);border:1px solid}
+.ce1{background:#eef4fc;border-color:#c2d5ed}
+.ce2{background:#eaf4ef;border-color:#b8dfc9}
+.ce3{background:#fdf8ee;border-color:#e0cc80}
+.crit-ex-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px}
+.cen1{background:var(--bleu)}.cen2{background:var(--vert)}.cen3{background:var(--or)}
+.crit-ex-text{font-size:13px;color:var(--ink2);line-height:1.55}
+.prod-conseils{background:var(--or-l);border:1px solid #d4b858;border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:1rem;font-size:14px;color:#5a3e00;line-height:1.7}
+.prod-grille-note{background:var(--vert-l);border:1px solid #a8d9bc;border-radius:var(--radius);padding:1.1rem 1.25rem;font-size:14px;color:var(--vert);line-height:1.7}
+
+/* GRILLE */
+.grille-crit{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1rem}
+.grille-crit-head{padding:1.1rem 1.5rem;border-left:4px solid;background:var(--paper2);font-weight:600;font-size:15px;color:var(--ink)}
+.gc1{border-left-color:var(--bleu)}.gc2{border-left-color:var(--vert)}.gc3{border-left-color:var(--or)}
+.grille-echelons{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:1.1rem 1.25rem}
+.echelon{border:1.5px solid var(--border2);border-radius:var(--radius);padding:.75rem .6rem;text-align:center;cursor:pointer;transition:all .14s;background:var(--paper)}
+.echelon:hover{border-color:var(--bleu)}
+.echelon.active{border-color:var(--bleu);background:var(--bleu-l);box-shadow:0 0 0 2px rgba(0,73,131,.15)}
+.echelon.seuil{border-color:var(--vert)!important}
+.echelon-level{font-size:10px;font-weight:700;color:var(--ink2);margin-bottom:4px}
+.echelon-desc{font-size:9px;color:var(--ink3);line-height:1.4}
+.grille-status{padding:.5rem 1.25rem 1rem;font-size:13px;min-height:28px}
+.gs-ok{color:var(--vert);font-weight:600}
+.gs-ko{color:var(--rouge);font-weight:600}
+.resultat-card{background:var(--paper);border:2px solid;border-radius:var(--radius-lg);padding:1.5rem;margin-top:1rem}
+.rc-ok{border-color:var(--vert)}.rc-ko{border-color:var(--rouge)}
+.resultat-badge{font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:.5rem}
+.rb-ok{color:var(--vert)}.rb-ko{color:var(--rouge)}
+
+/* ONE-PAGER */
+.op-wrap{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
+.op-header{background:var(--ink);padding:2rem 2.5rem;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.op-header-logo{background:white;border-radius:6px;padding:.4rem .75rem}
+.op-header-logo img{height:36px;width:auto}
+.op-header-text{}
+.op-header-title{font-family:var(--font-display);font-size:20px;margin-bottom:3px}
+.op-header-sub{font-size:11px;opacity:.45}
+.op-body{padding:2rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.op-sec{background:var(--paper2);border-radius:var(--radius);padding:1.1rem 1.25rem;border:1px solid var(--border)}
+.op-sec-full{grid-column:1/-1}
+.op-sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:2px solid}
+.os-bleu .op-sec-title{color:var(--bleu);border-color:var(--bleu)}
+.os-vert .op-sec-title{color:var(--vert);border-color:var(--vert)}
+.os-or .op-sec-title{color:var(--or);border-color:var(--or)}
+.os-violet .op-sec-title{color:var(--violet);border-color:var(--violet)}
+.op-student-name{font-family:var(--font-display);font-size:22px;color:var(--ink);margin-bottom:3px}
+.op-meta{font-size:13px;color:var(--ink2)}
+.op-item{font-size:13px;color:var(--ink2);padding:3px 0;display:flex;gap:7px;line-height:1.5}
+.op-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.op-footer{background:var(--paper3);padding:.9rem 2.5rem;font-size:10px;color:var(--ink3);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+
+/* NOTICE */
+.notice{font-size:13px;padding:.8rem 1.1rem;border-radius:var(--radius);border-left:3px solid;margin-bottom:1rem;line-height:1.65}
+.notice-info{background:var(--ciel-l);border-left-color:var(--ciel);color:var(--ciel)}
+.notice-warn{background:var(--or-l);border-left-color:var(--or);color:var(--or)}
+.notice-vert{background:var(--vert-l);border-left-color:var(--vert);color:var(--vert)}
+
+/* PROG */
+.prog-wrap{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.prog-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin-bottom:5px}
+.prog-bar{height:6px;background:var(--paper3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--bleu);border-radius:3px;transition:width .4s}
+.prog-status{font-size:13px;margin-top:8px;min-height:20px}
+.cb-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:14px;color:var(--ink2)}
+.cb-row:last-child{border-bottom:none}
+.cb-row:hover{color:var(--ink)}
+.cb-row input{accent-color:var(--bleu);cursor:pointer;flex-shrink:0;width:16px;height:16px}
+
+/* AUTODÉT */
+.auto-caract{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1rem}
+.auto-caract-head{display:flex;align-items:flex-start;gap:14px;padding:1.35rem 1.5rem;border-bottom:1px solid var(--border)}
+.auto-num{width:40px;height:40px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:17px;flex-shrink:0}
+.auto-titre{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:4px}
+.auto-desc{font-size:13px;color:var(--ink2);line-height:1.55}
+.auto-body{padding:1.35rem 1.5rem;background:var(--paper2)}
+.auto-q{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:.65rem;line-height:1.5}
+.auto-opts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1.1rem}
+.auto-opt{padding:6px 14px;border:1.5px solid var(--border2);border-radius:20px;font-size:13px;cursor:pointer;color:var(--ink2);background:var(--paper);transition:all .12s}
+.auto-opt:hover{border-color:var(--bleu)}
+.auto-opt.active{color:#fff;border-color:transparent;font-weight:500}
+
+/* RADAR */
+.radar-wrap{background:var(--paper);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem;text-align:center;border:1px solid var(--border)}
+
+/* PRINT */
+@media print{
+  .sidebar,.no-print{display:none!important}
+  .app{display:block}
+  .main{max-width:100%}
+  .panel{display:none!important}
+  #panel-onepager{display:block!important}
+  .op-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:var(--ink)!important;color:#fff!important}
+  .page-hero,.page-content{padding:.75rem}
+}
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .page-hero{padding:1.5rem}
+  .page-content{padding:1.5rem}
+  .field-grid,.field-grid-3,.savoir-cols,.projet-layout,.op-body,.prod-info-grid{grid-template-columns:1fr}
+  .prod-grid,.cours-grid{grid-template-columns:repeat(2,1fr)}
+  .grille-echelons{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-brand" style="text-align:center;padding:1.5rem 1rem 1.25rem">
+    <img src="data:image/png;base64,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/IkgOj6T5X21OV8wvGLypS5toY6083WgW1+kp019OtaddNjdtcUVWy8So2vJLzYdA+jdP8a0rrFnpY1gOrwND88VDontyWChbY722kCZaoEjhzbUpo/9VZZjbPHKR19gdSe3ckg/xSKwkzY/kTevsafbpA14byloJ/8A1P8AGsa9svzJvXdt7Dv6klHH6SKCPbELAgnwB5JWKFuH4Z4OnCwytfF9P9K8crbO8QRFx9sHsLsonT0BNasjZnmqjobOlPiZTX+iq9jGyjLnD5aIDI/Tka/wBp9XbD8AD/5/hL0Ur7ctrGVygpMcwoSTyLTO8oelRI+ytTu98vF3J9s7pLlj81xwlH+Xl9lSJbtjM1Sgbhe47ae1LDJWfpJH8K2mz7KcVhbqpSJNxWOfXu6J/wAqdPt1rzo605r/ACmg3nkK/smjiOzUEQYkufIEaDFelPHk2y2Vq+gVIOMbJbxO3Hr08m2sHj1adFvEfyp9Ovmqabdb4NuY6i3w48Vr8xlsIH2V6a2Mr+HYTMYzr27Ie/7KRsADNYfGMZsuORy1aoaW1qGjjyvKcX51Hj6OVZilK6CHDZDaGsFApgAMkpSlZr1KUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURf/Z" alt="CFGA De La Jonquière" style="height:80px;width:auto;margin-bottom:.75rem">
+    <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);line-height:1.5">Outil pédagogique<br>PPS-Z101-3</div>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Accueil</span>
+    <button class="nav-btn" onclick="go('accueil')"><span class="nav-ico">⌂</span> Page d'accueil</button>
+    <button class="nav-btn" onclick="go('apercu')"><span class="nav-ico">◎</span> Aperçu du cours</button>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Connaissance de l'élève</span>
+    <button class="nav-btn" onclick="go('oel')"><span class="nav-ico">◐</span> Mon empreinte O-ÉL-2</button>
+    <button class="nav-btn" onclick="go('capacites')"><span class="nav-ico">◑</span> Mes capacités EL.2.14</button>
+    <button class="nav-btn" onclick="go('auto')"><span class="nav-ico">◉</span> Autodétermination</button>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Suivi du projet</span>
+    <button class="nav-btn" onclick="go('projet')"><span class="nav-ico">✦</span> Projet + cours liés</button>
+    <button class="nav-btn" onclick="go('onepager')"><span class="nav-ico">◻</span> One-pager PDF</button>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Le programme</span>
+    <button class="nav-btn" onclick="go('savoirs')"><span class="nav-ico">◈</span> Savoirs essentiels</button>
+    <button class="nav-btn" onclick="go('cours')"><span class="nav-ico">◇</span> Les 29 cours</button>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Évaluation</span>
+    <button class="nav-btn" onclick="go('productions')"><span class="nav-ico">⬡</span> Productions finales</button>
+    <button class="nav-btn" onclick="go('grille')"><span class="nav-ico">⊞</span> Grille critérielle</button>
+  </div>
+
+  <div class="sidebar-footer">
+    DDE prescrite · MEQ oct. 2022<br>
+    O-ÉL-2 · Massé et al. (2022) · UQTR<br>
+    CP numérique · CSSDLJ
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- O-ÉL-2 -->
+
+<section class="panel active" id="panel-accueil">
+  <div style="min-height:100vh;background:linear-gradient(160deg,#f5f9f5 0%,#e8f4e8 40%,#eef4fc 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem;text-align:center">
+    <img src="data:image/png;base64,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/IkgOj6T5X21OV8wvGLypS5toY6083WgW1+kp019OtaddNjdtcUVWy8So2vJLzYdA+jdP8a0rrFnpY1gOrwND88VDontyWChbY722kCZaoEjhzbUpo/9VZZjbPHKR19gdSe3ckg/xSKwkzY/kTevsafbpA14byloJ/8A1P8AGsa9svzJvXdt7Dv6klHH6SKCPbELAgnwB5JWKFuH4Z4OnCwytfF9P9K8crbO8QRFx9sHsLsonT0BNasjZnmqjobOlPiZTX+iq9jGyjLnD5aIDI/Tka/wBp9XbD8AD/5/hL0Ur7ctrGVygpMcwoSTyLTO8oelRI+ytTu98vF3J9s7pLlj81xwlH+Xl9lSJbtjM1Sgbhe47ae1LDJWfpJH8K2mz7KcVhbqpSJNxWOfXu6J/wAqdPt1rzo605r/ACmg3nkK/smjiOzUEQYkufIEaDFelPHk2y2Vq+gVIOMbJbxO3Hr08m2sHj1adFvEfyp9Ovmqabdb4NuY6i3w48Vr8xlsIH2V6a2Mr+HYTMYzr27Ie/7KRsADNYfGMZsuORy1aoaW1qGjjyvKcX51Hj6OVZilK6CHDZDaGsFApgAMkpSlZr1KUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURf/Z" alt="CFGA De La Jonquière" style="height:140px;width:auto;margin-bottom:2rem;filter:drop-shadow(0 4px 16px rgba(0,73,131,.15))">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#007a47;margin-bottom:.75rem">Centre de formation générale des adultes · CSSDLJ</div>
+    <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:42px;font-weight:700;color:#004983;line-height:1.15;margin-bottom:.75rem;max-width:680px">Projection vers l'avenir</h1>
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:400;font-style:italic;color:#1D3557;margin-bottom:1.5rem">Mon projet de participation sociale</h2>
+
+    <p style="font-size:15px;color:#3a4556;max-width:560px;line-height:1.7;margin-bottom:2.5rem">Outil pédagogique complet pour accompagner l'élève dans la connaissance de soi, l'élaboration de son projet et la réussite du cours préalable obligatoire du programme.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <button onclick="go('oel')" style="padding:14px 28px;font-size:15px;font-weight:600;background:#007a47;color:white;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(0,122,71,.3);transition:all .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        Commencer — Mon empreinte d'apprentissage →
+      </button>
+      <button onclick="go('apercu')" style="padding:14px 28px;font-size:15px;font-weight:500;background:white;color:#004983;border:2px solid #004983;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.background='#eef4fc'" onmouseout="this.style.background='white'">
+        Aperçu du cours
+      </button>
+    </div>
+    <div style="margin-top:3rem;font-size:11px;color:#aaa;line-height:1.7">
+      DDE prescrite · MEQ octobre 2022 · O-ÉL-2 Massé et al. (2022) LaRIDAPE UQTR<br>
+      Outil développé par la CP pédagonumérique · CSSDLJ
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="panel-oel">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Outil réflexif · Aide à l'apprentissage uniquement · O-ÉL-2</div>
+    <div class="page-hero-title">Mon empreinte d'apprentissage</div>
+    <div class="page-hero-sub">Massé, L., Dubuc, M., Verret, C., Rouaud, É., Touzin, C. et Martineau-Crète, I. (2022). LaRIDAPE, UQTR. Adapté de <em>My Learning Print</em> (Schader & Zhou, 2014).</div>
+  </div>
+  <div class="page-content">
+    <div class="notice notice-info" style="margin-bottom:1.5rem">Cet outil est utilisé <strong>en aide à l'apprentissage uniquement</strong> — non évaluatif. Il aide l'élève à dresser son portrait comme apprenant.</div>
+    <div class="oel-wrap">
+<div class="oel-section">
+  <div class="oel-section-title"><div class="oel-section-num">1</div>Mes forces et mes intérêts</div>
+  <div class="oel-subtitle">1.1 Mes forces à l'école</div>
+  <div class="oel-instruction">Pour chacune des matières, coche si tu l'aimes (J'aime) et si tu réussis dans celle-ci (Je réussis). Si tu n'as jamais suivi un cours dans cette matière, coche la colonne de droite.</div>
+  <table class="oel-table">
+    <tr><th>Matières scolaires</th><th class="center">J'aime</th><th class="center">Je réussis</th><th class="center">Jamais suivi</th></tr>
+    <tr><td style="font-size:14px">Lecture</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_0" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_0" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_0" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Écriture</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_1" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_1" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_1" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Communication orale</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_2" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_2" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_2" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Mathématiques</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_3" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_3" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_3" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Géographie, histoire et éducation à la citoyenneté</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_4" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_4" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_4" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Sciences</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_5" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_5" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_5" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Technologies/ordinateur</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_6" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_6" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_6" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Anglais</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_7" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_7" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_7" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Espagnol</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_8" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_8" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_8" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Art dramatique</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_9" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_9" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_9" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Arts plastiques</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_10" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_10" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_10" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Danse</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_11" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_11" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_11" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Musique</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_12" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_12" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_12" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Éducation physique et à la santé</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_13" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_13" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_13" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Éthique et culture religieuse</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_14" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_14" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_14" onchange="saveOEL()"></td></tr>
+<tr><td style="font-size:14px">Autre (précise) :</td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-j" id="mj_15" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-r" id="mr_15" onchange="saveOEL()"></td><td class="oel-cb-cell"><input type="checkbox" class="oel-cb oel-cb-n" id="mn_15" onchange="saveOEL()"></td></tr>
+
+  </table>
+  <div class="field" style="max-width:420px"><label class="field-label">Ma matière préférée à l'école est :</label>
+  <input type="text" id="oel_mat_pref" placeholder="..." oninput="saveOEL()"></div>
+
+  <div class="oel-subtitle" style="margin-top:1.25rem">1.2 Mes intérêts particuliers</div>
+  <div class="oel-instruction">Fais la liste des sujets qui piquent ta curiosité ou qui t'intéressent actuellement.</div>
+  <textarea id="oel_interets_part" style="min-height:80px;font-size:14px" placeholder="Ex : Je suis passionné·e par la préhistoire, les jeux vidéo, la cuisine asiatique..." oninput="saveOEL()"></textarea>
+
+  <div class="oel-subtitle" style="margin-top:1.25rem">1.3 Mes intérêts généraux</div>
+  <div class="oel-instruction">Pour chacun des domaines, indique ton degré d'intérêt (—=Aucun · ~=Un peu · ★=Beaucoup) et le temps que tu y consacres habituellement par semaine.</div>
+  <table class="oel-interests-table">
+    <tr><th class="dom">Domaines</th><th class="center">Degré d'intérêt</th><th class="center">Temps consacré</th></tr>
+    <tr><td style="font-size:13px">Activités physiques : sports individuels (course, natation, ski...), de duel (tennis, badminton...) ou collectifs (basketball, hockey, soccer...)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_0_0" onclick="setIntDeg(0,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_0_1" onclick="setIntDeg(0,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_0_2" onclick="setIntDeg(0,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_0_0" onclick="setIntTemps(0,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_0_1" onclick="setIntTemps(0,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_0_2" onclick="setIntTemps(0,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Rédaction (fiction, poésie, journal intime, article de revue, blogue)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_1_0" onclick="setIntDeg(1,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_1_1" onclick="setIntDeg(1,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_1_2" onclick="setIntDeg(1,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_1_0" onclick="setIntTemps(1,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_1_1" onclick="setIntTemps(1,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_1_2" onclick="setIntTemps(1,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Lecture (roman, texte informatif, magazines, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_2_0" onclick="setIntDeg(2,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_2_1" onclick="setIntDeg(2,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_2_2" onclick="setIntDeg(2,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_2_0" onclick="setIntTemps(2,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_2_1" onclick="setIntTemps(2,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_2_2" onclick="setIntTemps(2,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Technologie / Électronique / Mécanique / Robotique / Informatique</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_3_0" onclick="setIntDeg(3,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_3_1" onclick="setIntDeg(3,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_3_2" onclick="setIntDeg(3,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_3_0" onclick="setIntTemps(3,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_3_1" onclick="setIntTemps(3,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_3_2" onclick="setIntTemps(3,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Bénévolat (école, communauté, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_4_0" onclick="setIntDeg(4,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_4_1" onclick="setIntDeg(4,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_4_2" onclick="setIntDeg(4,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_4_0" onclick="setIntTemps(4,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_4_1" onclick="setIntTemps(4,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_4_2" onclick="setIntTemps(4,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Arts visuels et médias (dessin, peinture, sculpture, cinéma, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_5_0" onclick="setIntDeg(5,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_5_1" onclick="setIntDeg(5,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_5_2" onclick="setIntDeg(5,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_5_0" onclick="setIntTemps(5,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_5_1" onclick="setIntTemps(5,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_5_2" onclick="setIntTemps(5,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Arts de la scène (théâtre, musique, danse, cirque, humour, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_6_0" onclick="setIntDeg(6,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_6_1" onclick="setIntDeg(6,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_6_2" onclick="setIntDeg(6,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_6_0" onclick="setIntTemps(6,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_6_1" onclick="setIntTemps(6,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_6_2" onclick="setIntTemps(6,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Artisanat (cuisine, couture, tricot, création de costumes, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_7_0" onclick="setIntDeg(7,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_7_1" onclick="setIntDeg(7,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_7_2" onclick="setIntDeg(7,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_7_0" onclick="setIntTemps(7,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_7_1" onclick="setIntTemps(7,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_7_2" onclick="setIntTemps(7,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Leadership (école, communauté, loisir, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_8_0" onclick="setIntDeg(8,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_8_1" onclick="setIntDeg(8,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_8_2" onclick="setIntDeg(8,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_8_0" onclick="setIntTemps(8,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_8_1" onclick="setIntTemps(8,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_8_2" onclick="setIntTemps(8,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Sciences naturelles ou physiques (biologie, chimie, physique, astronomie, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_9_0" onclick="setIntDeg(9,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_9_1" onclick="setIntDeg(9,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_9_2" onclick="setIntDeg(9,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_9_0" onclick="setIntTemps(9,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_9_1" onclick="setIntTemps(9,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_9_2" onclick="setIntTemps(9,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Mathématiques (calcul, algèbre, géométrie, probabilité, statistiques, énigmes, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_10_0" onclick="setIntDeg(10,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_10_1" onclick="setIntDeg(10,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_10_2" onclick="setIntDeg(10,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_10_0" onclick="setIntTemps(10,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_10_1" onclick="setIntTemps(10,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_10_2" onclick="setIntTemps(10,2)" title="Beaucoup">★</div></div></td></tr>
+<tr><td style="font-size:13px">Sciences humaines (histoire, géographie, etc.)</td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="ig_11_0" onclick="setIntDeg(11,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="ig_11_1" onclick="setIntDeg(11,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="ig_11_2" onclick="setIntDeg(11,2)" title="Beaucoup">★</div></div></td><td class="center"><div class="int-radio-group"><div class="int-radio int-degre-0 " id="igt_11_0" onclick="setIntTemps(11,0)" title="Aucun">—</div><div class="int-radio int-degre-1 " id="igt_11_1" onclick="setIntTemps(11,1)" title="Un peu">~</div><div class="int-radio int-degre-2 " id="igt_11_2" onclick="setIntTemps(11,2)" title="Beaucoup">★</div></div></td></tr>
+
+  </table>
+  <div class="field"><label class="field-label">Autres domaines d'intérêts :</label>
+  <textarea id="oel_autres_interets" style="min-height:60px;font-size:14px" placeholder="..." oninput="saveOEL()"></textarea></div>
+</div>
+
+<div class="oel-section">
+  <div class="oel-section-title"><div class="oel-section-num">2</div>Mes préférences d'apprentissage</div>
+
+  <div class="oel-subtitle">2.1 Mes façons préférées d'apprendre</div>
+  <div class="oel-instruction">😞 = je n'aime pas · 😐 = j'aime un peu · 😊 = j'aime beaucoup</div>
+  <table class="oel-pref-table">
+    <tr><th class="left">J'apprends mieux quand…</th><th class="center">Opinion</th></tr>
+    <tr class="cat-row"><td>J'écoute</td><td></td></tr>
+<tr><td style="font-size:15px">Écouter l'enseignant·e m'expliquer ou me parler d'un sujet.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_0_0_0" onclick="setPref('ap',0,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_0_0_1" onclick="setPref('ap',0,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_0_0_2" onclick="setPref('ap',0,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je regarde</td><td></td></tr>
+<tr><td style="font-size:15px">Regarder l'enseignant·e faire une démonstration.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_1_0_0" onclick="setPref('ap',1,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_1_0_1" onclick="setPref('ap',1,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_1_0_2" onclick="setPref('ap',1,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je lis</td><td></td></tr>
+<tr><td style="font-size:15px">Découvrir un sujet en lisant.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_2_0_0" onclick="setPref('ap',2,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_2_0_1" onclick="setPref('ap',2,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_2_0_2" onclick="setPref('ap',2,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>J'obtiens de l'aide d'autres personnes</td><td></td></tr>
+<tr><td style="font-size:15px">Demander à un·e camarade de classe ou à un·e ami·e de m'apprendre.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_3_0_0" onclick="setPref('ap',3,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_3_0_1" onclick="setPref('ap',3,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_3_0_2" onclick="setPref('ap',3,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Quelqu'un de plus âgé m'aide.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_3_1_0" onclick="setPref('ap',3,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_3_1_1" onclick="setPref('ap',3,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_3_1_2" onclick="setPref('ap',3,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je parle</td><td></td></tr>
+<tr><td style="font-size:15px">Parler/discuter avec des ami·e·s.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_4_0_0" onclick="setPref('ap',4,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_4_0_1" onclick="setPref('ap',4,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_4_0_2" onclick="setPref('ap',4,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Poser des questions.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_4_1_0" onclick="setPref('ap',4,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_4_1_1" onclick="setPref('ap',4,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_4_1_2" onclick="setPref('ap',4,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je fais</td><td></td></tr>
+<tr><td style="font-size:15px">Faire des projets.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_5_0_0" onclick="setPref('ap',5,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_5_0_1" onclick="setPref('ap',5,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_5_0_2" onclick="setPref('ap',5,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Construire des choses.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_5_1_0" onclick="setPref('ap',5,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_5_1_1" onclick="setPref('ap',5,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_5_1_2" onclick="setPref('ap',5,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Jouer à des jeux d'apprentissage.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_5_2_0" onclick="setPref('ap',5,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_5_2_1" onclick="setPref('ap',5,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_5_2_2" onclick="setPref('ap',5,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Manipuler des objets.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_5_3_0" onclick="setPref('ap',5,3,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_5_3_1" onclick="setPref('ap',5,3,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_5_3_2" onclick="setPref('ap',5,3,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Résoudre des problèmes réels.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_5_4_0" onclick="setPref('ap',5,4,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_5_4_1" onclick="setPref('ap',5,4,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_5_4_2" onclick="setPref('ap',5,4,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Participer physiquement à la tâche.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_5_5_0" onclick="setPref('ap',5,5,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_5_5_1" onclick="setPref('ap',5,5,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_5_5_2" onclick="setPref('ap',5,5,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>J'utilise</td><td></td></tr>
+<tr><td style="font-size:15px">Utiliser un cahier ou des feuilles d'exercices.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_6_0_0" onclick="setPref('ap',6,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_6_0_1" onclick="setPref('ap',6,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_6_0_2" onclick="setPref('ap',6,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Suivre un cours en ligne.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_6_1_0" onclick="setPref('ap',6,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_6_1_1" onclick="setPref('ap',6,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_6_1_2" onclick="setPref('ap',6,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Regarder des vidéos informatives.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_6_2_0" onclick="setPref('ap',6,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_6_2_1" onclick="setPref('ap',6,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_6_2_2" onclick="setPref('ap',6,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Utiliser un ordinateur ou une tablette électronique.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="ap_6_3_0" onclick="setPref('ap',6,3,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="ap_6_3_1" onclick="setPref('ap',6,3,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="ap_6_3_2" onclick="setPref('ap',6,3,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+
+  </table>
+  <div class="field"><label class="field-label">Autres façons d'apprendre :</label>
+  <textarea id="oel_ap_autres" style="min-height:55px;font-size:14px" placeholder="..." oninput="saveOEL()"></textarea></div>
+
+  <div class="oel-subtitle" style="margin-top:1.25rem">2.2 Mes façons préférées de me rappeler les informations</div>
+  <div class="oel-instruction">😞 = je n'aime pas · 😐 = j'aime un peu · 😊 = j'aime beaucoup</div>
+  <table class="oel-pref-table">
+    <tr><th class="left">Il est plus facile pour moi de me souvenir lorsque…</th><th class="center">Opinion</th></tr>
+    <tr class="cat-row"><td>Je parle</td><td></td></tr>
+<tr><td style="font-size:15px">Répéter l'information à retenir.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_0_0_0" onclick="setPref('me',0,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_0_0_1" onclick="setPref('me',0,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_0_0_2" onclick="setPref('me',0,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Le dire dans mes propres mots.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_0_1_0" onclick="setPref('me',0,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_0_1_1" onclick="setPref('me',0,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_0_1_2" onclick="setPref('me',0,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">L'expliquer à quelqu'un d'autre.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_0_2_0" onclick="setPref('me',0,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_0_2_1" onclick="setPref('me',0,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_0_2_2" onclick="setPref('me',0,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Participer à une discussion.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_0_3_0" onclick="setPref('me',0,3,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_0_3_1" onclick="setPref('me',0,3,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_0_3_2" onclick="setPref('me',0,3,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Répondre oralement à des questions.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_0_4_0" onclick="setPref('me',0,4,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_0_4_1" onclick="setPref('me',0,4,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_0_4_2" onclick="setPref('me',0,4,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>J'écris</td><td></td></tr>
+<tr><td style="font-size:15px">Écrire quelques phrases sur le sujet.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_1_0_0" onclick="setPref('me',1,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_1_0_1" onclick="setPref('me',1,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_1_0_2" onclick="setPref('me',1,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Faire une liste des principales informations à retenir.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_1_1_0" onclick="setPref('me',1,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_1_1_1" onclick="setPref('me',1,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_1_1_2" onclick="setPref('me',1,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Souligner les éléments importants.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_1_2_0" onclick="setPref('me',1,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_1_2_1" onclick="setPref('me',1,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_1_2_2" onclick="setPref('me',1,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Mettre des notes dans la marge.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_1_3_0" onclick="setPref('me',1,3,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_1_3_1" onclick="setPref('me',1,3,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_1_3_2" onclick="setPref('me',1,3,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je vois</td><td></td></tr>
+<tr><td style="font-size:15px">L'imaginer dans mon esprit.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_2_0_0" onclick="setPref('me',2,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_2_0_1" onclick="setPref('me',2,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_2_0_2" onclick="setPref('me',2,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Dessiner un diagramme ou une carte conceptuelle.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_2_1_0" onclick="setPref('me',2,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_2_1_1" onclick="setPref('me',2,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_2_1_2" onclick="setPref('me',2,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je pense ou comprends</td><td></td></tr>
+<tr><td style="font-size:15px">Penser à des exemples.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_3_0_0" onclick="setPref('me',3,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_3_0_1" onclick="setPref('me',3,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_3_0_2" onclick="setPref('me',3,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Penser à quelque chose que je connais déjà.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_3_1_0" onclick="setPref('me',3,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_3_1_1" onclick="setPref('me',3,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_3_1_2" onclick="setPref('me',3,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Penser à quelque chose qui ressemble (métaphore ou analogie).</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_3_2_0" onclick="setPref('me',3,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_3_2_1" onclick="setPref('me',3,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_3_2_2" onclick="setPref('me',3,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Envisager des moyens de l'utiliser dans la vraie vie.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_3_3_0" onclick="setPref('me',3,3,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_3_3_1" onclick="setPref('me',3,3,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_3_3_2" onclick="setPref('me',3,3,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Je fais ou pratique</td><td></td></tr>
+<tr><td style="font-size:15px">Faire une activité pratique.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_4_0_0" onclick="setPref('me',4,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_4_0_1" onclick="setPref('me',4,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_4_0_2" onclick="setPref('me',4,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Dessiner ce que je fais.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_4_1_0" onclick="setPref('me',4,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_4_1_1" onclick="setPref('me',4,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_4_1_2" onclick="setPref('me',4,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Réaliser un travail de création (histoire, poème, musique, dessin animé, blogue, etc.)</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="me_4_2_0" onclick="setPref('me',4,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="me_4_2_1" onclick="setPref('me',4,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="me_4_2_2" onclick="setPref('me',4,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+
+  </table>
+
+  <div class="oel-subtitle" style="margin-top:1.25rem">2.3 Les conditions dans lesquelles j'aime apprendre</div>
+  <div class="oel-instruction">😞 = je n'aime pas cette condition · 😐 = j'aime un peu · 😊 = j'aime beaucoup</div>
+  <table class="oel-cond-table">
+    <tr><th class="left">Conditions d'apprentissage</th><th class="center">Opinion</th></tr>
+    <tr class="cat-row"><td>Son</td><td></td></tr>
+<tr><td style="font-size:15px">Dans le silence ou avec des coquilles anti-bruit.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_0_0_0" onclick="setPref('co',0,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_0_0_1" onclick="setPref('co',0,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_0_0_2" onclick="setPref('co',0,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Avec un peu de bruit (gens qui parlent ou musique douce).</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_0_1_0" onclick="setPref('co',0,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_0_1_1" onclick="setPref('co',0,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_0_1_2" onclick="setPref('co',0,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Avec beaucoup de bruit.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_0_2_0" onclick="setPref('co',0,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_0_2_1" onclick="setPref('co',0,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_0_2_2" onclick="setPref('co',0,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Éclairage</td><td></td></tr>
+<tr><td style="font-size:15px">Avec une lumière forte.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_1_0_0" onclick="setPref('co',1,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_1_0_1" onclick="setPref('co',1,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_1_0_2" onclick="setPref('co',1,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Avec une lumière tamisée.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_1_1_0" onclick="setPref('co',1,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_1_1_1" onclick="setPref('co',1,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_1_1_2" onclick="setPref('co',1,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Température</td><td></td></tr>
+<tr><td style="font-size:15px">Quand il fait chaud.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_2_0_0" onclick="setPref('co',2,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_2_0_1" onclick="setPref('co',2,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_2_0_2" onclick="setPref('co',2,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Quand il fait frais.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_2_1_0" onclick="setPref('co',2,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_2_1_1" onclick="setPref('co',2,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_2_1_2" onclick="setPref('co',2,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Mouvement</td><td></td></tr>
+<tr><td style="font-size:15px">Quand je peux bouger.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_3_0_0" onclick="setPref('co',3,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_3_0_1" onclick="setPref('co',3,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_3_0_2" onclick="setPref('co',3,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Quand je reste assis.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_3_1_0" onclick="setPref('co',3,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_3_1_1" onclick="setPref('co',3,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_3_1_2" onclick="setPref('co',3,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Quand je peux changer ma position de travail.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_3_2_0" onclick="setPref('co',3,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_3_2_1" onclick="setPref('co',3,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_3_2_2" onclick="setPref('co',3,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Moment de la journée</td><td></td></tr>
+<tr><td style="font-size:15px">Le matin.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_4_0_0" onclick="setPref('co',4,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_4_0_1" onclick="setPref('co',4,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_4_0_2" onclick="setPref('co',4,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">L'après-midi.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_4_1_0" onclick="setPref('co',4,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_4_1_1" onclick="setPref('co',4,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_4_1_2" onclick="setPref('co',4,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">En soirée.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_4_2_0" onclick="setPref('co',4,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_4_2_1" onclick="setPref('co',4,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_4_2_2" onclick="setPref('co',4,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Seul ou avec d'autres</td><td></td></tr>
+<tr><td style="font-size:15px">Seul.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_5_0_0" onclick="setPref('co',5,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_5_0_1" onclick="setPref('co',5,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_5_0_2" onclick="setPref('co',5,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Avec une autre personne.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_5_1_0" onclick="setPref('co',5,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_5_1_1" onclick="setPref('co',5,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_5_1_2" onclick="setPref('co',5,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">En petit groupe.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="co_5_2_0" onclick="setPref('co',5,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="co_5_2_1" onclick="setPref('co',5,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="co_5_2_2" onclick="setPref('co',5,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+
+  </table>
+  <div class="field"><label class="field-label">Décris les obstacles qui t'empêchent d'apprendre facilement :</label>
+  <textarea id="oel_obstacles" style="min-height:70px;font-size:14px" placeholder="..." oninput="saveOEL()"></textarea></div>
+
+  <div class="oel-subtitle" style="margin-top:1.25rem">2.4 Mes façons préférées de montrer ce que j'ai appris</div>
+  <div class="oel-instruction">😞 = je n'aime pas · 😐 = j'aime un peu · 😊 = j'aime beaucoup</div>
+  <table class="oel-pref-table">
+    <tr><th class="left">Pour montrer ce que j'ai appris, j'aime…</th><th class="center">Opinion</th></tr>
+    <tr class="cat-row"><td>Parler</td><td></td></tr>
+<tr><td style="font-size:15px">Faire une présentation.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_0_0_0" onclick="setPref('mo',0,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_0_0_1" onclick="setPref('mo',0,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_0_0_2" onclick="setPref('mo',0,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Parler, discuter ou raconter.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_0_1_0" onclick="setPref('mo',0,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_0_1_1" onclick="setPref('mo',0,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_0_1_2" onclick="setPref('mo',0,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Écrire</td><td></td></tr>
+<tr><td style="font-size:15px">Écrire un texte, une histoire ou un rapport.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_1_0_0" onclick="setPref('mo',1,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_1_0_1" onclick="setPref('mo',1,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_1_0_2" onclick="setPref('mo',1,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Passer un test.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_1_1_0" onclick="setPref('mo',1,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_1_1_1" onclick="setPref('mo',1,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_1_1_2" onclick="setPref('mo',1,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Aider les autres</td><td></td></tr>
+<tr><td style="font-size:15px">Expliquer aux autres ce que j'ai appris ou leur montrer comment faire.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_2_0_0" onclick="setPref('mo',2,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_2_0_1" onclick="setPref('mo',2,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_2_0_2" onclick="setPref('mo',2,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr class="cat-row"><td>Appliquer</td><td></td></tr>
+<tr><td style="font-size:15px">Dessiner.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_3_0_0" onclick="setPref('mo',3,0,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_3_0_1" onclick="setPref('mo',3,0,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_3_0_2" onclick="setPref('mo',3,0,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Fabriquer quelque chose pour le montrer aux autres.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_3_1_0" onclick="setPref('mo',3,1,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_3_1_1" onclick="setPref('mo',3,1,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_3_1_2" onclick="setPref('mo',3,1,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Faire une démonstration.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_3_2_0" onclick="setPref('mo',3,2,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_3_2_1" onclick="setPref('mo',3,2,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_3_2_2" onclick="setPref('mo',3,2,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+<tr><td style="font-size:15px">Exécuter une action.</td><td class="center"><div class="pref-radio-group"><div class="pref-radio" id="mo_3_3_0" onclick="setPref('mo',3,3,0)" title="Je n'aime pas">😞</div><div class="pref-radio" id="mo_3_3_1" onclick="setPref('mo',3,3,1)" title="J'aime un peu">😐</div><div class="pref-radio" id="mo_3_3_2" onclick="setPref('mo',3,3,2)" title="J'aime beaucoup">😊</div></div></td></tr>
+
+  </table>
+  <div class="field"><label class="field-label">Autres façons de montrer :</label>
+  <textarea id="oel_mo_autres" style="min-height:55px;font-size:14px" placeholder="..." oninput="saveOEL()"></textarea></div>
+</div>
+
+<div class="oel-section">
+  <div class="oel-section-title"><div class="oel-section-num">3</div>Mes expériences familiales</div>
+  <div class="oel-instruction">Énumère des informations sur ta famille : activités familiales, expériences intéressantes, ce qui rend ta famille spéciale.</div>
+  <div class="field"><label class="field-label">Activités et expériences familiales</label>
+  <textarea id="oel_famille_act" style="min-height:80px;font-size:14px" placeholder="Ex : Ma famille fait du camping chaque été. Mon père est né au Mexique..." oninput="saveOEL()"></textarea></div>
+  <div class="field"><label class="field-label">Qu'est-ce que ma famille a de spécial ?</label>
+  <textarea id="oel_famille_spec" style="min-height:65px;font-size:14px" placeholder="..." oninput="saveOEL()"></textarea></div>
+</div>
+
+<div class="oel-section">
+  <div class="oel-section-title"><div class="oel-section-num">4</div>Mes activités parascolaires</div>
+  <div class="oel-instruction">Loisirs organisés ou activités préférées lors de ton temps libre (clubs, sports, collections, cuisine, etc.).</div>
+  <div style="display:grid;grid-template-columns:1fr 200px;gap:10px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);margin-bottom:8px;padding:0 2px">
+    <span>Loisirs ou activités</span><span>Depuis quand</span>
+  </div>
+  <div id="parascolaireRows">
+    <div style="display:grid;grid-template-columns:1fr 200px;gap:10px;margin-bottom:8px"><input type="text" placeholder="Ex : Équipe de soccer de ma ville" oninput="saveOEL()"><input type="text" placeholder="Ex : 3 ans" oninput="saveOEL()"></div>
+    <div style="display:grid;grid-template-columns:1fr 200px;gap:10px;margin-bottom:8px"><input type="text" placeholder="..." oninput="saveOEL()"><input type="text" placeholder="..." oninput="saveOEL()"></div>
+    <div style="display:grid;grid-template-columns:1fr 200px;gap:10px;margin-bottom:8px"><input type="text" placeholder="..." oninput="saveOEL()"><input type="text" placeholder="..." oninput="saveOEL()"></div>
+  </div>
+  <button class="btn btn-sm" style="margin-top:4px" onclick="addParaScolaire()">+ Ajouter une activité</button>
+</div>
+
+<div class="oel-section">
+  <div class="oel-section-title"><div class="oel-section-num">5</div>Mes motivations scolaires</div>
+  <div class="oel-instruction">La motivation, c'est comme l'essence dans une voiture — ce qui te permet d'avancer. Pense à ce qui te motive à apprendre.</div>
+  <div class="field-grid">
+    <div class="field"><label class="field-label">Je veux apprendre, parce que…</label>
+    <textarea id="oel_motiv1" style="min-height:80px;font-size:14px" oninput="saveOEL()"></textarea></div>
+    <div class="field"><label class="field-label">J'aime apprendre, parce que…</label>
+    <textarea id="oel_motiv2" style="min-height:80px;font-size:14px" oninput="saveOEL()"></textarea></div>
+    <div class="field"><label class="field-label">L'apprentissage est plus facile pour moi quand…</label>
+    <textarea id="oel_facile" style="min-height:80px;font-size:14px" oninput="saveOEL()"></textarea></div>
+    <div class="field"><label class="field-label">L'apprentissage est plus difficile pour moi quand…</label>
+    <textarea id="oel_difficile" style="min-height:80px;font-size:14px" oninput="saveOEL()"></textarea></div>
+  </div>
+</div>
+
+<div class="portrait-zone" id="portraitZone">
+  <div class="portrait-title">✦ Portrait de l'apprenant·e <span id="portraitLoading" style="display:none"><span class="loading-dots"><span></span><span></span><span></span></span></span></div>
+  <div id="portraitEmpty" style="font-size:14px;color:var(--ink2)">Remplissez les sections 1 à 5 puis cliquez sur le bouton pour générer le portrait personnalisé.</div>
+  <div id="portraitForces" style="display:none">
+    <div class="portrait-forces"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--vert);margin-bottom:.6rem">⭐ Top forces et capacités — cliquer pour modifier</div><div id="topForcesChips"></div></div>
+    <div class="portrait-defis"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--rouge);margin-bottom:.6rem">🎯 Top défis à travailler — cliquer pour modifier</div><div id="topDefisChips"></div></div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin:.75rem 0 .5rem">Portrait narratif</div>
+    <div class="portrait-text" id="portraitTexte"></div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin:.75rem 0 .5rem">Pistes de réflexion et moyens d'accompagnement</div>
+    <div class="portrait-pistes" id="portraitPistes"></div>
+    <div style="margin-top:.75rem;font-size:11px;color:var(--ink3)">Portrait généré par IA à titre de piste de réflexion. À valider avec l'élève. O-ÉL-2 — Massé et al. (2022), LaRIDAPE, UQTR.</div>
+  </div>
+  <div class="btn-row" style="margin-top:1.25rem">
+    <button class="btn btn-primary" onclick="genPortrait()">✦ Générer le portrait IA</button>
+    <button class="btn btn-vert" id="btnSaveForces" onclick="saveTopForcesManual()">💾 Enregistrer forces/défis → One-pager</button>
+  </div>
+</div>
+</div>
+  </div>
+</section>
+
+<!-- EL.2.14 -->
+<section class="panel" id="panel-capacites">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Outil réflexif · Aide à l'apprentissage · EL.2.14</div>
+    <div class="page-hero-title">Liste de mes capacités et de mes forces</div>
+    <div class="page-hero-sub">Programme de plan d'intervention. L'élève s'autoévalue sur 6 dimensions liées à son fonctionnement scolaire.</div>
+  </div>
+  <div class="page-content">
+    <div class="notice notice-info">Outil utilisé <strong>en aide à l'apprentissage uniquement</strong>.</div>
+    <div id="capacitesContent"></div>
+    <div class="radar-wrap" style="margin-top:1.25rem">
+      <div style="font-family:var(--font-display);font-size:18px;color:var(--ink);margin-bottom:1rem">Profil — radar des capacités</div>
+      <canvas id="radarCanvas" width="400" height="280" style="display:block;margin:0 auto"></canvas>
+      <div id="radarProfile" style="margin-top:1rem;font-size:14px;color:var(--ink2);line-height:1.7;max-width:500px;margin-left:auto;margin-right:auto"></div>
+    </div>
+    <div class="btn-row no-print">
+      <button class="btn btn-primary" onclick="buildCapacites()">Réinitialiser</button>
+    </div>
+  </div>
+</section>
+
+<!-- AUTODÉTERMINATION -->
+<section class="panel" id="panel-auto">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Outil réflexif · Wehmeyer et al. (2007)</div>
+    <div class="page-hero-title">Autodétermination</div>
+    <div class="page-hero-sub">Les 4 caractéristiques essentielles d'un comportement autodéterminé. Réf. : Duchaine, Gaudreau & Bernier (2022), MOOC Plan d'intervention autodéterminé, Université Laval.</div>
+  </div>
+  <div class="page-content">
+    <div class="notice notice-info"><strong>Aide à l'apprentissage uniquement.</strong></div>
+    <div id="autoContainer"></div>
+    <div class="btn-row no-print" style="margin-top:1rem">
+      <button class="btn" onclick="resetAuto()">Recommencer</button>
+      <button class="btn btn-primary" onclick="showAutoBilan()">Voir mon bilan →</button>
+    </div>
+    <div id="autoBilan" style="display:none;margin-top:1.5rem"></div>
+  </div>
+</section>
+
+<!-- PROJET -->
+<section class="panel" id="panel-projet">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Suivi individualisé</div>
+    <div class="page-hero-title">Projet de l'élève</div>
+    <div class="page-hero-sub">Décrivez le projet, obtenez des suggestions de cours par l'IA, et documentez les grandes lignes par cours. Données sauvegardées localement.</div>
+  </div>
+  <div class="page-content">
+    <div class="card">
+      <div class="card-title">Profil de l'élève</div>
+      <div class="field-grid" style="margin-top:.75rem">
+        <div class="field"><label class="field-label">Nom de l'élève</label><input type="text" id="pNom" placeholder="Prénom Nom" oninput="saveProj()"></div>
+        <div class="field"><label class="field-label">Date de départ du cours</label><input type="text" id="pDate" placeholder="ex : 12 mai 2026" oninput="saveProj()"></div>
+      </div>
+      <div class="field"><label class="field-label">Idée de projet de participation sociale</label><textarea id="pProjet" placeholder="Ex : Je veux faire du bénévolat dans une épicerie communautaire. Je veux aider les personnes âgées de mon quartier..." oninput="saveProj();scheduleAI()" style="min-height:95px"></textarea></div>
+      <div class="field-grid">
+        <div class="field"><label class="field-label">Milieux d'appartenance identifiés</label><input type="text" id="pMilieux" placeholder="Famille, école, quartier, groupe sportif..." oninput="saveProj()"></div>
+        <div class="field"><label class="field-label">Facteurs de motivation</label><input type="text" id="pMotiv" placeholder="Ce qui motive l'élève à participer..." oninput="saveProj()"></div>
+      </div>
+      <div class="field-grid">
+        <div class="field"><label class="field-label">Traits de personnalité et habiletés</label><textarea id="pProfil" style="min-height:70px" placeholder="Forces, traits, expériences..." oninput="saveProj()"></textarea></div>
+        <div class="field"><label class="field-label">Buts et composantes du projet</label><textarea id="pButs" style="min-height:70px" placeholder="Buts, besoins de formation, conditions de réussite, partenaires..." oninput="saveProj()"></textarea></div>
+      </div>
+    </div>
+
+    <div class="suggestion-zone">
+      <div class="suggestion-title">✦ Suggestions de cours basées sur le projet <span id="suggestionLoading" style="display:none"><span class="loading-dots"><span></span><span></span><span></span></span></span></div>
+      <div id="suggestionChips"><div style="font-size:13px;color:var(--ink3)">Écrivez le projet de l'élève ci-dessus pour obtenir des suggestions personnalisées…</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Cours du programme à relier au projet</div>
+      <div class="card-body" style="margin-bottom:1rem">Cochez les cours — les grandes lignes apparaîtront sous chaque cours sélectionné.</div>
+      <div id="coursLiensContainer"></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="btn btn-primary" onclick="go('onepager')">Voir le one-pager →</button>
+      <button class="btn" onclick="clearProjet()">Effacer le profil</button>
+    </div>
+  </div>
+</section>
+
+<!-- ONE-PAGER -->
+<section class="panel" id="panel-onepager">
+  <div class="page-hero no-print">
+    <div class="page-hero-eyebrow">Synthèse · Impression et PDF</div>
+    <div class="page-hero-title">One-pager du projet</div>
+    <div class="page-hero-sub">Fiche synthèse complète avec cours sélectionnés, grandes lignes et forces/défis enregistrés depuis l'empreinte d'apprentissage.</div>
+  </div>
+  <div class="page-content">
+    <div class="btn-row no-print" style="margin-bottom:1.5rem">
+      <button class="btn btn-or" onclick="exportPDF()">Exporter en PDF</button>
+      <button class="btn btn-primary" onclick="window.print()">Imprimer</button>
+      <button class="btn" onclick="go('projet')">← Modifier le projet</button>
+    </div>
+    <div class="notice notice-info no-print"><strong>Conseil :</strong> Dans la fenêtre d'impression, activez <em>Arrière-plans graphiques</em> pour conserver les couleurs.</div>
+    <div id="onePagerContent"></div>
+  </div>
+</section>
+
+<!-- APERÇU -->
+<section class="panel" id="panel-apercu">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Définition du domaine d'évaluation · MEQ octobre 2022</div>
+    <div class="page-hero-title">Projection vers l'avenir :<br><em>mon projet de participation sociale</em></div>
+    <div class="page-hero-sub">Compétence à traiter des situations de la vie courante liées à l'organisation de son projet de participation sociale. Cours préalable obligatoire à tous les autres cours du programme.</div>
+  </div>
+  <div class="page-content">
+    <div class="crit-grid">
+      <div class="crit-card crit-1"><div class="crit-num cn1">1</div><div class="crit-content"><div class="crit-title">Détermination rigoureuse de ses réalités personnelles et sociales</div><div class="crit-desc">Établir des liens entre sa vie quotidienne et ses dispositions personnelles et sociales.</div><div class="tags"><span class="tag tag-bleu">Traits de personnalité</span><span class="tag tag-bleu">Habiletés</span><span class="tag tag-bleu">Expériences</span><span class="tag tag-bleu">Facteurs de délimitation</span></div></div></div>
+      <div class="crit-card crit-2"><div class="crit-num cn2">2</div><div class="crit-content"><div class="crit-title">Reconnaissance réaliste de son potentiel d'action</div><div class="crit-desc">Cerner sa motivation personnelle et la contribution de ses milieux d'appartenance.</div><div class="tags"><span class="tag tag-vert">Facteurs de motivation</span><span class="tag tag-vert">Habitudes de vie</span><span class="tag tag-vert">Fonctionnement en groupe</span><span class="tag tag-vert">Milieux d'appartenance</span></div></div></div>
+      <div class="crit-card crit-3"><div class="crit-num cn3">3</div><div class="crit-content"><div class="crit-title">Élaboration méthodique du projet de participation sociale</div><div class="crit-desc">Déterminer ses buts et les composantes de son projet.</div><div class="tags"><span class="tag tag-or">Buts</span><span class="tag tag-or">Besoins de formation</span><span class="tag tag-or">Conditions de réussite</span><span class="tag tag-or">Partenaires</span></div></div></div>
+    </div>
+    <div class="acc"><div class="acc-head" onclick="toggleAcc(this)">DDE prescrite — rôle des organismes et des enseignant·e·s<span class="acc-chevron">▼</span></div><div class="acc-body">La DDE (octobre 2022) est prescrite pour toute épreuve — ministérielle, organisme scolaire ou BIM. Le prototype MEQ <strong>ne peut pas être utilisé</strong> en aide à l'apprentissage ni comme exercice. Toute nouvelle version d'épreuve doit porter le logo de l'organisme concepteur. L'adulte doit connaître les critères et leur importance avant l'évaluation.</div></div>
+    <div class="acc"><div class="acc-head" onclick="toggleAcc(this)">Seuil de réussite, résultat et reprise<span class="acc-chevron">▼</span></div><div class="acc-body">Seuil : <strong>60 % par critère</strong> (échelon Acceptable). Résultat exprimé : <em>Succès</em> ou <em>Échec</em>. L'adulte doit atteindre le seuil pour <strong>chaque</strong> critère. Ce cours est <strong>préalable obligatoire</strong> — aucun autre cours du programme ne peut être évalué avant lui.</div></div>
+    <div class="acc"><div class="acc-head" onclick="toggleAcc(this)">Durée, formes et conditions de l'épreuve<span class="acc-chevron">▼</span></div><div class="acc-body">1 ou 2 parties. Durée maximale : <strong>2 heures</strong>. Formes acceptées : questionnaire, étude de cas, entrevue, jeu de rôle, simulation, exposé oral, observation en action, portfolio, journal de bord, recherche.</div></div>
+    <div class="acc"><div class="acc-head" onclick="toggleAcc(this)">Politique d'évaluation des apprentissages (PEA, MEQ 2003)<span class="acc-chevron">▼</span></div><div class="acc-body">L'adulte doit savoir <strong>sur quoi</strong> il sera évalué et <strong>ce qu'on attend de lui</strong> (PEA, p. 11). La DDE et la grille critérielle sont recommandées à cette fin. L'interprétation critérielle consiste à comparer les données recueillies avec ce qui est attendu (PEA, p. 34).</div></div>
+  </div>
+</section>
+
+<!-- SAVOIRS -->
+<section class="panel" id="panel-savoirs">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Contenu du cours</div>
+    <div class="page-hero-title">Savoirs essentiels</div>
+    <div class="page-hero-sub">L'épreuve doit toucher au moins la moitié des 12 savoirs, en couvrant obligatoirement les 3 catégories.</div>
+  </div>
+  <div class="page-content">
+    <div class="savoir-cols">
+      <div class="savoir-col sc-bleu"><div class="savoir-col-title st-bleu">Dispositions personnelles et sociales</div><div class="savoir-item si-bleu">Traits de personnalité</div><div class="savoir-item si-bleu">Habiletés</div><div class="savoir-item si-bleu">Expériences</div><div class="savoir-item si-bleu">Facteurs de délimitation</div></div>
+      <div class="savoir-col sc-vert"><div class="savoir-col-title st-vert">Potentiel d'action</div><div class="savoir-item si-vert">Facteurs de motivation</div><div class="savoir-item si-vert">Habitudes de vie</div><div class="savoir-item si-vert">Fonctionnement en groupe</div><div class="savoir-item si-vert">Milieux d'appartenance</div></div>
+      <div class="savoir-col sc-or"><div class="savoir-col-title st-or">Composantes du projet</div><div class="savoir-item si-or">Buts</div><div class="savoir-item si-or">Besoins de formation</div><div class="savoir-item si-or">Conditions de réussite</div><div class="savoir-item si-or">Partenaires</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Planificateur de couverture d'épreuve</div>
+      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs couverts pour vérifier la conformité MEQ (min. 6 savoirs, 3 catégories).</div>
+      <div id="savoirCboxes"></div>
+      <div class="prog-wrap">
+        <div class="prog-meta"><span>Savoirs couverts</span><span id="sCount" style="font-weight:600">0 / 12</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="sProg" style="width:0%"></div></div>
+        <div class="prog-status" id="sStatus"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 29 COURS -->
+<section class="panel" id="panel-cours">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Programme d'études · MEQ 2022</div>
+    <div class="page-hero-title">Les 29 cours du programme</div>
+    <div class="page-hero-sub">Explorez les cours organisés par axe thématique. Cliquez sur un cours pour voir son contenu détaillé.</div>
+  </div>
+  <div class="page-content">
+    <div class="axe-filter" id="axeFilter"></div>
+    <div class="cours-grid" id="coursGrid"></div>
+  </div>
+</section>
+
+<!-- PRODUCTIONS -->
+<section class="panel" id="panel-productions">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Évaluation finale · DDE prescrite MEQ</div>
+    <div class="page-hero-title">Formes de production</div>
+    <div class="page-hero-sub">Choisissez une forme. Chaque fiche détaille : description, durée, matériel, exemples par critère, conseils et ancrage dans la grille MEQ.</div>
+  </div>
+  <div class="page-content">
+    <div class="prod-grid" id="prodGrid"></div>
+    <div class="prod-detail" id="prodDetail"></div>
+  </div>
+</section>
+
+<!-- GRILLE -->
+<section class="panel" id="panel-grille">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Outil d'évaluation prescrit · MEQ</div>
+    <div class="page-hero-title">Grille d'évaluation critérielle</div>
+    <div class="page-hero-sub">Grille à interprétation critérielle prescrite — PPS-Z101-3. Seuil de réussite : Acceptable (60%) pour chaque critère.</div>
+  </div>
+  <div class="page-content">
+    <div class="card">
+      <div class="field-grid-3">
+        <div class="field"><label class="field-label">Nom de l'adulte</label><input type="text" id="gNom" placeholder="Prénom Nom"></div>
+        <div class="field"><label class="field-label">Enseignant·e</label><input type="text" id="gEns" placeholder="Nom"></div>
+        <div class="field"><label class="field-label">Date</label><input type="text" id="gDate" placeholder="jj/mm/aaaa"></div>
+      </div>
+    </div>
+    <div id="grilleContainer"></div>
+    <div id="grilleResultat" style="display:none"></div>
+    <div class="btn-row no-print">
+      <button class="btn btn-primary" onclick="calcGrille()">Calculer le résultat</button>
+      <button class="btn btn-or" onclick="window.print()">Imprimer / PDF</button>
+      <button class="btn" onclick="resetGrille()">Réinitialiser</button>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+const COURS_DATA = [
+  {
+    "code": "PPS-Z101-3",
+    "nom": "Projection vers l'avenir : mon projet de participation sociale",
+    "axe": "Démarche d'autonomie",
+    "credits": 3,
+    "desc": "Cours fondateur et préalable obligatoire. L'adulte identifie ses réalités personnelles, son potentiel d'action et élabore son projet de participation sociale. Il établit des liens entre sa vie quotidienne et ses dispositions personnelles.",
+    "mots_cles": [
+      "projet",
+      "avenir",
+      "buts",
+      "potentiel",
+      "autonomie",
+      "participation"
+    ]
+  },
+  {
+    "code": "PPS-Z102-3",
+    "nom": "Consolidation de mon projet de participation sociale",
+    "axe": "Démarche d'autonomie",
+    "credits": 3,
+    "desc": "L'adulte consolide et précise son projet. Il valide ses buts, identifie ses besoins de formation et les ressources nécessaires à la réalisation de son projet.",
+    "mots_cles": [
+      "consolider",
+      "valider",
+      "ressources",
+      "formation",
+      "projet"
+    ]
+  },
+  {
+    "code": "PPS-Z103-3",
+    "nom": "Actualisation de ma démarche d'autonomie et de participation sociale",
+    "axe": "Démarche d'autonomie",
+    "credits": 3,
+    "desc": "L'adulte met en œuvre son projet, évalue sa réalisation dans ses milieux d'appartenance et ajuste sa démarche d'autonomie en continu.",
+    "mots_cles": [
+      "mise en oeuvre",
+      "évaluation",
+      "milieu",
+      "réalisation",
+      "ajustement"
+    ]
+  },
+  {
+    "code": "PPS-Z104-2",
+    "nom": "Soins personnels",
+    "axe": "Santé et bien-être",
+    "credits": 2,
+    "desc": "L'adulte développe et maintient des habitudes de soins personnels adaptées à ses besoins : hygiène corporelle, apparence personnelle, santé bucco-dentaire.",
+    "mots_cles": [
+      "soins",
+      "hygiène",
+      "corps",
+      "santé",
+      "autonomie"
+    ]
+  },
+  {
+    "code": "PPS-Z105-2",
+    "nom": "Hygiène et prévention",
+    "axe": "Santé et bien-être",
+    "credits": 2,
+    "desc": "L'adulte adopte des comportements d'hygiène et de prévention pour maintenir sa santé physique et psychologique et celle de son entourage.",
+    "mots_cles": [
+      "prévention",
+      "maladie",
+      "vaccination",
+      "sécurité",
+      "santé"
+    ]
+  },
+  {
+    "code": "PPS-Z106-3",
+    "nom": "Alimentation au quotidien",
+    "axe": "Santé et bien-être",
+    "credits": 3,
+    "desc": "L'adulte fait des choix alimentaires éclairés dans sa vie quotidienne : achats, préparation de repas simples, lecture d'étiquettes nutritionnelles.",
+    "mots_cles": [
+      "alimentation",
+      "repas",
+      "épicerie",
+      "nutrition",
+      "cuisiner"
+    ]
+  },
+  {
+    "code": "PPS-Z107-3",
+    "nom": "Alimentation saine",
+    "axe": "Santé et bien-être",
+    "credits": 3,
+    "desc": "L'adulte planifie et prépare une alimentation saine et équilibrée en tenant compte des besoins nutritionnels et de son budget.",
+    "mots_cles": [
+      "nutrition",
+      "équilibre",
+      "planification",
+      "budget",
+      "santé"
+    ]
+  },
+  {
+    "code": "PPS-Z108-3",
+    "nom": "Psychomotricité",
+    "axe": "Santé et bien-être",
+    "credits": 3,
+    "desc": "L'adulte développe ses capacités psychomotrices : coordination, équilibre, motricité fine et globale dans des activités de la vie courante.",
+    "mots_cles": [
+      "motricité",
+      "coordination",
+      "corps",
+      "mouvement",
+      "activité physique"
+    ]
+  },
+  {
+    "code": "PPS-Z109-3",
+    "nom": "Forme physique",
+    "axe": "Santé et bien-être",
+    "credits": 3,
+    "desc": "L'adulte adopte un mode de vie actif, comprend les bienfaits de l'activité physique et maintient sa forme physique par des habitudes régulières.",
+    "mots_cles": [
+      "activité physique",
+      "sport",
+      "bien-être",
+      "exercice",
+      "habitudes"
+    ]
+  },
+  {
+    "code": "PPS-Z110-2",
+    "nom": "Sexualité et respect",
+    "axe": "Santé et bien-être",
+    "credits": 2,
+    "desc": "L'adulte développe une compréhension saine et respectueuse de la sexualité, des relations amoureuses et de l'intimité dans le respect de soi et des autres.",
+    "mots_cles": [
+      "sexualité",
+      "respect",
+      "relations",
+      "intimité",
+      "consentement"
+    ]
+  },
+  {
+    "code": "PPS-Z111-2",
+    "nom": "Conduites à risque",
+    "axe": "Santé et bien-être",
+    "credits": 2,
+    "desc": "L'adulte reconnaît et évite les conduites à risque liées à la consommation de substances, aux comportements dangereux, pour sa santé et sa sécurité.",
+    "mots_cles": [
+      "drogues",
+      "alcool",
+      "risque",
+      "sécurité",
+      "prévention"
+    ]
+  },
+  {
+    "code": "PPS-Z112-3",
+    "nom": "Interactions au quotidien",
+    "axe": "Relations et vie sociale",
+    "credits": 3,
+    "desc": "L'adulte développe des habiletés de communication verbale et non verbale pour interagir efficacement dans les situations de la vie courante.",
+    "mots_cles": [
+      "communication",
+      "interaction",
+      "quotidien",
+      "habiletés sociales",
+      "parler"
+    ]
+  },
+  {
+    "code": "PPS-Z113-3",
+    "nom": "Réseau social sain",
+    "axe": "Relations et vie sociale",
+    "credits": 3,
+    "desc": "L'adulte crée et maintient des relations interpersonnelles positives, développe un réseau social sain et équilibré dans ses différents milieux.",
+    "mots_cles": [
+      "amis",
+      "réseau",
+      "relations",
+      "communauté",
+      "appartenance"
+    ]
+  },
+  {
+    "code": "PPS-Z114-3",
+    "nom": "Relations harmonieuses",
+    "axe": "Relations et vie sociale",
+    "credits": 3,
+    "desc": "L'adulte gère les conflits de façon constructive et maintient des relations harmonieuses dans ses milieux d'appartenance par des stratégies de communication.",
+    "mots_cles": [
+      "conflits",
+      "harmonie",
+      "médiation",
+      "communication",
+      "résolution"
+    ]
+  },
+  {
+    "code": "PPS-Z115-3",
+    "nom": "Langages utilitaires",
+    "axe": "Relations et vie sociale",
+    "credits": 3,
+    "desc": "L'adulte utilise divers langages (écrit, numérique, visuel) pour communiquer efficacement dans des contextes variés de la vie quotidienne.",
+    "mots_cles": [
+      "lecture",
+      "écriture",
+      "numérique",
+      "communication",
+      "langages"
+    ]
+  },
+  {
+    "code": "PPS-Z116-3",
+    "nom": "Vie parentale",
+    "axe": "Relations et vie sociale",
+    "credits": 3,
+    "desc": "L'adulte développe les compétences nécessaires à l'exercice du rôle parental : soins aux enfants, développement de l'enfant, routines familiales.",
+    "mots_cles": [
+      "famille",
+      "enfants",
+      "parentalité",
+      "soins",
+      "routines"
+    ]
+  },
+  {
+    "code": "PPS-Z117-2",
+    "nom": "Vie en cohabitation",
+    "axe": "Vie résidentielle",
+    "credits": 2,
+    "desc": "L'adulte développe les habiletés nécessaires à la vie en cohabitation : partage des responsabilités, règles de vie commune, respect de l'espace partagé.",
+    "mots_cles": [
+      "cohabitation",
+      "colocation",
+      "responsabilités",
+      "règles",
+      "partage"
+    ]
+  },
+  {
+    "code": "PPS-Z118-3",
+    "nom": "Perspective de vie en appartement",
+    "axe": "Vie résidentielle",
+    "credits": 3,
+    "desc": "L'adulte planifie et prépare sa transition vers la vie en appartement autonome : recherche de logement, démarches administratives, budget.",
+    "mots_cles": [
+      "appartement",
+      "logement",
+      "autonomie",
+      "budget",
+      "déménagement"
+    ]
+  },
+  {
+    "code": "PPS-Z119-2",
+    "nom": "Vie locative",
+    "axe": "Vie résidentielle",
+    "credits": 2,
+    "desc": "L'adulte comprend ses droits et responsabilités de locataire : bail, relations avec le propriétaire, Régie du logement, entretien.",
+    "mots_cles": [
+      "bail",
+      "locataire",
+      "propriétaire",
+      "droits",
+      "logement"
+    ]
+  },
+  {
+    "code": "PPS-Z120-2",
+    "nom": "Sécurité et salubrité du milieu de vie",
+    "axe": "Vie résidentielle",
+    "credits": 2,
+    "desc": "L'adulte maintient un milieu de vie sécuritaire et salubre : prévention des accidents, entretien, produits dangereux, détecteurs.",
+    "mots_cles": [
+      "sécurité",
+      "salubrité",
+      "accidents",
+      "entretien",
+      "prévention"
+    ]
+  },
+  {
+    "code": "PPS-Z121-2",
+    "nom": "Gestion de l'entretien domestique",
+    "axe": "Vie résidentielle",
+    "credits": 2,
+    "desc": "L'adulte planifie et réalise les tâches d'entretien domestique de façon autonome et organisée : ménage, lessive, organisation.",
+    "mots_cles": [
+      "ménage",
+      "nettoyage",
+      "organisation",
+      "tâches",
+      "domestique"
+    ]
+  },
+  {
+    "code": "PPS-Z122-2",
+    "nom": "Objets technologiques courants",
+    "axe": "Vie citoyenne",
+    "credits": 2,
+    "desc": "L'adulte utilise les objets technologiques courants de façon sécuritaire et efficace dans sa vie quotidienne : téléphone, tablette, internet.",
+    "mots_cles": [
+      "technologie",
+      "internet",
+      "téléphone",
+      "numérique",
+      "outils"
+    ]
+  },
+  {
+    "code": "PPS-Z123-2",
+    "nom": "Identité culturelle",
+    "axe": "Vie citoyenne",
+    "credits": 2,
+    "desc": "L'adulte explore et affirme son identité culturelle dans la société québécoise : traditions, langue, diversité, appartenance culturelle.",
+    "mots_cles": [
+      "culture",
+      "identité",
+      "québec",
+      "diversité",
+      "traditions"
+    ]
+  },
+  {
+    "code": "PPS-Z124-2",
+    "nom": "Vie dans une collectivité",
+    "axe": "Vie citoyenne",
+    "credits": 2,
+    "desc": "L'adulte s'implique dans sa collectivité, connaît les ressources de son milieu et exerce son rôle de citoyen responsable.",
+    "mots_cles": [
+      "communauté",
+      "collectivité",
+      "citoyen",
+      "ressources",
+      "implication"
+    ]
+  },
+  {
+    "code": "PPS-Z125-3",
+    "nom": "Participation citoyenne",
+    "axe": "Vie citoyenne",
+    "credits": 3,
+    "desc": "L'adulte participe activement à la vie démocratique et citoyenne : vote, organismes communautaires, bénévolat, droits et responsabilités.",
+    "mots_cles": [
+      "bénévolat",
+      "vote",
+      "démocratie",
+      "droits",
+      "citoyenneté",
+      "communauté"
+    ]
+  },
+  {
+    "code": "PPS-Z126-3",
+    "nom": "Activités productives",
+    "axe": "Vie économique",
+    "credits": 3,
+    "desc": "L'adulte explore et s'engage dans des activités productives adaptées à ses capacités : travail bénévole, stages, activités de production.",
+    "mots_cles": [
+      "travail",
+      "emploi",
+      "bénévolat",
+      "stage",
+      "production",
+      "activités"
+    ]
+  },
+  {
+    "code": "PPS-Z127-2",
+    "nom": "Achat et consommation",
+    "axe": "Vie économique",
+    "credits": 2,
+    "desc": "L'adulte fait des choix de consommation éclairés et responsables : comparer les prix, droits du consommateur, publicité.",
+    "mots_cles": [
+      "achats",
+      "consommation",
+      "budget",
+      "épicerie",
+      "droits",
+      "prix"
+    ]
+  },
+  {
+    "code": "PPS-Z128-2",
+    "nom": "Budget et consommation",
+    "axe": "Vie économique",
+    "credits": 2,
+    "desc": "L'adulte gère un budget personnel équilibré : revenus, dépenses, épargne, outils bancaires, gestion des dettes.",
+    "mots_cles": [
+      "budget",
+      "argent",
+      "épargne",
+      "banque",
+      "dépenses",
+      "revenus"
+    ]
+  },
+  {
+    "code": "PPS-Z129-2",
+    "nom": "Activités de loisir",
+    "axe": "Vie économique",
+    "credits": 2,
+    "desc": "L'adulte choisit et s'engage dans des activités de loisir enrichissantes, accessibles et adaptées à ses intérêts et ressources.",
+    "mots_cles": [
+      "loisirs",
+      "activités",
+      "sports",
+      "culture",
+      "détente",
+      "temps libre"
+    ]
+  }
+];
+
+const PRODS_DETAIL = {
+  "Entrevue guidée": {
+    "icon": "💬",
+    "desc_courte": "Dialogue structuré avec l'enseignant·e",
+    "desc_longue": "L'enseignant·e prépare 6 à 10 questions ouvertes couvrant les 3 critères. L'adulte répond oralement, développe sa pensée, fait des liens. L'enseignant·e prend des notes ou enregistre (avec consentement).",
+    "duree": "20–45 minutes",
+    "materiel": "Guide de questions, grille d'observation, optionnel : enregistreur audio",
+    "critere1_ex": "Parle-moi de toi : qui tu es, tes forces, tes expériences. Qu'est-ce qui te définit comme personne?",
+    "critere2_ex": "Qu'est-ce qui te motive à vouloir participer dans ta communauté? Qui dans ta vie peut t'aider à réaliser ton projet?",
+    "critere3_ex": "Décris-moi ton projet en détail. Quels sont tes buts? Quelles étapes as-tu prévues? Qui seront tes partenaires?",
+    "conseils": "Laisser du temps de réflexion. Relancer avec 'peux-tu développer?'. Reformuler pour vérifier la compréhension. L'authenticité se valide par la cohérence des réponses.",
+    "grille_note": "Cocher l'échelon correspondant à la qualité des liens établis, à la précision du potentiel d'action et au degré de détail du projet décrit oralement."
+  },
+  "Journal de bord": {
+    "icon": "📓",
+    "desc_courte": "Traces réflexives accumulées au fil du cours",
+    "desc_longue": "L'adulte consigne régulièrement (idéalement après chaque séance) ses réflexions, découvertes, décisions et questionnements liés à son projet. Le journal témoigne de l'évolution de sa pensée.",
+    "duree": "Tout au long du cours — consultation finale : 30–60 min",
+    "materiel": "Cahier ou document numérique, consignes de rédaction, grille d'évaluation",
+    "critere1_ex": "L'adulte décrit ses traits de personnalité, ses expériences passées et les liens avec sa vie d'aujourd'hui dans au moins 3 entrées.",
+    "critere2_ex": "L'adulte note ses sources de motivation, les personnes-ressources identifiées et ce qu'il apprend sur son potentiel.",
+    "critere3_ex": "L'adulte documente l'évolution de son projet : premières idées, ajustements, buts finaux, partenaires ciblés.",
+    "conseils": "Fournir des amorces de rédaction (ex : 'Ce que j'ai découvert sur moi...', 'Mon projet prend la forme de...'). Vérifier l'authenticité par la progression visible des idées.",
+    "grille_note": "Évaluer la qualité des liens établis, la réalisme du potentiel exprimé et la cohérence du projet tel que documenté dans l'ensemble du journal."
+  },
+  "Portfolio": {
+    "icon": "📂",
+    "desc_courte": "Recueil de documents illustrant le parcours",
+    "desc_longue": "L'adulte compile des documents variés qui illustrent sa démarche : textes descriptifs, photos, lettres de référence, plans, artefacts de ses milieux. Il choisit et justifie ses sélections.",
+    "duree": "Construction tout au long du cours — présentation : 20–30 min",
+    "materiel": "Chemise, cahier ou plateforme numérique, consignes de sélection et de justification",
+    "critere1_ex": "Inclure : un texte 'Qui je suis', une liste de ses forces, une carte des expériences significatives.",
+    "critere2_ex": "Inclure : une description de ses milieux d'appartenance, témoignages de personnes de confiance, identification des motivations.",
+    "critere3_ex": "Inclure : le plan du projet avec buts, échéancier, partenaires, besoins de formation identifiés.",
+    "conseils": "La sélection et la justification des pièces sont aussi importantes que les pièces elles-mêmes. L'adulte explique pourquoi chaque document est significatif.",
+    "grille_note": "Juger la qualité et la pertinence des pièces choisies, la cohérence entre les documents et les critères, et la capacité à justifier ses choix."
+  },
+  "Exposé oral": {
+    "icon": "🎤",
+    "desc_courte": "Présentation structurée du projet devant l'enseignant·e",
+    "desc_longue": "L'adulte présente son projet de participation sociale de façon structurée. Il couvre les 3 critères dans sa présentation et répond aux questions de l'enseignant·e.",
+    "duree": "10–15 minutes + 5 minutes de questions",
+    "materiel": "Plan de présentation, optionnel : diaporama, affiches, objets",
+    "critere1_ex": "L'adulte se présente en faisant des liens entre ses traits de personnalité et sa vie quotidienne (ex: 'Je suis quelqu'un de patient, ce qui se voit quand...').",
+    "critere2_ex": "L'adulte explique concrètement ce qui le motive et qui sont les personnes de son entourage qui peuvent soutenir son projet.",
+    "critere3_ex": "L'adulte présente son projet avec ses buts clairs, les étapes prévues, les partenaires ciblés et les conditions de réussite.",
+    "conseils": "Fournir un plan type. Prévoir une période de questions pour approfondir les critères moins développés. Évaluer pendant la présentation ET pendant les questions.",
+    "grille_note": "Observer la clarté des liens (C1), la précision de la motivation et du réseau (C2), et la structure du projet présenté (C3). Les questions peuvent faire monter l'échelon."
+  },
+  "Questionnaire écrit": {
+    "icon": "📋",
+    "desc_courte": "Réponses développées à des questions structurées",
+    "desc_longue": "L'adulte répond par écrit à un questionnaire structuré couvrant les 3 critères. Les questions sont ouvertes et permettent des réponses développées.",
+    "duree": "60–90 minutes",
+    "materiel": "Questionnaire papier ou numérique, matériel d'écriture ou ordinateur",
+    "critere1_ex": "Q1 : Décris 3 traits de ta personnalité et explique comment ils se manifestent dans ta vie de tous les jours. Q2 : Quelles expériences passées ont forgé qui tu es aujourd'hui?",
+    "critere2_ex": "Q3 : Qu'est-ce qui te motive à vouloir participer à la vie de ta communauté? Q4 : Qui dans ta vie (famille, amis, intervenants) peut t'aider à réaliser ton projet et comment?",
+    "critere3_ex": "Q5 : Décris ton projet en détail (buts, activités, partenaires). Q6 : Quelles sont les conditions nécessaires pour que ton projet réussisse?",
+    "conseils": "Permettre l'utilisation de ressources personnelles. S'assurer que l'adulte comprend ce qu'on attend. Une réponse courte mais précise peut valoir plus qu'une longue réponse floue.",
+    "grille_note": "Chaque réponse contribue à l'évaluation du critère correspondant. La qualité des liens, la précision et la méthode sont plus importantes que la quantité."
+  },
+  "Jeu de rôle": {
+    "icon": "🎭",
+    "desc_courte": "Mise en situation authentique liée au projet",
+    "desc_longue": "L'adulte joue une situation réaliste liée à son projet : se présenter à un organisme, demander de l'aide, négocier sa participation. L'enseignant·e joue le rôle de l'interlocuteur et évalue en temps réel.",
+    "duree": "15–25 minutes (incluant la préparation et le débriefing)",
+    "materiel": "Scénario préparé à l'avance, grille d'observation, espace de jeu",
+    "critere1_ex": "Scénario C1 : L'adulte se présente à un nouvel intervenant en décrivant ses forces, son parcours et ce qui le caractérise comme personne.",
+    "critere2_ex": "Scénario C2 : L'adulte explique à un organisme communautaire ce qui le motive et ce qu'il peut apporter, en nommant ses ressources personnelles.",
+    "critere3_ex": "Scénario C3 : L'adulte présente son projet à un partenaire potentiel, explique ses buts et négocie les modalités de sa participation.",
+    "conseils": "Préparer le scénario avec l'adulte à l'avance. Prévoir un temps de réflexion avant le jeu. Faire un débriefing après : 'Comment tu t'es senti?' 'Qu'est-ce que tu referais autrement?'",
+    "grille_note": "Évaluer la spontanéité et l'authenticité des réponses, la capacité à adapter le discours à l'interlocuteur, et la cohérence du projet décrit dans l'action."
+  },
+  "Étude de cas": {
+    "icon": "🔍",
+    "desc_courte": "Analyse d'une situation sociale réelle ou fictive",
+    "desc_longue": "L'adulte analyse une situation présentée (réelle ou fictive) mettant en scène une personne avec des défis de participation sociale. Il fait des liens avec sa propre situation et propose des pistes.",
+    "duree": "45–75 minutes",
+    "materiel": "Document de cas, questions guidées, matériel d'écriture",
+    "critere1_ex": "À partir du cas : 'Quels traits de personnalité de Marie correspondent aux tiens? Quelles différences vois-tu? Comment ton vécu personnel t'aide à comprendre sa situation?'",
+    "critere2_ex": "À partir du cas : 'Quels sont les facteurs de motivation de Marie? Lesquels te ressemblent? Quels milieux d'appartenance lui manquent-ils? Et toi, lesquels as-tu?'",
+    "critere3_ex": "À partir du cas : 'Comment tu améliorerais le projet de Marie? Qu'est-ce que sa situation t'inspire pour ton propre projet?'",
+    "conseils": "Choisir un cas suffisamment proche de la réalité de l'adulte pour qu'il puisse se projeter. Le cas sert de miroir — l'adulte parle autant de lui que du personnage.",
+    "grille_note": "Observer la qualité des liens que l'adulte établit entre le cas et sa propre réalité. Un adulte qui se projette authentiquement démontre les 3 critères simultanément."
+  },
+  "Observation en action": {
+    "icon": "👁",
+    "desc_courte": "Évaluation dans une activité authentique du milieu",
+    "desc_longue": "L'enseignant·e observe l'adulte en action dans une activité authentique liée à son projet : sortie dans la communauté, rencontre avec un partenaire, activité de groupe. La grille critérielle est complétée sur place.",
+    "duree": "Variable selon l'activité — idéalement 30–90 minutes",
+    "materiel": "Grille d'observation adaptée, notes anecdotiques, contexte préalablement défini",
+    "critere1_ex": "Observer : L'adulte se présente en faisant des liens entre qui il est et ce qu'il fait. Il démontre une connaissance de soi cohérente avec ses actions.",
+    "critere2_ex": "Observer : L'adulte nomme ce qui le motive, s'appuie sur ses ressources, interagit avec les personnes de son réseau de façon naturelle.",
+    "critere3_ex": "Observer : L'adulte met en pratique les composantes de son projet : respecte les ententes, interagit avec les partenaires, démontre une démarche planifiée.",
+    "conseils": "Informer l'adulte à l'avance des comportements observés (sans lui donner la grille exacte). Prendre des notes anecdotiques en temps réel. Cette forme a la validité écologique la plus forte.",
+    "grille_note": "Évaluer ce qui est observé directement dans l'action — les comportements sont plus révélateurs que les discours. Un seul moment d'observation ciblée peut suffire par critère."
+  }
+};
+
+
+
+
+const AXE_COLORS = {"Démarche d'autonomie": "#004983", "Santé et bien-être": "#006b3c", "Relations et vie sociale": "#b8860b", "Vie résidentielle": "#0077a8", "Vie citoyenne": "#5b2d8e", "Vie économique": "#c0221e"};
+
+// === NAVIGATION ===
+function go(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if ((b.getAttribute('onclick') || '').includes("'" + id + "'")) b.classList.add('active');
+  });
+  if (id === 'onepager') buildOnePager();
+  if (id === 'cours') buildCours();
+  if (id === 'projet') buildCoursLiens();
+  if (id === 'productions') buildProductions();
+  if (id === 'grille') buildGrille();
+  if (id === 'savoirs') buildSavoirs();
+  if (id === 'capacites') buildCapacites();
+  if (id === 'auto') buildAuto();
+  window.scrollTo(0, 0);
+}
+function toggleAcc(h) {
+  const b = h.nextElementSibling;
+  const c = h.querySelector('.acc-chevron');
+  b.classList.toggle('open');
+  if(c) c.classList.toggle('open');
+}
+function toggleAxeBody(h) {
+  const b = h.nextElementSibling;
+  b.classList.toggle('open');
+  const ch = h.querySelector('.axe-ch');
+  if(ch) ch.textContent = b.classList.contains('open') ? '▲' : '▼';
+}
+
+// === SAVOIRS ===
+const SAVOIRS = [
+  {cat:0,lab:'Dispositions',nom:'Traits de personnalité'},
+  {cat:0,lab:'Dispositions',nom:'Habiletés'},
+  {cat:0,lab:'Dispositions',nom:'Expériences'},
+  {cat:0,lab:'Dispositions',nom:'Facteurs de délimitation'},
+  {cat:1,lab:'Potentiel',nom:'Facteurs de motivation'},
+  {cat:1,lab:'Potentiel',nom:'Habitudes de vie'},
+  {cat:1,lab:'Potentiel',nom:"Fonctionnement en groupe"},
+  {cat:1,lab:'Potentiel',nom:"Milieux d'appartenance"},
+  {cat:2,lab:'Projet',nom:'Buts'},
+  {cat:2,lab:'Projet',nom:'Besoins de formation'},
+  {cat:2,lab:'Projet',nom:'Conditions de réussite'},
+  {cat:2,lab:'Projet',nom:'Partenaires'},
+];
+const SAVOIR_TAGS = ['tag-bleu','tag-vert','tag-or'];
+function buildSavoirs() {
+  const c = document.getElementById('savoirCboxes'); if(!c) return;
+  c.innerHTML = SAVOIRS.map((s,i) =>
+    `<label class="cb-row"><input type="checkbox" onchange="updateSavoirs()">
+    <span class="tag ${SAVOIR_TAGS[s.cat]}" style="font-size:11px">${s.lab}</span>${s.nom}</label>`
+  ).join('');
+}
+function updateSavoirs() {
+  const boxes = [...document.querySelectorAll('#savoirCboxes input')];
+  const checked = boxes.filter(b => b.checked); const n = checked.length;
+  document.getElementById('sCount').textContent = n + ' / 12';
+  document.getElementById('sProg').style.width = (n/12*100) + '%';
+  const cats = new Set(checked.map(b => SAVOIRS[boxes.indexOf(b)].cat));
+  const el = document.getElementById('sStatus');
+  if (n >= 6 && cats.size === 3) {
+    el.innerHTML = '<span style="color:var(--vert);font-weight:600">✓ Conforme MEQ — min. 6 savoirs, 3 catégories couvertes.</span>';
+  } else {
+    const m = [];
+    if(n<6) m.push('Min. 6 savoirs ('+(6-n)+' manquant'+(6-n>1?'s':'')+')');
+    if(cats.size<3) m.push((3-cats.size)+' catégorie'+(3-cats.size>1?'s':'')+' manquante'+(3-cats.size>1?'s':''));
+    el.innerHTML = '<span style="color:var(--rouge)">⚠ '+m.join(' · ')+'</span>';
+  }
+}
+
+// === 29 COURS ===
+let coursFilter = 'tous';
+function buildCours() {
+  const axes = ['tous', ...new Set(COURS_DATA.map(c => c.axe))];
+  const filterEl = document.getElementById('axeFilter'); if(!filterEl) return;
+  filterEl.innerHTML = axes.map(ax => {
+    const color = AXE_COLORS[ax] || 'var(--ink)';
+    const active = coursFilter === ax;
+    return `<div class="axe-chip ${active?'active':''}" style="${active?'background:'+color+';color:#fff':''}" onclick="setCoursFilter('${ax}','${color}')">${ax==='tous'?'Tous les cours':ax}</div>`;
+  }).join('');
+  const grid = document.getElementById('coursGrid');
+  const filtered = coursFilter === 'tous' ? COURS_DATA : COURS_DATA.filter(c => c.axe === coursFilter);
+  grid.innerHTML = filtered.map(c => {
+    const color = AXE_COLORS[c.axe] || '#004983';
+    return `<div class="cours-card" id="cc_${c.code}" style="border-left-color:${color}">
+      <div class="cours-code" style="color:${color}">${c.code}</div>
+      <div class="cours-nom">${c.nom}</div>
+      <div class="cours-mots">${c.mots_cles.map(m=>`<span class="cours-mot">${m}</span>`).join('')}</div>
+      <div class="cours-desc" id="cdesc_${c.code}">${c.desc}</div>
+      <div class="cours-expand-btn" onclick="toggleCours('${c.code}')"><span id="cebtn_${c.code}">▼ Voir le contenu</span></div>
+    </div>`;
+  }).join('');
+}
+function setCoursFilter(ax, color) {
+  coursFilter = ax;
+  buildCours();
+}
+function toggleCours(code) {
+  const desc = document.getElementById('cdesc_'+code);
+  const btn = document.getElementById('cebtn_'+code);
+  const card = document.getElementById('cc_'+code);
+  const showing = desc.classList.contains('show');
+  desc.classList.toggle('show');
+  card.classList.toggle('expanded');
+  btn.innerHTML = showing ? '▼ Voir le contenu' : '▲ Masquer';
+}
+
+// === PROJET + IA ===
+let aiTimer = null;
+function scheduleAI() {
+  clearTimeout(aiTimer);
+  const txt = gv('pProjet').trim();
+  if (txt.length < 20) {
+    document.getElementById('suggestionChips').innerHTML = '<div style="font-size:13px;color:var(--ink3)">Écrivez le projet de l\'élève pour obtenir des suggestions personnalisées…</div>';
+    return;
+  }
+  aiTimer = setTimeout(() => fetchSuggestions(txt), 1400);
+}
+async function fetchSuggestions(projet) {
+  const loadEl = document.getElementById('suggestionLoading');
+  const chipsEl = document.getElementById('suggestionChips');
+  if(loadEl) loadEl.style.display = 'inline';
+  if(chipsEl) chipsEl.innerHTML = '';
+  try {
+    const courseList = COURS_DATA.map(c => c.code + ': ' + c.nom + ' (' + c.mots_cles.join(',') + ')').join(' | ');
+    const prompt = `Tu es expert du programme Participation sociale FGA (MEQ 2022). Projet de l'élève : "${projet}". Cours disponibles : ${courseList}. Suggère 5 à 7 cours les plus pertinents pour ce projet. Réponds UNIQUEMENT en JSON valide sans markdown : {"suggestions":[{"code":"PPS-Z125-3","raison":"courte raison 8 mots max"}]}`;
+    const response = await fetch('/.netlify/functions/claude', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({max_tokens: 600, messages: [{role:'user', content: prompt}]})
+    });
+    const data = await response.json();
+    if (!data.content || !data.content[0]) throw new Error('No content');
+    let text = data.content[0].text.trim();
+    text = text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+    const parsed = JSON.parse(text);
+    if (parsed.suggestions && parsed.suggestions.length) {
+      chipsEl.innerHTML = parsed.suggestions.map(s => {
+        const cours = COURS_DATA.find(c => c.code === s.code);
+        if (!cours) return '';
+        return `<div class="suggestion-chip" onclick="highlightCours('${s.code}')">
+          <span class="chip-code">${s.code}</span>
+          <span>${s.raison}</span>
+        </div>`;
+      }).filter(Boolean).join('');
+    } else {
+      chipsEl.innerHTML = '<div style="font-size:13px;color:var(--ink3)">Aucune suggestion disponible.</div>';
+    }
+  } catch(e) {
+    if(chipsEl) chipsEl.innerHTML = '<div style="font-size:13px;color:var(--rouge)">Suggestions indisponibles — vérifiez votre connexion.</div>';
+  }
+  if(loadEl) loadEl.style.display = 'none';
+}
+function highlightCours(code) {
+  const cb = document.getElementById('clcb_'+code);
+  if (cb) {
+    cb.checked = true;
+    onCoursChange(code);
+    const item = document.getElementById('clab_'+code);
+    if(item) item.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+function buildCoursLiens() {
+  const c = document.getElementById('coursLiensContainer'); if(!c) return;
+  const axes = [...new Set(COURS_DATA.map(x => x.axe))];
+  c.innerHTML = axes.map(ax => {
+    const items = COURS_DATA.filter(x => x.axe === ax);
+    const color = AXE_COLORS[ax] || '#004983';
+    return `<div class="cours-axe-group">
+      <div class="cours-axe-head" style="background:${color}18;color:${color}" onclick="toggleAxeBody(this)">
+        <span style="flex:1">${ax}</span>
+        <span class="axe-ch" style="font-size:10px">▼</span>
+      </div>
+      <div class="cours-axe-body">
+        ${items.map(cours => `<label class="cours-lien-item" id="clab_${cours.code}">
+          <input type="checkbox" id="clcb_${cours.code}" style="accent-color:${color};margin-top:3px;flex-shrink:0;width:16px;height:16px" onchange="onCoursChange('${cours.code}')">
+          <div style="flex:1">
+            <span class="cli-code">${cours.code}</span>
+            <span class="cli-nom">${cours.nom}</span>
+            <textarea class="cli-gl" id="clgl_${cours.code}" placeholder="Grandes lignes du projet pour ce cours..." oninput="saveProj()"></textarea>
+          </div>
+        </label>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  loadProjet();
+}
+function onCoursChange(code) {
+  const cb = document.getElementById('clcb_'+code);
+  const gl = document.getElementById('clgl_'+code);
+  const lab = document.getElementById('clab_'+code);
+  if(gl) gl.classList.toggle('show', cb.checked);
+  if(lab) lab.classList.toggle('active', cb.checked);
+  saveProj();
+}
+function saveProj() {
+  try {
+    const cours = COURS_DATA.map(c => {
+      const cb = document.getElementById('clcb_'+c.code);
+      const gl = document.getElementById('clgl_'+c.code);
+      return {checked: cb?cb.checked:false, gl: gl?gl.value:''};
+    });
+    localStorage.setItem('pps5_proj', JSON.stringify({
+      nom:gv('pNom'),date:gv('pDate'),projet:gv('pProjet'),
+      milieux:gv('pMilieux'),motiv:gv('pMotiv'),profil:gv('pProfil'),buts:gv('pButs'),cours
+    }));
+  } catch(e) {}
+}
+function loadProjet() {
+  try {
+    const d = JSON.parse(localStorage.getItem('pps5_proj') || 'null'); if(!d) return;
+    sv('pNom',d.nom);sv('pDate',d.date);sv('pProjet',d.projet);
+    sv('pMilieux',d.milieux);sv('pMotiv',d.motiv);sv('pProfil',d.profil);sv('pButs',d.buts);
+    if(d.cours) d.cours.forEach((c,i) => {
+      if(!COURS_DATA[i]) return;
+      const code = COURS_DATA[i].code;
+      const cb = document.getElementById('clcb_'+code); if(cb) cb.checked = c.checked;
+      const gl = document.getElementById('clgl_'+code); if(gl){gl.value=c.gl||'';gl.classList.toggle('show',c.checked);}
+      const lab = document.getElementById('clab_'+code); if(lab) lab.classList.toggle('active',c.checked);
+    });
+  } catch(e) {}
+}
+function clearProjet() {
+  if(!confirm('Effacer le profil?')) return;
+  try{localStorage.removeItem('pps5_proj');}catch(e){}
+  ['pNom','pDate','pProjet','pMilieux','pMotiv','pProfil','pButs'].forEach(id=>sv(id,''));
+  COURS_DATA.forEach(c=>{
+    const cb=document.getElementById('clcb_'+c.code);if(cb)cb.checked=false;
+    const gl=document.getElementById('clgl_'+c.code);if(gl){gl.value='';gl.classList.remove('show');}
+    const lab=document.getElementById('clab_'+c.code);if(lab)lab.classList.remove('active');
+  });
+}
+function gv(id){const e=document.getElementById(id);return e?e.value:'';}
+function sv(id,v){const e=document.getElementById(id);if(e)e.value=v||'';}
+
+// === O-ÉL-2 ===
+function setPref(prefix, ci, ii, vi) {
+  [0,1,2].forEach(v => {
+    const el = document.getElementById(`${prefix}_${ci}_${ii}_${v}`);
+    if(!el) return;
+    el.classList.remove('sel-0','sel-1','sel-2');
+    el.style.background=''; el.style.borderColor=''; el.style.color='';
+  });
+  const el = document.getElementById(`${prefix}_${ci}_${ii}_${vi}`);
+  if(el) {
+    el.classList.add('sel-'+vi);
+    const colors = ['#ccc','#4AB9E8','#004983'];
+    el.style.background = colors[vi];
+    el.style.borderColor = colors[vi];
+    el.style.color = vi===0?'var(--ink)':'#fff';
+  }
+  saveOEL();
+}
+function setIntDeg(i, v) {
+  [0,1,2].forEach(x => {
+    const el = document.getElementById(`ig_${i}_${x}`);
+    if(!el) return;
+    el.classList.remove('sel');
+    el.style.background=''; el.style.borderColor=''; el.style.color='';
+  });
+  const el = document.getElementById(`ig_${i}_${v}`);
+  if(el) {
+    el.classList.add('sel');
+    const colors = ['#ccc','#4AB9E8','#004983'];
+    el.style.background = colors[v]; el.style.borderColor = colors[v]; el.style.color='#fff';
+  }
+  saveOEL();
+}
+function setIntTemps(i, v) {
+  [0,1,2].forEach(x => {
+    const el = document.getElementById(`igt_${i}_${x}`);
+    if(!el) return;
+    el.classList.remove('sel');
+    el.style.background=''; el.style.borderColor=''; el.style.color='';
+  });
+  const el = document.getElementById(`igt_${i}_${v}`);
+  if(el) {
+    el.classList.add('sel');
+    const colors=['#ccc','#4AB9E8','#004983'];
+    el.style.background=colors[v]; el.style.borderColor=colors[v]; el.style.color='#fff';
+  }
+  saveOEL();
+}
+function saveOEL() { try{localStorage.setItem('pps5_oel','changed');}catch(e){} }
+function addParaScolaire() {
+  const c = document.getElementById('parascolaireRows'); if(!c) return;
+  const div = document.createElement('div');
+  div.style.cssText='display:grid;grid-template-columns:1fr 200px;gap:10px;margin-bottom:8px';
+  div.innerHTML='<input type="text" placeholder="..." oninput="saveOEL()"><input type="text" placeholder="..." oninput="saveOEL()">';
+  c.appendChild(div);
+}
+
+// === PORTRAIT IA ===
+async function genPortrait() {
+  const nom = gv('pNom') || 'l\'élève';
+  const motiv1 = gv('oel_motiv1'), motiv2 = gv('oel_motiv2');
+  const facile = gv('oel_facile'), difficile = gv('oel_difficile');
+  const interets = gv('oel_interets_part');
+  const matPref = gv('oel_mat_pref');
+  const famille = gv('oel_famille_act');
+  const obstacles = gv('oel_obstacles');
+
+  if (!motiv1 && !motiv2 && !interets && !facile && !difficile) {
+    alert('Veuillez remplir au moins les sections 2 et 5 de l\'empreinte avant de générer le portrait.');
+    return;
+  }
+
+  const load = document.getElementById('portraitLoading');
+  const portForces = document.getElementById('portraitForces');
+  const portEmpty = document.getElementById('portraitEmpty');
+  if(load) load.style.display='inline';
+  if(portForces) portForces.style.display='none';
+  if(portEmpty) portEmpty.style.display='none';
+
+  const prompt = `Tu es une conseillère pédagogique experte en accompagnement d'élèves ayant des besoins particuliers (FGA, Québec). 
+Voici les données de l'outil O-ÉL-2 pour l'élève ${nom} :
+- Matière préférée : ${matPref || 'non précisé'}
+- Intérêts particuliers : ${interets || 'non précisé'}
+- Expériences familiales : ${famille || 'non précisé'}
+- Je veux apprendre parce que : ${motiv1 || 'non précisé'}
+- J'aime apprendre parce que : ${motiv2 || 'non précisé'}
+- Apprentissage plus facile quand : ${facile || 'non précisé'}
+- Apprentissage plus difficile quand : ${difficile || 'non précisé'}
+- Obstacles à l'apprentissage : ${obstacles || 'non précisé'}
+
+Génère en JSON (UNIQUEMENT du JSON sans markdown) :
+{
+  "forces": ["force1","force2","force3","force4"],
+  "defis": ["defi1","defi2","defi3"],
+  "portrait": "Portrait narratif de 3-4 phrases, chaleureux et précis, à la 3e personne, qui lie les forces aux intérêts.",
+  "pistes": "3 à 5 pistes d'action concrètes pour aider cet élève comme apprenant, basées sur ses préférences et ses défis. Utiliser des puces •."
+}`;
+
+  try {
+    const response = await fetch('/.netlify/functions/claude', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({max_tokens:900, messages:[{role:'user', content:prompt}]})
+    });
+    const data = await response.json();
+    if(!data.content || !data.content[0]) throw new Error('no content');
+    let text = data.content[0].text.trim().replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+    const r = JSON.parse(text);
+
+    document.getElementById('topForcesChips').innerHTML = (r.forces||[]).map(f =>
+      `<span class="force-chip" onclick="editChip(this,'forces')">${f}</span>`).join('');
+    document.getElementById('topDefisChips').innerHTML = (r.defis||[]).map(d =>
+      `<span class="defi-chip" onclick="editChip(this,'defis')">${d}</span>`).join('');
+    document.getElementById('portraitTexte').innerHTML = (r.portrait||'').replace(/\n/g,'<br>');
+    document.getElementById('portraitPistes').innerHTML = (r.pistes||'').replace(/•/g,'<br>•').replace(/\n/g,'<br>');
+
+    if(portForces) portForces.style.display='block';
+    saveTopForcesManual(); // auto-sauvegarde
+
+    // Sauvegarder forces/défis
+    try {
+      localStorage.setItem('pps5_topforces', JSON.stringify({forces: r.forces||[], defis: r.defis||[], nom}));
+    } catch(e) {}
+  } catch(e) {
+    if(portEmpty) {
+      portEmpty.style.display='block';
+      portEmpty.innerHTML = '<span style="color:var(--rouge)">Erreur lors de la génération. Vérifiez votre connexion.</span>';
+    }
+  }
+  if(load) load.style.display='none';
+}
+function editChip(el, type) {
+  const val = prompt('Modifier :', el.textContent);
+  if(val !== null) { el.textContent = val; saveTopForcesManual(); }
+}
+function saveTopForcesManual() {
+  const forces = [...document.querySelectorAll('.force-chip')].map(c=>c.textContent);
+  const defis = [...document.querySelectorAll('.defi-chip')].map(c=>c.textContent);
+  const nom = gv('pNom') || '';
+  try {
+    localStorage.setItem('pps5_topforces', JSON.stringify({forces, defis, nom}));
+    const btn = document.getElementById('btnSaveForces');
+    if(btn) {
+      btn.textContent = '✓ Enregistré dans le one-pager!';
+      btn.style.background = '#004983';
+      setTimeout(()=>{ btn.textContent='💾 Enregistrer forces/défis → One-pager'; btn.style.background=''; },2000);
+    }
+  } catch(e) { alert('Erreur de sauvegarde.'); }
+}
+
+// === EL.2.14 CAPACITÉS ===
+const CAP_CATS = [
+  {titre:"GÉRER MON TEMPS",color:"#004983",items:["Arriver en classe à l'heure.","Respecter les échéances de remise des travaux.","Bien organiser le temps alloué pour une tâche.","Utiliser des outils de gestion du temps (agenda, horloge visuelle, etc.)."]},
+  {titre:"M'ACTIVER ET ME CONCENTRER",color:"#006b3c",items:["Me mettre au travail seul.","Travailler individuellement en demeurant centré sur ma tâche.","Fournir un effort soutenu.","Persévérer devant les difficultés.","Faire preuve d'autonomie."]},
+  {titre:"M'ORGANISER",color:"#b8860b",items:["Utiliser les méthodes de travail que j'ai apprises.","Avoir le matériel nécessaire en classe.","Utiliser des stratégies d'organisation du temps."]},
+  {titre:"COMMUNIQUER",color:"#0077a8",items:["Exprimer adéquatement mes besoins.","Écouter la personne qui parle.","M'exprimer oralement avec respect.","Communiquer respectueusement lorsqu'il y a un problème."]},
+  {titre:"GÉRER MES COMPORTEMENTS",color:"#5b2d8e",items:["Faire preuve de politesse et de respect.","Respecter les règles de la classe.","Adapter mes comportements selon les situations.","Utiliser les stratégies apprises pour régler un conflit."]},
+  {titre:"DÉVELOPPER DES RELATIONS POSITIVES",color:"#c0221e",items:["Aider mes pairs.","Partager ce que j'ai.","Participer activement à la vie de classe.","Avoir confiance en moi.","Faire preuve de leadership."]},
+];
+let capVals = {};
+function buildCapacites() {
+  const c = document.getElementById('capacitesContent'); if(!c) return;
+  CAP_CATS.forEach((cat,ci) => cat.items.forEach((_,ii) => capVals[ci+'_'+ii] = 2));
+  c.innerHTML = CAP_CATS.map((cat,ci) => `
+    <div style="margin-bottom:10px">
+      <div class="cours-axe-head" style="background:${cat.color}18;color:${cat.color}" onclick="toggleAxeBody(this)">
+        <span style="flex:1;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">${cat.titre}</span>
+        <span class="axe-ch" style="font-size:10px">▼</span>
+      </div>
+      <div class="cours-axe-body">
+        ${cat.items.map((item,ii) => `<div style="display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--border)">
+          <span style="flex:1;font-size:14px;color:var(--ink2)">${item}</span>
+          <input type="range" min="1" max="3" value="2" id="cap_${ci}_${ii}" oninput="updateCap(${ci},${ii},this.value)" style="width:100px;accent-color:${cat.color}">
+          <span id="capv_${ci}_${ii}" style="font-size:13px;font-weight:700;color:${cat.color};width:28px;text-align:right">2</span>
+        </div>`).join('')}
+        <div style="font-size:11px;color:var(--ink3);margin-top:5px;padding-top:4px;border-top:1px dashed var(--border)">1 = Très difficile &nbsp;·&nbsp; 2 = Capable &nbsp;·&nbsp; 3 = Vraiment bon</div>
+      </div>
+    </div>`).join('');
+  drawRadarCap(); updateCapProfile();
+}
+function updateCap(ci,ii,val) {
+  capVals[ci+'_'+ii] = parseInt(val);
+  const vEl = document.getElementById('capv_'+ci+'_'+ii); if(vEl) vEl.textContent = val;
+  drawRadarCap(); updateCapProfile();
+}
+function updateCapProfile() {
+  const avgs = CAP_CATS.map((cat,ci) => {
+    const v = cat.items.map((_,ii) => capVals[ci+'_'+ii]||2);
+    return v.reduce((a,b)=>a+b,0)/v.length;
+  });
+  const noms = ['Gestion du temps','Activation','Organisation','Communication','Comportements','Relations'];
+  const msgs = [];
+  avgs.forEach((avg,i) => {
+    if(avg<1.7) msgs.push(`<strong>${noms[i]}</strong> : dimension à travailler.`);
+    else if(avg>=2.6) msgs.push(`<strong>${noms[i]}</strong> : point fort à valoriser dans le projet.`);
+  });
+  const el = document.getElementById('radarProfile');
+  if(el) el.innerHTML = msgs.length ? msgs.map(m=>`<p style="margin-bottom:5px;font-size:14px">• ${m}</p>`).join('') : 'Ajustez les curseurs pour voir apparaître le profil.';
+}
+function drawRadarCap() {
+  const canvas = document.getElementById('radarCanvas'); if(!canvas) return;
+  const ctx = canvas.getContext('2d'); const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const labels=['Temps','Activation','Organisation','Communication','Comportements','Relations'];
+  const vals=CAP_CATS.map((cat,ci)=>{const v=cat.items.map((_,ii)=>capVals[ci+'_'+ii]||2);return v.reduce((a,b)=>a+b,0)/v.length;});
+  const colors=CAP_CATS.map(c=>c.color);
+  const cx=W/2,cy=H/2,R=Math.min(W,H)/2-52,n=labels.length;
+  for(let r=1;r<=3;r++){ctx.beginPath();for(let i=0;i<n;i++){const a=Math.PI*2*i/n-Math.PI/2;const x=cx+Math.cos(a)*(R*r/3);const y=cy+Math.sin(a)*(R*r/3);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.closePath();ctx.strokeStyle='rgba(0,73,131,0.08)';ctx.lineWidth=1;ctx.stroke();}
+  for(let i=0;i<n;i++){const a=Math.PI*2*i/n-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);ctx.strokeStyle='rgba(0,73,131,0.08)';ctx.lineWidth=1;ctx.stroke();}
+  ctx.beginPath();vals.forEach((v,i)=>{const a=Math.PI*2*i/n-Math.PI/2;const x=cx+Math.cos(a)*(R*v/3);const y=cy+Math.sin(a)*(R*v/3);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.closePath();ctx.fillStyle='rgba(0,73,131,0.15)';ctx.fill();ctx.strokeStyle='#004983';ctx.lineWidth=2;ctx.stroke();
+  vals.forEach((v,i)=>{const a=Math.PI*2*i/n-Math.PI/2;const x=cx+Math.cos(a)*(R*v/3);const y=cy+Math.sin(a)*(R*v/3);ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle=colors[i];ctx.fill();});
+  ctx.textAlign='center';ctx.fillStyle='rgba(30,40,60,.7)';ctx.font='12px DM Sans,sans-serif';
+  labels.forEach((l,i)=>{const a=Math.PI*2*i/n-Math.PI/2;ctx.fillText(l,cx+Math.cos(a)*(R+30),cy+Math.sin(a)*(R+30)+4);});
+}
+
+// === AUTODÉTERMINATION ===
+const AUTO = [
+  {num:'1',titre:'Agir de manière autonome',desc:"Effectuer des choix basés sur ses préférences et ses capacités.",color:'#004983',qs:["Quand j'ai le choix, je choisis ce qui me convient vraiment.","Je prends mes propres décisions en pensant aux conséquences.","Je suis capable de résoudre un problème par moi-même avant de demander de l'aide."]},
+  {num:'2',titre:'Agir de manière autorégulée',desc:"S'observer, se fixer des buts et s'autoévaluer.",color:'#006b3c',qs:["Je me fixe des buts et je vérifie si je les atteins.","Quand quelque chose ne fonctionne pas, je change ma façon de faire.","Je suis capable d'évaluer mes propres comportements."]},
+  {num:'3',titre:'Renforcer son autonomie',desc:"Promouvoir ses droits, croire en ses capacités et se valoriser.",color:'#b8860b',qs:["J'ai confiance que je peux réussir ce que j'entreprends.","Je suis capable de dire ce dont j'ai besoin pour apprendre.","Je reconnais mes forces et mes bons coups."]},
+  {num:'4',titre:'Agir de manière autoréalisée',desc:"Connaître ses forces, ses défis et répondre à des motivations personnelles.",color:'#5b2d8e',qs:["Je connais bien mes forces et mes défis.","Je participe à mon projet parce que ça me tient à cœur.","Je sais ce que je veux pour mon avenir et je peux en parler."]},
+];
+const AUTO_OPTS = ['Jamais','Parfois','Souvent','Toujours'];
+let autoAns = {};
+function buildAuto() {
+  const c = document.getElementById('autoContainer'); if(!c) return;
+  c.innerHTML = AUTO.map((car,ci) => `
+    <div class="auto-caract">
+      <div class="auto-caract-head" style="background:${car.color}10">
+        <div class="auto-num" style="background:${car.color}">${car.num}</div>
+        <div><div class="auto-titre">${car.titre}</div><div class="auto-desc">${car.desc}</div></div>
+      </div>
+      <div class="auto-body">
+        ${car.qs.map((q,qi) => `
+          <div class="auto-q">${q}</div>
+          <div class="auto-opts">
+            ${AUTO_OPTS.map((o,oi) => `<div class="auto-opt" id="ao_${ci}_${qi}_${oi}" onclick="selAuto(${ci},${qi},${oi})">${o}</div>`).join('')}
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function selAuto(ci,qi,oi) {
+  autoAns[ci+'_'+qi]=oi;
+  AUTO_OPTS.forEach((_,i)=>{const el=document.getElementById('ao_'+ci+'_'+qi+'_'+i);if(el){el.classList.toggle('active',i===oi);el.style.background=i===oi?AUTO[ci].color:'';el.style.borderColor=i===oi?AUTO[ci].color:'';el.style.color=i===oi?'#fff':'';}});
+}
+function resetAuto(){autoAns={};buildAuto();document.getElementById('autoBilan').style.display='none';}
+function showAutoBilan() {
+  const total=AUTO.reduce((s,c)=>s+c.qs.length,0);
+  if(Object.keys(autoAns).length<total){alert('Veuillez répondre à toutes les questions.');return;}
+  const score=Object.values(autoAns).reduce((s,v)=>s+v,0);
+  const pct=Math.round(score/(total*3)*100);
+  let msg,color;
+  if(pct>=75){msg="Profil fort — Manifeste les 4 caractéristiques essentielles. Encourager la mise en action.";color='var(--vert)';}
+  else if(pct>=45){msg="Profil en développement — Accompagner l'élève à renforcer son autonomie et sa connaissance de soi.";color='var(--or)';}
+  else{msg="Accompagnement soutenu requis — Revenir sur la connaissance de soi, la confiance et le réseau de soutien.";color='var(--rouge)';}
+  const carScores=AUTO.map((car,ci)=>{const v=car.qs.map((_,qi)=>autoAns[ci+'_'+qi]||0);return{titre:car.titre,avg:v.reduce((a,b)=>a+b,0)/v.length,color:car.color};});
+  const bilan=document.getElementById('autoBilan');
+  bilan.innerHTML=`<div class="card"><div class="card-title" style="font-family:var(--font-display)">Bilan d'autodétermination</div>
+    <div style="font-size:34px;font-family:var(--font-display);color:${color};margin:.5rem 0">${pct}%</div>
+    <div style="font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:1.35rem">${msg}</div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);margin-bottom:.75rem">Par caractéristique</div>
+    ${carScores.map(cs=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+      <div style="flex:1;font-size:14px;color:var(--ink)">${cs.titre}</div>
+      <div style="width:130px;background:var(--paper3);border-radius:3px;height:5px;overflow:hidden"><div style="height:100%;background:${cs.color};width:${Math.round(cs.avg/3*100)}%"></div></div>
+      <div style="font-size:13px;font-weight:700;color:${cs.color};width:35px;text-align:right">${Math.round(cs.avg/3*100)}%</div>
+    </div>`).join('')}
+    <div style="margin-top:1rem;font-size:12px;color:var(--ink3)">Réf. : Duchaine, Gaudreau & Bernier (2022). Wehmeyer et al. (2007).</div>
+  </div>`;
+  bilan.style.display='block';bilan.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// === PRODUCTIONS ===
+function buildProductions() {
+  const g = document.getElementById('prodGrid'); if(!g) return;
+  g.innerHTML = Object.entries(PRODS_DETAIL).map(([nom,p]) =>
+    `<div class="prod-card" id="pc_${nom}" onclick="selectProd('${nom}')">
+      <div class="prod-ico">${p.icon}</div>
+      <div class="prod-nom">${nom}</div>
+      <div class="prod-desc-short">${p.desc_courte}</div>
+    </div>`).join('');
+}
+function selectProd(nom) {
+  document.querySelectorAll('.prod-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('pc_'+nom).classList.add('active');
+  const p = PRODS_DETAIL[nom];
+  const det = document.getElementById('prodDetail');
+  det.innerHTML = `<div class="prod-detail-card">
+    <div class="prod-detail-header"><div class="prod-detail-ico">${p.icon}</div><div><div class="prod-detail-title">${nom}</div><div class="prod-detail-sub">${p.desc_courte}</div></div></div>
+    <div class="prod-detail-body">
+      <p class="card-body" style="margin-bottom:1.35rem">${p.desc_longue}</p>
+      <div class="prod-info-grid">
+        <div class="prod-info-item"><div class="prod-info-label">Durée estimée</div><div class="prod-info-value">${p.duree}</div></div>
+        <div class="prod-info-item"><div class="prod-info-label">Matériel requis</div><div class="prod-info-value">${p.materiel}</div></div>
+      </div>
+      <div class="crit-exemples">
+        <div class="crit-ex-title">Exemples par critère — que fait ou dit l'élève?</div>
+        <div class="crit-ex-item ce1"><div class="crit-ex-num cen1">1</div><div class="crit-ex-text"><strong>Réalités personnelles :</strong> ${p.critere1_ex}</div></div>
+        <div class="crit-ex-item ce2"><div class="crit-ex-num cen2">2</div><div class="crit-ex-text"><strong>Potentiel d'action :</strong> ${p.critere2_ex}</div></div>
+        <div class="crit-ex-item ce3"><div class="crit-ex-num cen3">3</div><div class="crit-ex-text"><strong>Élaboration du projet :</strong> ${p.critere3_ex}</div></div>
+      </div>
+      <div class="prod-conseils">💡 <strong>Conseils pédagogiques :</strong> ${p.conseils}</div>
+      <div class="prod-grille-note">📋 <strong>Ancrage dans la grille MEQ :</strong> ${p.grille_note}</div>
+      <div class="btn-row" style="margin-top:1rem"><button class="btn btn-primary" onclick="go('grille')">Ouvrir la grille d'évaluation →</button></div>
+    </div>
+  </div>`;
+  det.classList.add('show');
+  det.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// === GRILLE ===
+const GRILLE_DATA = [
+  {crit:1,label:"Détermination rigoureuse de ses réalités personnelles et sociales",border:"gc1",
+   descs:["Grande difficulté à établir des liens entre sa vie quotidienne et ses dispositions.","Difficulté à établir des liens entre sa vie quotidienne et ses dispositions.","Établit de façon satisfaisante des liens entre sa vie quotidienne et ses dispositions.","Établit clairement des liens entre sa vie quotidienne et ses dispositions.","Établit très clairement des liens entre sa vie quotidienne et ses dispositions."]},
+  {crit:2,label:"Reconnaissance réaliste de son potentiel d'action",border:"gc2",
+   descs:["Grande difficulté à cerner sa motivation et la contribution de ses milieux.","Difficulté à cerner sa motivation et la contribution de ses milieux.","Cerne de façon satisfaisante sa motivation et la contribution de ses milieux.","Cerne de façon concrète sa motivation et la contribution de ses milieux.","Cerne de façon concrète et précise sa motivation et la contribution de ses milieux."]},
+  {crit:3,label:"Élaboration méthodique du projet de participation sociale",border:"gc3",
+   descs:["Grande difficulté à déterminer les composantes de son projet.","Difficulté à déterminer les composantes de son projet.","Détermine de façon satisfaisante les principales composantes de son projet.","Détermine de façon claire l'ensemble des composantes de son projet.","Détermine de façon claire et détaillée l'ensemble des composantes de son projet."]},
+];
+const ECHELONS_LABELS = ['Très peu développée','Peu développée','Acceptable','Assurée','Marquée'];
+let gSel = [null,null,null];
+function buildGrille() {
+  const c = document.getElementById('grilleContainer'); if(!c) return;
+  c.innerHTML = GRILLE_DATA.map((s,si) => `
+    <div class="grille-crit">
+      <div class="grille-crit-head ${s.border}">Critère ${s.crit} — ${s.label}</div>
+      <div class="grille-echelons">
+        ${ECHELONS_LABELS.map((e,ei) => `<div class="echelon${ei===2?' seuil':''}" id="gsc_${si}_${ei}" onclick="selGrille(${si},${ei})">
+          <div class="echelon-level">${e}${ei===2?' ✓':''}</div>
+          <div class="echelon-desc">${s.descs[ei]}</div>
+        </div>`).join('')}
+      </div>
+      <div class="grille-status" id="gst_${si}"></div>
+    </div>`).join('');
+}
+function selGrille(si,ei) {
+  gSel[si]=ei;
+  ECHELONS_LABELS.forEach((_,i)=>{const el=document.getElementById('gsc_'+si+'_'+i);if(el)el.classList.toggle('active',i===ei);});
+  const st=document.getElementById('gst_'+si);
+  if(st) st.innerHTML=ei>=2?'<span class="gs-ok">✓ Succès — seuil atteint</span>':'<span class="gs-ko">✗ Échec — seuil non atteint</span>';
+  document.getElementById('grilleResultat').style.display='none';
+}
+function calcGrille() {
+  if(gSel.includes(null)){alert('Sélectionnez un échelon pour chaque critère.');return;}
+  const ok=gSel.every(s=>s>=2); const nom=gv('gNom')||"l'adulte";
+  const el=document.getElementById('grilleResultat'); el.style.display='block';
+  el.innerHTML=`<div class="resultat-card ${ok?'rc-ok':'rc-ko'}">
+    <div class="resultat-badge ${ok?'rb-ok':'rb-ko'}">${ok?'✓ SUCCÈS':'✗ ÉCHEC'} — Compétence ${ok?'développée avec succès':'non développée'}</div>
+    <div style="font-size:14px;color:var(--ink2);line-height:1.7">${ok?`${nom} atteint le seuil de réussite (Acceptable) pour chaque critère.`:`${nom} n'atteint pas le seuil pour ${gSel.filter(s=>s<2).length} critère(s). Une reprise ciblée est possible.`}</div>
+  </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function resetGrille(){gSel=[null,null,null];buildGrille();document.getElementById('grilleResultat').style.display='none';}
+
+// === ONE-PAGER ===
+function buildOnePager() {
+  const nom=gv('pNom')||'Élève'; const date=gv('pDate')||'—';
+  const selected=COURS_DATA.map((c,i)=>{
+    const cb=document.getElementById('clcb_'+c.code);
+    const gl=document.getElementById('clgl_'+c.code);
+    return cb&&cb.checked?{...c,gl:gl?gl.value:''}:null;
+  }).filter(Boolean);
+  const byAxe={};
+  selected.forEach(c=>{if(!byAxe[c.axe])byAxe[c.axe]=[];byAxe[c.axe].push(c);});
+
+  let topForcesHtml = '';
+  try {
+    const tf = JSON.parse(localStorage.getItem('pps5_topforces')||'null');
+    if(tf && (tf.forces.length || tf.defis.length)) {
+      topForcesHtml = `<div class="op-sec os-vert op-sec-full"><div class="op-sec-title">Forces et défis de l'apprenant·e</div>
+        ${tf.forces.length?`<div style="margin-bottom:.5rem"><strong style="font-size:11px">Forces :</strong> ${tf.forces.map(f=>`<span style="background:var(--vert);color:#fff;font-size:11px;padding:2px 7px;border-radius:10px;margin:2px;display:inline-block">${f}</span>`).join('')}</div>`:''}
+        ${tf.defis.length?`<div><strong style="font-size:11px">Défis :</strong> ${tf.defis.map(d=>`<span style="background:var(--rouge);color:#fff;font-size:11px;padding:2px 7px;border-radius:10px;margin:2px;display:inline-block">${d}</span>`).join('')}</div>`:''}
+      </div>`;
+    }
+  } catch(e) {}
+
+  document.getElementById('onePagerContent').innerHTML = `
+  <div class="op-wrap">
+    <div class="op-header">
+      <div class="op-header-logo"><img src="__LOGO__" alt="CSSDLJ" style="height:36px;width:auto"></div>
+      <div class="op-header-text">
+        <div class="op-header-title">Projection vers l'avenir : mon projet de participation sociale</div>
+        <div class="op-header-sub">PPS-Z101-3 · Formation générale des adultes · CSSDLJ · DDE prescrite MEQ octobre 2022</div>
+      </div>
+    </div>
+    <div class="op-body">
+      <div class="op-sec os-bleu op-sec-full">
+        <div class="op-sec-title">Identification</div>
+        <div class="op-student-name">${nom}</div>
+        <div class="op-meta">Départ : ${date}</div>
+      </div>
+      <div class="op-sec os-bleu">
+        <div class="op-sec-title">Critère 1 — Réalités personnelles</div>
+        <div class="op-item"><div class="op-dot" style="background:var(--bleu)"></div><div>${gv('pProfil')||'(À compléter)'}</div></div>
+      </div>
+      <div class="op-sec os-vert">
+        <div class="op-sec-title">Critère 2 — Potentiel d'action</div>
+        <div class="op-item"><div class="op-dot" style="background:var(--vert)"></div><div><strong>Milieux :</strong> ${gv('pMilieux')||'(À identifier)'}</div></div>
+        <div class="op-item"><div class="op-dot" style="background:var(--vert)"></div><div><strong>Motivation :</strong> ${gv('pMotiv')||'(À préciser)'}</div></div>
+      </div>
+      ${topForcesHtml}
+      <div class="op-sec os-or op-sec-full">
+        <div class="op-sec-title">Critère 3 — Projet</div>
+        <div class="op-item"><div class="op-dot" style="background:var(--or)"></div><div><strong>Projet :</strong> ${gv('pProjet')||'(À compléter)'}</div></div>
+        <div class="op-item"><div class="op-dot" style="background:var(--or)"></div><div><strong>Composantes :</strong> ${gv('pButs')||'(À définir)'}</div></div>
+      </div>
+      ${selected.length>0?`<div class="op-sec os-violet op-sec-full">
+        <div class="op-sec-title">Cours du programme reliés au projet (${selected.length} sélectionné${selected.length>1?'s':''})</div>
+        ${Object.entries(byAxe).map(([ax,cours])=>`
+          <div style="margin-bottom:.75rem">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${AXE_COLORS[ax]||'#004983'};margin-bottom:4px">${ax}</div>
+            ${cours.map(c=>`<div style="border-left:2px solid ${AXE_COLORS[c.axe]||'#004983'};padding:4px 8px;margin-bottom:3px;background:var(--paper);border-radius:0 4px 4px 0">
+              <strong style="font-size:11px">${c.code}</strong> — <span style="font-size:12px">${c.nom}</span>
+              ${c.gl?`<div style="font-size:11px;color:var(--ink3);margin-top:2px;font-style:italic">↳ ${c.gl}</div>`:''}
+            </div>`).join('')}
+          </div>`).join('')}
+      </div>`:''}
+    </div>
+    <div class="op-footer"><span>PPS-Z101-3 · DDE prescrite · MEQ oct. 2022 · CSSDLJ · CFGA</span><span>${new Date().toLocaleDateString('fr-CA')}</span></div>
+  </div>`.replace('__LOGO__', 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyODAgNjAiIGZpbGw9Im5vbmUiPgogIDwhLS0gU25vd2ZsYWtlcyAtLT4KICA8cmVjdCB4PSIwIiB5PSIxNiIgd2lkdGg9IjI3IiBoZWlnaHQ9IjExIiBmaWxsPSIjMDA2QkI2Ii8+CiAgPHJlY3QgeD0iMCIgeT0iMjkiIHdpZHRoPSIyNyIgaGVpZ2h0PSIxMSIgZmlsbD0iIzAwNkJCNiIvPgogIDxyZWN0IHg9IjI4IiB5PSIxNiIgd2lkdGg9IjI3IiBoZWlnaHQ9IjExIiBmaWxsPSIjMDA2QkI2Ii8+CiAgPHJlY3QgeD0iMjgiIHk9IjI5IiB3aWR0aD0iMjciIGhlaWdodD0iMTEiIGZpbGw9IiMwMDZCQjYiLz4KICA8IS0tIENTU0RMSiB3b3JkbWFyayAtLT4KICA8dGV4dCB4PSI2MCIgeT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMWExYTFhIiBsZXR0ZXItc3BhY2luZz0iMC41Ij5DU1NETEo8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSI3LjUiIGZpbGw9IiM0NDQiIGxldHRlci1zcGFjaW5nPSIwLjIiPkNlbnRyZSBkZSBzZXJ2aWNlcyBzY29sYWlyZSBEZSBMYSBKb25xdWnDqHJlPC90ZXh0PgogIDwhLS0gQ0ZHQSB0YWcgLS0+CiAgPHJlY3QgeD0iNjAiIHk9IjQ3IiB3aWR0aD0iNjAiIGhlaWdodD0iOSIgcng9IjIiIGZpbGw9IiMwMDQ5ODMiLz4KICA8dGV4dCB4PSI2MyIgeT0iNTQuNSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0id2hpdGUiIGZvbnQtd2VpZ2h0PSI2MDAiPkZvcm1hdGlvbiBnw6luw6lyYWxlIGRlcyBhZHVsdGVzPC90ZXh0Pgo8L3N2Zz4K');
+}
+function exportPDF(){buildOnePager();setTimeout(()=>window.print(),100);}
+
+window.addEventListener('DOMContentLoaded', () => {
+  buildSavoirs();
+  // Set accueil as active on load
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if ((b.getAttribute('onclick')||'').includes("'accueil'")) b.classList.add('active');
+  });
+});
+
+</script>
+</body>
+</html>
