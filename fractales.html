@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FRACTALES ∞ — Explorateur de l'Infini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#07071a;
+  --panel:#0c0c20;
+  --panel2:#111128;
+  --border:rgba(255,255,255,0.07);
+  --surf:rgba(255,255,255,0.04);
+  --surf2:rgba(255,255,255,0.07);
+  --text:#e2e8f0;
+  --dim:#94a3b8;
+  --muted:#475569;
+  --accent:#8b5cf6;
+  --accent-g:rgba(139,92,246,0.25);
+  --radius:8px;
+  --font:'Space Grotesk',system-ui,sans-serif;
+  --mono:'Space Mono',monospace;
+  --panel-w:310px;
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--font);color:var(--text);font-size:14px}
+
+/* ── LAYOUT ─────────────────────────────── */
+#app{display:flex;width:100vw;height:100vh;position:relative}
+#c{flex:1;display:block;cursor:crosshair;touch-action:none}
+
+/* ── PANEL ───────────────────────────────── */
+#panel{
+  width:var(--panel-w);min-width:var(--panel-w);
+  height:100vh;background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:relative;z-index:10;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
+}
+#panel.hidden{transform:translateX(calc(-1 * var(--panel-w) + 36px))}
+#panel-scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
+#panel-scroll::-webkit-scrollbar{width:3px}
+#panel-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+/* ── PANEL HEADER ────────────────────────── */
+.ph{
+  padding:1.1rem 1rem 1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.7rem;flex-shrink:0;position:relative;
+  background:linear-gradient(135deg,rgba(139,92,246,.15) 0%,transparent 60%);
+}
+.ph-mark{
+  width:34px;height:34px;border-radius:9px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  flex-shrink:0;animation:glow 3s ease-in-out infinite;
+  box-shadow:0 0 16px var(--accent-g);
+}
+@keyframes glow{0%,100%{box-shadow:0 0 12px var(--accent-g)}50%{box-shadow:0 0 28px var(--accent-g),0 0 50px var(--accent-g)}}
+.ph-text{flex:1;min-width:0}
+.ph-title{font-size:14px;font-weight:700;letter-spacing:.07em;white-space:nowrap}
+.ph-sub{font-size:10px;color:var(--muted);margin-top:1px;letter-spacing:.04em}
+#btn-toggle{
+  width:24px;height:24px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surf);color:var(--dim);cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;
+}
+#btn-toggle:hover{background:var(--surf2);color:var(--text)}
+
+/* ── SECTIONS ────────────────────────────── */
+.sec{padding:.85rem 1rem;border-bottom:1px solid var(--border)}
+.sec-title{
+  font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── TYPE BUTTONS ────────────────────────── */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.type-btn{
+  padding:.45rem .4rem;border:1px solid var(--border);background:var(--surf);
+  color:var(--dim);border-radius:7px;cursor:pointer;font-size:11.5px;
+  font-family:var(--font);font-weight:500;transition:all .15s;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.type-btn:hover{background:var(--surf2);color:var(--text)}
+.type-btn.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 14px var(--accent-g);font-weight:600}
+.type-btn[data-type="0"]{grid-column:1/3}
+
+/* ── CONTROLS ────────────────────────────── */
+.ctrl-stack{display:flex;flex-direction:column;gap:.8rem}
+.ctrl{display:flex;flex-direction:column;gap:.35rem}
+.ctrl-hd{display:flex;justify-content:space-between;align-items:center}
+.ctrl-hd label{font-size:11.5px;color:var(--dim);font-weight:500}
+.val-badge{
+  font-family:var(--mono);font-size:10px;color:var(--accent);
+  background:var(--accent-g);padding:1px 7px;border-radius:20px;min-width:50px;
+  text-align:center;transition:color .1s;
+}
+
+/* ── RANGE SLIDERS ───────────────────────── */
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:3px;border-radius:2px;outline:none;cursor:pointer;
+  background:rgba(255,255,255,.08);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);cursor:pointer;transition:transform .1s;
+  box-shadow:0 0 8px var(--accent-g);
+}
+input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.25)}
+input[type=range]::-moz-range-thumb{
+  width:14px;height:14px;border-radius:50%;background:var(--accent);
+  cursor:pointer;border:none;
+}
+
+/* ── NUMBER INPUTS ───────────────────────── */
+input[type=number],input[type=text]{
+  width:100%;padding:.38rem .6rem;background:var(--surf);
+  border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-family:var(--mono);font-size:11.5px;outline:none;
+  transition:border-color .15s;
+}
+input[type=number]:focus,input[type=text]:focus{border-color:var(--accent)}
+input[type=number]::-webkit-inner-spin-button{opacity:.3}
+
+/* ── COLOR PICKER ────────────────────────── */
+input[type=color]{
+  -webkit-appearance:none;width:100%;height:34px;
+  border:1px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;background:none;padding:2px;
+}
+
+/* ── SCHEME GRID ─────────────────────────── */
+.scheme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:.7rem}
+.sch-btn{
+  padding:.3rem .2rem;border:1px solid var(--border);background:var(--surf);
+  color:var(--dim);border-radius:6px;cursor:pointer;font-size:10.5px;
+  font-family:var(--font);font-weight:500;transition:all .15s;text-align:center;
+}
+.sch-btn:hover{background:var(--surf2);color:var(--text)}
+.sch-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-g)}
+
+/* ── BUTTONS ─────────────────────────────── */
+.btn-primary{
+  width:100%;padding:.55rem;background:var(--accent);border:none;
+  border-radius:var(--radius);color:#fff;font-family:var(--font);font-size:13px;
+  font-weight:600;cursor:pointer;transition:all .15s;
+  box-shadow:0 4px 14px var(--accent-g);
+}
+.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-sec{
+  width:100%;padding:.48rem;background:var(--surf);
+  border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--dim);font-family:var(--font);font-size:12px;
+  cursor:pointer;transition:all .15s;
+}
+.btn-sec:hover{background:var(--surf2);color:var(--text)}
+.btn-row{display:flex;gap:6px}
+.btn-row .btn-sec,.btn-row .btn-primary{flex:1}
+
+/* ── PRESETS ─────────────────────────────── */
+.preset-list{display:flex;flex-direction:column;gap:5px}
+.preset{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.5rem .65rem;background:var(--surf);border:1px solid var(--border);
+  border-radius:var(--radius);cursor:pointer;transition:all .15s;
+}
+.preset:hover{background:var(--surf2);border-color:var(--accent);transform:translateX(2px)}
+.p-swatch{
+  width:32px;height:32px;border-radius:6px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--p-a) 0%,var(--p-b) 100%);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+.p-info{flex:1;min-width:0}
+.p-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-desc{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-badge{font-size:9px;color:var(--accent);font-family:var(--mono);opacity:.8;flex-shrink:0}
+
+/* ── COORD OVERLAY ───────────────────────── */
+#info-overlay{
+  position:fixed;top:1rem;right:1rem;
+  background:rgba(7,7,26,.82);backdrop-filter:blur(14px) saturate(1.5);
+  border:1px solid var(--border);border-radius:10px;
+  padding:.55rem .85rem;font-family:var(--mono);font-size:10.5px;
+  color:var(--dim);z-index:20;pointer-events:none;line-height:1.9;
+  transition:opacity .2s;
+}
+#info-overlay span{color:#06b6d4}
+
+/* ── STATUS BAR ──────────────────────────── */
+#status{
+  position:fixed;bottom:0;left:var(--panel-w);right:0;height:26px;
+  background:rgba(7,7,26,.88);backdrop-filter:blur(10px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:1.5rem;padding:0 1rem;
+  font-family:var(--mono);font-size:10px;color:var(--muted);z-index:5;
+  transition:left .3s cubic-bezier(.4,0,.2,1);
+}
+#panel.hidden~* #status,#panel.hidden+*{--bar-left:36px}
+.s-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.s-item{display:flex;align-items:center;gap:.4rem;white-space:nowrap}
+
+/* ── TOAST ───────────────────────────────── */
+#toast{
+  position:fixed;bottom:2.2rem;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(20,20,50,.96);border:1px solid var(--accent);
+  border-radius:var(--radius);padding:.55rem 1.2rem;font-size:12.5px;
+  color:var(--text);opacity:0;transition:all .3s ease;
+  pointer-events:none;z-index:100;white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── ANIM TOGGLE ──────────────────────────── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:.5rem}
+.toggle-label{font-size:11.5px;color:var(--dim)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer}
+.toggle input{display:none}
+.toggle-track{
+  position:absolute;inset:0;border-radius:20px;background:rgba(255,255,255,.1);
+  transition:background .2s;
+}
+.toggle input:checked~.toggle-track{background:var(--accent)}
+.toggle-thumb{
+  position:absolute;top:3px;left:3px;width:14px;height:14px;
+  border-radius:50%;background:#fff;transition:transform .2s;
+}
+.toggle input:checked~.toggle-thumb{transform:translateX(16px)}
+
+/* ── KEYBOARD HINTS ──────────────────────── */
+.kbd-hints{display:flex;flex-wrap:wrap;gap:5px;margin-top:.5rem}
+.kbd{
+  font-family:var(--mono);font-size:10px;color:var(--dim);
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:4px;padding:1px 6px;
+}
+
+/* ── LOADING ─────────────────────────────── */
+#loader{
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;z-index:999;transition:opacity .5s .3s;
+}
+#loader.done{opacity:0;pointer-events:none}
+.loader-ring{
+  width:48px;height:48px;border:2px solid rgba(139,92,246,.2);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{font-size:13px;color:var(--dim);letter-spacing:.06em}
+
+/* ── MOBILE ──────────────────────────────── */
+@media(max-width:700px){
+  :root{--panel-w:290px}
+  #panel{position:fixed;left:0;top:0;height:100vh;z-index:50;transform:translateX(-100%)}
+  #panel.open{transform:translateX(0)}
+  #panel.hidden{transform:translateX(-100%)}
+  #status{left:0}
+  #mob-btn{
+    display:flex;position:fixed;top:.75rem;left:.75rem;z-index:60;
+    background:rgba(12,12,32,.85);backdrop-filter:blur(10px);
+    border:1px solid var(--border);color:var(--text);border-radius:8px;
+    width:38px;height:38px;align-items:center;justify-content:center;
+    font-size:16px;cursor:pointer;
+  }
+}
+@media(min-width:701px){#mob-btn{display:none}}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-ring"></div><div class="loader-text">Compilation du moteur WebGL…</div></div>
+
+<div id="app">
+  <canvas id="c"></canvas>
+
+  <!-- ── PANEL ──────────────────────────────── -->
+  <aside id="panel">
+    <div class="ph">
+      <div class="ph-mark">∞</div>
+      <div class="ph-text">
+        <div class="ph-title">FRACTALES</div>
+        <div class="ph-sub">Explorateur de l'infini</div>
+      </div>
+      <button id="btn-toggle" title="Réduire (Tab)">‹</button>
+    </div>
+
+    <div id="panel-scroll">
+
+      <!-- TYPE -->
+      <div class="sec">
+        <div class="sec-title">Type de fractale</div>
+        <div class="type-grid">
+          <button class="type-btn on" data-type="0">Mandelbrot</button>
+          <button class="type-btn" data-type="1">Julia</button>
+          <button class="type-btn" data-type="2">Burning Ship</button>
+          <button class="type-btn" data-type="3">Newton z³−1</button>
+          <button class="type-btn" data-type="4">Tricorne</button>
+        </div>
+      </div>
+
+      <!-- JULIA PARAMS -->
+      <div class="sec" id="julia-sec" style="display:none">
+        <div class="sec-title">Constante de Julia  c = a + bi</div>
+        <div class="ctrl-stack">
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Re(c) — partie réelle</label><span class="val-badge" id="v-jre">−0.700</span></div>
+            <input type="range" id="s-jre" min="-2" max="2" step="0.001" value="-0.7">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Im(c) — partie imaginaire</label><span class="val-badge" id="v-jim">0.270</span></div>
+            <input type="range" id="s-jim" min="-2" max="2" step="0.001" value="0.27">
+          </div>
+        </div>
+      </div>
+
+      <!-- MATH -->
+      <div class="sec">
+        <div class="sec-title">Paramètres mathématiques</div>
+        <div class="ctrl-stack">
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Itérations max</label><span class="val-badge" id="v-mi">200</span></div>
+            <input type="range" id="s-mi" min="20" max="2000" step="10" value="200">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Exposant p  (z → zᵖ + c)</label><span class="val-badge" id="v-pw">2.0</span></div>
+            <input type="range" id="s-pw" min="1.5" max="8" step="0.1" value="2">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Rayon de fuite R</label><span class="val-badge" id="v-er">256</span></div>
+            <input type="range" id="s-er" min="2" max="1024" step="1" value="256">
+          </div>
+        </div>
+      </div>
+
+      <!-- COLORS -->
+      <div class="sec">
+        <div class="sec-title">Palette de couleurs</div>
+        <div class="scheme-grid">
+          <button class="sch-btn on" data-sch="0">HSV</button>
+          <button class="sch-btn" data-sch="1">Feu</button>
+          <button class="sch-btn" data-sch="2">Océan</button>
+          <button class="sch-btn" data-sch="3">Néon</button>
+          <button class="sch-btn" data-sch="4">Or</button>
+          <button class="sch-btn" data-sch="5">Cosmos</button>
+        </div>
+        <div class="ctrl-stack">
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Décalage de teinte</label><span class="val-badge" id="v-sh">0°</span></div>
+            <input type="range" id="s-sh" min="0" max="360" step="1" value="0">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Densité couleur</label><span class="val-badge" id="v-sp">1.0×</span></div>
+            <input type="range" id="s-sp" min="0.1" max="8" step="0.1" value="1">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Couleur intérieure</label></div>
+            <input type="color" id="s-col" value="#070714">
+          </div>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Animer les couleurs</span>
+          <label class="toggle"><input type="checkbox" id="chk-anim"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="sec">
+        <div class="sec-title">Navigation</div>
+        <div class="ctrl-stack">
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Centre Re</label></div>
+            <input type="number" id="n-cx" step="0.0001" value="-0.5">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Centre Im</label></div>
+            <input type="number" id="n-cy" step="0.0001" value="0">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Niveau de zoom</label></div>
+            <input type="number" id="n-zm" step="0.1" min="0.01" value="1">
+          </div>
+        </div>
+        <br>
+        <button class="btn-sec" id="btn-reset">↺ Réinitialiser la vue</button>
+      </div>
+
+      <!-- EXPORT -->
+      <div class="sec">
+        <div class="sec-title">Exporter</div>
+        <div class="btn-row">
+          <button class="btn-primary" id="btn-png">⬇ PNG</button>
+          <button class="btn-sec" id="btn-url">⎋ Partager</button>
+        </div>
+      </div>
+
+      <!-- PRESETS -->
+      <div class="sec">
+        <div class="sec-title">Préréglages</div>
+        <div class="preset-list" id="preset-list"></div>
+      </div>
+
+      <!-- KEYBOARD -->
+      <div class="sec">
+        <div class="sec-title">Raccourcis clavier</div>
+        <div class="kbd-hints">
+          <span class="kbd">Roulette → zoom</span>
+          <span class="kbd">Drag → pan</span>
+          <span class="kbd">DblClic → centrer</span>
+          <span class="kbd">R → reset</span>
+          <span class="kbd">E → export</span>
+          <span class="kbd">A → animer</span>
+          <span class="kbd">Tab → panel</span>
+          <span class="kbd">1-5 → type</span>
+        </div>
+      </div>
+
+    </div><!-- end panel-scroll -->
+  </aside><!-- end panel -->
+
+</div><!-- end app -->
+
+<!-- mobile toggle -->
+<button id="mob-btn" onclick="document.getElementById('panel').classList.toggle('open')">☰</button>
+
+<!-- info overlay -->
+<div id="info-overlay">
+  Re : <span id="oi-x">—</span><br>
+  Im : <span id="oi-y">—</span><br>
+  Zoom : <span id="oi-z">1×</span>
+</div>
+
+<!-- status bar -->
+<div id="status">
+  <div class="s-item"><div class="s-dot"></div><span id="s-type">Mandelbrot</span></div>
+  <div class="s-item">iter : <span id="s-iter">200</span></div>
+  <div class="s-item">zoom : <span id="s-zoom">1.00×</span></div>
+  <div class="s-item" id="s-fps-item">— fps</div>
+</div>
+
+<!-- toast -->
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   VERTEX SHADER
+   ════════════════════════════════════════════════ */
+const VS = `
+attribute vec2 pos;
+void main(){gl_Position=vec4(pos,0.,1.);}
+`;
+
+/* ════════════════════════════════════════════════
+   FRAGMENT SHADER  (WebGL 1 / GLSL ES 1.00)
+   Types: 0=Mandelbrot 1=Julia 2=BurningShip 3=Newton 4=Tricorn
+   ════════════════════════════════════════════════ */
+const FS = `
+precision highp float;
+
+uniform vec2  u_res;
+uniform vec2  u_center;
+uniform float u_zoom;
+uniform float u_maxIter;
+uniform float u_type;
+uniform vec2  u_juliaC;
+uniform float u_power;
+uniform float u_scheme;
+uniform float u_shift;
+uniform float u_speed;
+uniform float u_escR;
+uniform vec3  u_interior;
+
+/* ── complex ops ─────────────────────────── */
+vec2 cmul(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
+vec2 cdiv(vec2 a,vec2 b){float d=b.x*b.x+b.y*b.y;return vec2(a.x*b.x+a.y*b.y,a.y*b.x-a.x*b.y)/d;}
+vec2 cpow(vec2 z,float p){
+  float r=length(z);
+  if(r<1e-12)return vec2(0.);
+  float t=atan(z.y,z.x)*p;
+  float rp=pow(r,p);
+  return vec2(rp*cos(t),rp*sin(t));
+}
+
+/* ── HSV helper ──────────────────────────── */
+vec3 hsv(float h,float s,float v){
+  float h6=fract(h)*6.;
+  float c=v*s;
+  float x=c*(1.-abs(mod(h6,2.)-1.));
+  vec3 rgb;
+  if(h6<1.)rgb=vec3(c,x,0.);
+  else if(h6<2.)rgb=vec3(x,c,0.);
+  else if(h6<3.)rgb=vec3(0.,c,x);
+  else if(h6<4.)rgb=vec3(0.,x,c);
+  else if(h6<5.)rgb=vec3(x,0.,c);
+  else rgb=vec3(c,0.,x);
+  return rgb+vec3(v-c);
+}
+
+/* ── cosine palette helper ───────────────── */
+vec3 cospal(vec3 a,vec3 b,vec3 c,vec3 d,float t){
+  return a+b*cos(6.28318*(c*t+d));
+}
+
+/* ── main palette ────────────────────────── */
+vec3 palette(float iter){
+  float t=fract(iter*u_speed/u_maxIter+u_shift);
+  if(u_scheme<0.5) return hsv(t,.88,1.);
+  if(u_scheme<1.5) return cospal(vec3(.5,.1,.0),vec3(.5,.4,.1),vec3(1.,.7,.3),vec3(.0,.1,.2),t);
+  if(u_scheme<2.5) return cospal(vec3(.05,.2,.45),vec3(.1,.25,.4),vec3(1.,1.,1.),vec3(.35,.45,.55),t);
+  if(u_scheme<3.5) return vec3(.5+.5*sin(6.28318*t),.5+.5*sin(6.28318*t+2.094),.5+.5*sin(6.28318*t+4.189));
+  if(u_scheme<4.5) return cospal(vec3(.75,.45,.1),vec3(.25,.3,.1),vec3(2.,1.,.5),vec3(.0,.2,.5),t);
+  return cospal(vec3(.2,.1,.45),vec3(.5,.4,.5),vec3(1.,.7,.4),vec3(.0,.15,.2),t);
+}
+
+/* ════════════════════════════════════════════════ */
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  float aspect=u_res.x/u_res.y;
+
+  /* pixel → complex plane */
+  vec2 px=vec2(
+    (uv.x-.5)*4.*aspect/u_zoom+u_center.x,
+    (uv.y-.5)*4./u_zoom+u_center.y
+  );
+
+  /* ── Newton z³-1 ─────────────────────── */
+  if(u_type>2.5&&u_type<3.5){
+    vec2 z=px;
+    vec2 r0=vec2(1.,0.),r1=vec2(-.5,.8660254),r2=vec2(-.5,-.8660254);
+    float root=-1.;float ni=0.;
+    for(int i=0;i<300;i++){
+      if(float(i)>=u_maxIter)break;
+      vec2 z2=cmul(z,z);
+      vec2 z3=cmul(z2,z)-vec2(1.,0.);
+      z-=cdiv(z3,3.*z2);
+      float d0=length(z-r0),d1=length(z-r1),d2=length(z-r2);
+      if(min(d0,min(d1,d2))<1e-5){
+        ni=float(i);
+        if(d0<=d1&&d0<=d2)root=0.;
+        else if(d1<=d2)root=1.;
+        else root=2.;
+        break;
+      }
+    }
+    if(root<0.){gl_FragColor=vec4(u_interior,1.);return;}
+    float shade=clamp(1.-ni/80.,.15,1.);
+    float hue=fract(root/3.+u_shift+ni*.004*u_speed);
+    gl_FragColor=vec4(hsv(hue,.78,shade),1.);
+    return;
+  }
+
+  /* ── Escape-time fractals ─────────────── */
+  vec2 z,c;
+  if(u_type<0.5){z=vec2(0.);c=px;}           /* Mandelbrot  */
+  else if(u_type<1.5){z=px;c=u_juliaC;}       /* Julia       */
+  else if(u_type<2.5){z=vec2(0.);c=px;}       /* BurningShip */
+  else{z=vec2(0.);c=px;}                       /* Tricorn     */
+
+  float escR2=u_escR*u_escR;
+  float iter=-1.;
+
+  for(int i=0;i<2000;i++){
+    if(float(i)>=u_maxIter)break;
+
+    if(u_type<1.5){
+      /* Mandelbrot / Julia */
+      if(u_power>1.95&&u_power<2.05)
+        z=vec2(z.x*z.x-z.y*z.y+c.x,2.*z.x*z.y+c.y);
+      else
+        z=cpow(z,u_power)+c;
+    } else if(u_type<2.5){
+      /* Burning Ship */
+      z=vec2(abs(z.x),abs(z.y));
+      if(u_power>1.95&&u_power<2.05)
+        z=vec2(z.x*z.x-z.y*z.y+c.x,2.*z.x*z.y+c.y);
+      else
+        z=cpow(z,u_power)+c;
+    } else {
+      /* Tricorn – conjugate then square */
+      z=vec2(z.x,-z.y);
+      if(u_power>1.95&&u_power<2.05)
+        z=vec2(z.x*z.x-z.y*z.y+c.x,2.*z.x*z.y+c.y);
+      else
+        z=cpow(z,u_power)+c;
+    }
+
+    if(dot(z,z)>escR2){
+      /* smooth iteration count (potential function) */
+      float lz=log(dot(z,z))*.5;
+      float lR=log(max(u_escR,2.0001));
+      float lp=log(max(u_power,1.0001));
+      float nu=log(max(lz/lR,1e-10))/lp;
+      iter=float(i)+1.-clamp(nu,0.,1.);
+      break;
+    }
+  }
+
+  if(iter<0.){gl_FragColor=vec4(u_interior,1.);return;}
+  gl_FragColor=vec4(palette(iter),1.);
+}
+`;
+
+/* ════════════════════════════════════════════════
+   WEBGL SETUP
+   ════════════════════════════════════════════════ */
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl', {preserveDrawingBuffer:true, antialias:false});
+
+function mkShader(src, type){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+    console.error('Shader error:', gl.getShaderInfoLog(s));
+  return s;
+}
+
+const prog = gl.createProgram();
+gl.attachShader(prog, mkShader(VS, gl.VERTEX_SHADER));
+gl.attachShader(prog, mkShader(FS, gl.FRAGMENT_SHADER));
+gl.linkProgram(prog);
+if(!gl.getProgramParameter(prog, gl.LINK_STATUS))
+  console.error('Program link error:', gl.getProgramInfoLog(prog));
+gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+const posLoc = gl.getAttribLocation(prog, 'pos');
+gl.enableVertexAttribArray(posLoc);
+gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+const U = {};
+['u_res','u_center','u_zoom','u_maxIter','u_type','u_juliaC',
+ 'u_power','u_scheme','u_shift','u_speed','u_escR','u_interior']
+  .forEach(n => U[n] = gl.getUniformLocation(prog, n));
+
+/* ════════════════════════════════════════════════
+   PARAMS
+   ════════════════════════════════════════════════ */
+const P = {
+  type:0, cx:-0.5, cy:0, zoom:1,
+  maxIter:200, power:2, jre:-0.7, jim:0.27,
+  escR:256, scheme:0, shift:0, speed:1,
+  ir:0.027, ig:0.027, ib:0.078,
+};
+
+const TYPE_NAMES = ['Mandelbrot','Julia','Burning Ship','Newton z³−1','Tricorne'];
+const TYPE_ACCENTS = ['#8b5cf6','#06b6d4','#f97316','#22c55e','#ec4899'];
+const TYPE_DEFAULTS = [
+  {cx:-0.5, cy:0, zoom:1},
+  {cx:0, cy:0, zoom:1.2},
+  {cx:-0.5, cy:-0.5, zoom:1},
+  {cx:0, cy:0, zoom:1},
+  {cx:-0.5, cy:0, zoom:1},
+];
+
+/* ════════════════════════════════════════════════
+   RENDER
+   ════════════════════════════════════════════════ */
+let raf = null;
+let animOn = false;
+let lastFPS = performance.now();
+let frameCount = 0;
+
+function render(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr);
+  const h = Math.round(canvas.clientHeight * dpr);
+  if(canvas.width !== w || canvas.height !== h){
+    canvas.width = w; canvas.height = h;
+    gl.viewport(0, 0, w, h);
+  }
+  gl.uniform2f(U.u_res, canvas.width, canvas.height);
+  gl.uniform2f(U.u_center, P.cx, P.cy);
+  gl.uniform1f(U.u_zoom, P.zoom);
+  gl.uniform1f(U.u_maxIter, P.maxIter);
+  gl.uniform1f(U.u_type, P.type);
+  gl.uniform2f(U.u_juliaC, P.jre, P.jim);
+  gl.uniform1f(U.u_power, P.power);
+  gl.uniform1f(U.u_scheme, P.scheme);
+  gl.uniform1f(U.u_shift, P.shift / 360);
+  gl.uniform1f(U.u_speed, P.speed);
+  gl.uniform1f(U.u_escR, P.escR);
+  gl.uniform3f(U.u_interior, P.ir, P.ig, P.ib);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+  /* FPS counter */
+  frameCount++;
+  const now = performance.now();
+  if(now - lastFPS > 1000){
+    const fps = Math.round(frameCount * 1000 / (now - lastFPS));
+    document.getElementById('s-fps-item').textContent = fps + ' fps';
+    frameCount = 0; lastFPS = now;
+  }
+}
+
+function renderLoop(){
+  if(animOn){ P.shift = (P.shift + 0.4) % 360; syncShiftSlider(); }
+  render();
+  raf = requestAnimationFrame(renderLoop);
+}
+
+function startLoop(){ if(!raf) raf = requestAnimationFrame(renderLoop); }
+function stopLoop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+function schedRender(){ if(!animOn){ stopLoop(); render(); } }
+
+/* ════════════════════════════════════════════════
+   COORDINATE HELPERS
+   ════════════════════════════════════════════════ */
+function pxToComplex(mx, my){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width, h = rect.height;
+  const aspect = w / h;
+  return {
+    x: (mx/w - 0.5) * 4 * aspect / P.zoom + P.cx,
+    y: (0.5 - my/h) * 4 / P.zoom + P.cy,
+  };
+}
+
+/* ════════════════════════════════════════════════
+   MOUSE / TOUCH INTERACTION
+   ════════════════════════════════════════════════ */
+let drag = null;
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.18 : 1/1.18;
+  const rect = canvas.getBoundingClientRect();
+  const before = pxToComplex(e.clientX - rect.left, e.clientY - rect.top);
+  P.zoom *= factor;
+  const after = pxToComplex(e.clientX - rect.left, e.clientY - rect.top);
+  P.cx += before.x - after.x;
+  P.cy += before.y - after.y;
+  syncNavUI(); schedRender();
+}, {passive:false});
+
+canvas.addEventListener('mousedown', e => {
+  drag = {sx: e.clientX, sy: e.clientY, cx: P.cx, cy: P.cy};
+  canvas.style.cursor = 'grabbing';
+});
+window.addEventListener('mousemove', e => {
+  if(drag){
+    const rect = canvas.getBoundingClientRect();
+    const aspect = rect.width / rect.height;
+    P.cx = drag.cx - (e.clientX - drag.sx) / rect.width * 4 * aspect / P.zoom;
+    P.cy = drag.cy + (e.clientY - drag.sy) / rect.height * 4 / P.zoom;
+    syncNavUI(); schedRender();
+  }
+  /* update info overlay */
+  const rect = canvas.getBoundingClientRect();
+  const p = pxToComplex(e.clientX - rect.left, e.clientY - rect.top);
+  document.getElementById('oi-x').textContent = p.x.toFixed(7);
+  document.getElementById('oi-y').textContent = p.y.toFixed(7);
+});
+window.addEventListener('mouseup', () => {
+  drag = null; canvas.style.cursor = 'crosshair';
+});
+canvas.addEventListener('dblclick', e => {
+  const rect = canvas.getBoundingClientRect();
+  const p = pxToComplex(e.clientX - rect.left, e.clientY - rect.top);
+  P.cx = p.x; P.cy = p.y; P.zoom *= 3;
+  syncNavUI(); schedRender();
+});
+
+/* touch */
+let touches = {};
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  for(const t of e.changedTouches) touches[t.identifier] = {x:t.clientX, y:t.clientY};
+  if(e.touches.length === 1){
+    const t = e.touches[0];
+    drag = {sx:t.clientX, sy:t.clientY, cx:P.cx, cy:P.cy};
+  }
+},{passive:false});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if(e.touches.length === 2){
+    drag = null;
+    const a = e.touches[0], b = e.touches[1];
+    const pa = touches[a.identifier], pb = touches[b.identifier];
+    if(!pa || !pb) return;
+    const d0 = Math.hypot(pa.x-pb.x, pa.y-pb.y);
+    const d1 = Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
+    if(d0 > 0){ P.zoom *= d1/d0; }
+    touches[a.identifier] = {x:a.clientX, y:a.clientY};
+    touches[b.identifier] = {x:b.clientX, y:b.clientY};
+    syncNavUI(); schedRender();
+  } else if(e.touches.length === 1 && drag){
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const aspect = rect.width / rect.height;
+    P.cx = drag.cx - (t.clientX - drag.sx) / rect.width * 4 * aspect / P.zoom;
+    P.cy = drag.cy + (t.clientY - drag.sy) / rect.height * 4 / P.zoom;
+    syncNavUI(); schedRender();
+  }
+},{passive:false});
+canvas.addEventListener('touchend', e => {
+  e.preventDefault();
+  for(const t of e.changedTouches) delete touches[t.identifier];
+  drag = null;
+},{passive:false});
+
+/* ════════════════════════════════════════════════
+   UI SYNC
+   ════════════════════════════════════════════════ */
+function setAccent(color){
+  document.documentElement.style.setProperty('--accent', color);
+  document.documentElement.style.setProperty('--accent-g', color + '40');
+}
+
+function syncNavUI(){
+  document.getElementById('n-cx').value = P.cx.toFixed(8);
+  document.getElementById('n-cy').value = P.cy.toFixed(8);
+  document.getElementById('n-zm').value = P.zoom.toFixed(4);
+  document.getElementById('oi-z').textContent = fmtZoom(P.zoom);
+  document.getElementById('s-zoom').textContent = fmtZoom(P.zoom);
+  document.getElementById('s-iter').textContent = P.maxIter;
+}
+
+function fmtZoom(z){
+  if(z < 1000) return z.toFixed(2) + '×';
+  if(z < 1e6) return (z/1000).toFixed(2) + 'k×';
+  if(z < 1e9) return (z/1e6).toFixed(2) + 'M×';
+  return (z/1e9).toFixed(2) + 'G×';
+}
+
+function syncShiftSlider(){
+  document.getElementById('s-sh').value = P.shift;
+  document.getElementById('v-sh').textContent = Math.round(P.shift) + '°';
+}
+
+/* ════════════════════════════════════════════════
+   CONTROLS WIRING
+   ════════════════════════════════════════════════ */
+function wire(id, paramKey, display, fmt){
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    P[paramKey] = parseFloat(el.value);
+    if(display) document.getElementById(display).textContent = fmt ? fmt(P[paramKey]) : P[paramKey];
+    schedRender();
+  });
+}
+
+wire('s-jre','jre','v-jre', v => v.toFixed(3));
+wire('s-jim','jim','v-jim', v => v.toFixed(3));
+wire('s-mi','maxIter','v-mi', v => Math.round(v));
+wire('s-pw','power','v-pw', v => v.toFixed(1));
+wire('s-er','escR','v-er', v => Math.round(v));
+wire('s-sh','shift','v-sh', v => Math.round(v) + '°');
+wire('s-sp','speed','v-sp', v => v.toFixed(1) + '×');
+
+/* interior color */
+document.getElementById('s-col').addEventListener('input', e => {
+  const hex = e.target.value;
+  P.ir = parseInt(hex.slice(1,3),16)/255;
+  P.ig = parseInt(hex.slice(3,5),16)/255;
+  P.ib = parseInt(hex.slice(5,7),16)/255;
+  schedRender();
+});
+
+/* nav number inputs */
+['n-cx','n-cy','n-zm'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    P.cx = parseFloat(document.getElementById('n-cx').value) || -0.5;
+    P.cy = parseFloat(document.getElementById('n-cy').value) || 0;
+    P.zoom = parseFloat(document.getElementById('n-zm').value) || 1;
+    schedRender();
+  });
+});
+
+/* fractal type buttons */
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = parseInt(btn.dataset.type);
+    P.type = t;
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('on', b === btn));
+    document.getElementById('julia-sec').style.display = (t === 1) ? '' : 'none';
+    setAccent(TYPE_ACCENTS[t]);
+    document.getElementById('s-type').textContent = TYPE_NAMES[t];
+    /* apply type defaults */
+    const def = TYPE_DEFAULTS[t];
+    P.cx = def.cx; P.cy = def.cy; P.zoom = def.zoom;
+    syncNavUI(); schedRender();
+  });
+});
+
+/* color scheme buttons */
+document.querySelectorAll('.sch-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    P.scheme = parseInt(btn.dataset.sch);
+    document.querySelectorAll('.sch-btn').forEach(b => b.classList.toggle('on', b === btn));
+    schedRender();
+  });
+});
+
+/* animate toggle */
+document.getElementById('chk-anim').addEventListener('change', e => {
+  animOn = e.target.checked;
+  if(animOn) startLoop(); else stopLoop();
+});
+
+/* reset */
+document.getElementById('btn-reset').addEventListener('click', () => {
+  const def = TYPE_DEFAULTS[P.type];
+  P.cx = def.cx; P.cy = def.cy; P.zoom = 1;
+  syncNavUI(); schedRender();
+});
+
+/* toggle panel */
+document.getElementById('btn-toggle').addEventListener('click', () => {
+  const panel = document.getElementById('panel');
+  const hidden = panel.classList.toggle('hidden');
+  document.getElementById('btn-toggle').textContent = hidden ? '›' : '‹';
+  document.getElementById('status').style.left = hidden ? '36px' : 'var(--panel-w)';
+  setTimeout(schedRender, 320);
+});
+
+/* ════════════════════════════════════════════════
+   EXPORT / SHARE
+   ════════════════════════════════════════════════ */
+document.getElementById('btn-png').addEventListener('click', () => {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = canvas.clientWidth * dpr, H = canvas.clientHeight * dpr;
+  canvas.width = W; canvas.height = H;
+  gl.viewport(0, 0, W, H);
+  render();
+  canvas.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'fractale_' + TYPE_NAMES[P.type].replace(/\s/g,'_') + '_' + Date.now() + '.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Image exportée avec succès !');
+  });
+});
+
+document.getElementById('btn-url').addEventListener('click', () => {
+  const state = JSON.stringify(P);
+  const url = location.href.split('#')[0] + '#' + btoa(state);
+  navigator.clipboard.writeText(url).then(() => toast('URL copiée dans le presse-papier !'))
+    .catch(() => toast('URL: ' + url));
+});
+
+/* ════════════════════════════════════════════════
+   TOAST
+   ════════════════════════════════════════════════ */
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+/* ════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+   ════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if(['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+  if(e.key === 'r' || e.key === 'R'){ document.getElementById('btn-reset').click(); }
+  if(e.key === 'e' || e.key === 'E'){ document.getElementById('btn-png').click(); }
+  if(e.key === 'a' || e.key === 'A'){
+    const chk = document.getElementById('chk-anim');
+    chk.checked = !chk.checked; chk.dispatchEvent(new Event('change'));
+  }
+  if(e.key === 'Tab'){
+    e.preventDefault();
+    document.getElementById('btn-toggle').click();
+  }
+  if(e.key >= '1' && e.key <= '5'){
+    const btn = document.querySelector(`.type-btn[data-type="${parseInt(e.key)-1}"]`);
+    if(btn) btn.click();
+  }
+  if(e.key === '+' || e.key === '='){ P.zoom *= 1.5; syncNavUI(); schedRender(); }
+  if(e.key === '-'){ P.zoom /= 1.5; syncNavUI(); schedRender(); }
+});
+
+/* ════════════════════════════════════════════════
+   PRESETS
+   ════════════════════════════════════════════════ */
+const PRESETS = [
+  {
+    name:'Mandelbrot Classique', desc:'Vue d\'ensemble',
+    icon:'🔮', a:'#8b5cf6', b:'#06b6d4',
+    p:{type:0,cx:-0.5,cy:0,zoom:1,maxIter:200,power:2,jre:-0.7,jim:0.27,escR:256,scheme:0,shift:0,speed:1}
+  },
+  {
+    name:'Spirale Infinie', desc:'×800 — bord du chaos',
+    icon:'🌀', a:'#8b5cf6', b:'#ec4899',
+    p:{type:0,cx:-0.7269,cy:0.1889,zoom:800,maxIter:600,power:2,jre:-0.7,jim:0.27,escR:256,scheme:2,shift:200,speed:1.8}
+  },
+  {
+    name:'Vallée des Éléphants', desc:'×180 — mini-mandelbrots',
+    icon:'🐘', a:'#f59e0b', b:'#f97316',
+    p:{type:0,cx:0.2929,cy:0,zoom:180,maxIter:400,power:2,jre:-0.7,jim:0.27,escR:256,scheme:4,shift:30,speed:1.4}
+  },
+  {
+    name:'Seahorse Valley', desc:'×120 — spirales hippocampes',
+    icon:'🌊', a:'#06b6d4', b:'#3b82f6',
+    p:{type:0,cx:-0.743643,cy:0.13182,zoom:120,maxIter:500,power:2,jre:-0.7,jim:0.27,escR:256,scheme:2,shift:60,speed:2}
+  },
+  {
+    name:'Julia — Spirale', desc:'c = −0.7 + 0.27i',
+    icon:'💫', a:'#06b6d4', b:'#8b5cf6',
+    p:{type:1,cx:0,cy:0,zoom:1.2,maxIter:200,power:2,jre:-0.7,jim:0.27,escR:256,scheme:3,shift:120,speed:1}
+  },
+  {
+    name:'Julia — Dendrite', desc:'c = 0 + i  (arbre fractal)',
+    icon:'🌿', a:'#22c55e', b:'#06b6d4',
+    p:{type:1,cx:0,cy:0,zoom:1.3,maxIter:300,power:2,jre:0,jim:1,escR:256,scheme:2,shift:0,speed:1.5}
+  },
+  {
+    name:'Julia — San Marco', desc:'c = −0.75 + 0i',
+    icon:'🦁', a:'#f97316', b:'#f59e0b',
+    p:{type:1,cx:0,cy:0,zoom:1.2,maxIter:250,power:2,jre:-0.75,jim:0,escR:256,scheme:1,shift:10,speed:1.2}
+  },
+  {
+    name:'Burning Ship', desc:'Le vaisseau brûlant',
+    icon:'🔥', a:'#f97316', b:'#ef4444',
+    p:{type:2,cx:-0.5,cy:-0.55,zoom:1.1,maxIter:200,power:2,jre:-0.7,jim:0.27,escR:256,scheme:1,shift:0,speed:1}
+  },
+  {
+    name:'Newton z³−1', desc:'Convergence vers 3 racines',
+    icon:'⚗️', a:'#22c55e', b:'#06b6d4',
+    p:{type:3,cx:0,cy:0,zoom:1,maxIter:60,power:2,jre:-0.7,jim:0.27,escR:256,scheme:0,shift:0,speed:1}
+  },
+  {
+    name:'Tricorne', desc:'Conjugué de Mandelbrot',
+    icon:'🔺', a:'#ec4899', b:'#8b5cf6',
+    p:{type:4,cx:-0.5,cy:0,zoom:1,maxIter:200,power:2,jre:-0.7,jim:0.27,escR:256,scheme:2,shift:90,speed:1.2}
+  },
+  {
+    name:'Multibrot p=3', desc:'Puissance cubique',
+    icon:'🎆', a:'#8b5cf6', b:'#f59e0b',
+    p:{type:0,cx:0,cy:0,zoom:0.85,maxIter:200,power:3,jre:-0.7,jim:0.27,escR:256,scheme:5,shift:0,speed:1}
+  },
+  {
+    name:'Julia Néon p=3', desc:'Puissance 3, c = 0.4 + 0.2i',
+    icon:'⚡', a:'#f59e0b', b:'#ec4899',
+    p:{type:1,cx:0,cy:0,zoom:1,maxIter:200,power:3,jre:0.4,jim:0.2,escR:256,scheme:3,shift:60,speed:2}
+  },
+];
+
+function buildPresets(){
+  const list = document.getElementById('preset-list');
+  PRESETS.forEach((pr,i) => {
+    const div = document.createElement('div');
+    div.className = 'preset';
+    div.innerHTML = `
+      <div class="p-swatch" style="--p-a:${pr.a};--p-b:${pr.b}">${pr.icon}</div>
+      <div class="p-info">
+        <div class="p-name">${pr.name}</div>
+        <div class="p-desc">${pr.desc}</div>
+      </div>
+      <div class="p-badge">#${String(i+1).padStart(2,'0')}</div>
+    `;
+    div.addEventListener('click', () => applyPreset(pr));
+    list.appendChild(div);
+  });
+}
+
+function applyPreset(pr){
+  Object.assign(P, pr.p);
+  /* sync all UI */
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('on', parseInt(b.dataset.type) === P.type));
+  document.getElementById('julia-sec').style.display = (P.type === 1) ? '' : 'none';
+  setAccent(TYPE_ACCENTS[P.type]);
+  document.getElementById('s-type').textContent = TYPE_NAMES[P.type];
+  document.getElementById('s-jre').value = P.jre;
+  document.getElementById('v-jre').textContent = P.jre.toFixed(3);
+  document.getElementById('s-jim').value = P.jim;
+  document.getElementById('v-jim').textContent = P.jim.toFixed(3);
+  document.getElementById('s-mi').value = P.maxIter;
+  document.getElementById('v-mi').textContent = P.maxIter;
+  document.getElementById('s-pw').value = P.power;
+  document.getElementById('v-pw').textContent = P.power.toFixed(1);
+  document.getElementById('s-er').value = P.escR;
+  document.getElementById('v-er').textContent = P.escR;
+  document.querySelectorAll('.sch-btn').forEach(b => b.classList.toggle('on', parseInt(b.dataset.sch) === P.scheme));
+  document.getElementById('s-sh').value = P.shift;
+  document.getElementById('v-sh').textContent = P.shift + '°';
+  document.getElementById('s-sp').value = P.speed;
+  document.getElementById('v-sp').textContent = P.speed.toFixed(1) + '×';
+  syncNavUI();
+  schedRender();
+  toast('Préréglage : ' + pr.name);
+}
+
+/* ════════════════════════════════════════════════
+   URL STATE RESTORE
+   ════════════════════════════════════════════════ */
+function loadURL(){
+  try{
+    if(location.hash){
+      const s = JSON.parse(atob(location.hash.slice(1)));
+      Object.assign(P, s);
+    }
+  }catch(e){}
+}
+
+/* ════════════════════════════════════════════════
+   RESIZE
+   ════════════════════════════════════════════════ */
+new ResizeObserver(() => schedRender()).observe(canvas);
+
+/* ════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════ */
+loadURL();
+buildPresets();
+syncNavUI();
+
+/* dismiss loader */
+setTimeout(() => {
+  document.getElementById('loader').classList.add('done');
+  render();
+}, 200);
+</script>
+</body>
+</html>
