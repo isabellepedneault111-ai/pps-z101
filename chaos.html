@@ -425,7 +425,8 @@ select:focus{border-color:var(--accent)}
 </div><!-- end app -->
 
 <!-- MOBILE TOGGLE -->
-<button id="mob-btn" onclick="document.getElementById('panel').classList.toggle('open')">☰</button>
+<button id="mob-btn">☰</button>
+<div id="backdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;backdrop-filter:blur(2px)"></div>
 
 <!-- INFO OVERLAY -->
 <div id="info-box">
@@ -960,12 +961,32 @@ document.getElementById('btn-step').addEventListener('click',()=>{
   if(!state.running){ drawBatch(1); updateDieDisplay(); drawOverlay(); updateStats(); }
 });
 
-// Panel toggle
-document.getElementById('btn-tog').addEventListener('click',()=>{
-  const p=document.getElementById('panel');
-  const h=p.classList.toggle('hidden');
-  document.getElementById('btn-tog').textContent=h?'›':'‹';
-  document.getElementById('status').style.left=h?'36px':'var(--panel-w)';
+// Panel toggle — mobile-aware
+const _bd = document.getElementById('backdrop');
+function togglePanel(){
+  const panel = document.getElementById('panel');
+  const mobile = window.innerWidth <= 700;
+  if(mobile){
+    const opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    _bd.style.display = opening ? 'block' : 'none';
+  } else {
+    const h = panel.classList.toggle('hidden');
+    document.getElementById('btn-tog').textContent = h ? '›' : '‹';
+    document.getElementById('status').style.left = h ? '36px' : 'var(--panel-w)';
+  }
+}
+function closePanel(){
+  document.getElementById('panel').classList.remove('open');
+  _bd.style.display = 'none';
+}
+document.getElementById('btn-tog').addEventListener('click', togglePanel);
+_bd.addEventListener('click', closePanel);
+document.getElementById('mob-btn').addEventListener('click', ()=>{
+  const panel = document.getElementById('panel');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  _bd.style.display = opening ? 'block' : 'none';
 });
 
 // Export PNG
@@ -1066,7 +1087,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R') doReset();
   if(e.key==='e'||e.key==='E') document.getElementById('btn-png').click();
   if(e.key==='.') document.getElementById('btn-step').click();
-  if(e.key==='Tab'){ e.preventDefault(); document.getElementById('btn-tog').click(); }
+  if(e.key==='Tab'){ e.preventDefault(); togglePanel(); }
 });
 
 /* ════════════════════════════════════════════════

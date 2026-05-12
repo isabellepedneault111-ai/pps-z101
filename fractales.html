@@ -438,7 +438,9 @@ input[type=color]{
 </div><!-- end app -->
 
 <!-- mobile toggle -->
-<button id="mob-btn" onclick="document.getElementById('panel').classList.toggle('open')">☰</button>
+<button id="mob-btn">☰</button>
+<!-- backdrop: ferme le panel en tapant à côté (mobile) -->
+<div id="backdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;backdrop-filter:blur(2px)"></div>
 
 <!-- info overlay -->
 <div id="info-overlay">
@@ -924,13 +926,34 @@ document.getElementById('btn-reset').addEventListener('click', () => {
   syncNavUI(); schedRender();
 });
 
-/* toggle panel */
-document.getElementById('btn-toggle').addEventListener('click', () => {
+/* toggle panel — mobile-aware */
+const _backdrop = document.getElementById('backdrop');
+function togglePanel() {
   const panel = document.getElementById('panel');
-  const hidden = panel.classList.toggle('hidden');
-  document.getElementById('btn-toggle').textContent = hidden ? '›' : '‹';
-  document.getElementById('status').style.left = hidden ? '36px' : 'var(--panel-w)';
-  setTimeout(schedRender, 320);
+  const mobile = window.innerWidth <= 700;
+  if (mobile) {
+    const opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    _backdrop.style.display = opening ? 'block' : 'none';
+  } else {
+    const hidden = panel.classList.toggle('hidden');
+    document.getElementById('btn-toggle').textContent = hidden ? '›' : '‹';
+    document.getElementById('status').style.left = hidden ? '36px' : 'var(--panel-w)';
+    setTimeout(schedRender, 320);
+  }
+}
+function closePanel() {
+  const panel = document.getElementById('panel');
+  panel.classList.remove('open');
+  _backdrop.style.display = 'none';
+}
+document.getElementById('btn-toggle').addEventListener('click', togglePanel);
+_backdrop.addEventListener('click', closePanel);
+document.getElementById('mob-btn').addEventListener('click', () => {
+  const panel = document.getElementById('panel');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  _backdrop.style.display = opening ? 'block' : 'none';
 });
 
 /* ════════════════════════════════════════════════
@@ -984,7 +1007,7 @@ document.addEventListener('keydown', e => {
   }
   if(e.key === 'Tab'){
     e.preventDefault();
-    document.getElementById('btn-toggle').click();
+    togglePanel();
   }
   if(e.key >= '1' && e.key <= '5'){
     const btn = document.querySelector(`.type-btn[data-type="${parseInt(e.key)-1}"]`);
