@@ -71,6 +71,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
   transition:all .15s;
 }
 #btn-toggle:hover{background:var(--surf2);color:var(--text)}
+#btn-close-mob{
+  display:none;width:100%;padding:.75rem;margin-bottom:.5rem;
+  background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.35);
+  border-radius:var(--radius);color:var(--accent);font-family:var(--font);
+  font-size:14px;font-weight:600;cursor:pointer;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
 
 /* ── SECTIONS ────────────────────────────── */
 .sec{padding:.85rem 1rem;border-bottom:1px solid var(--border)}
@@ -265,6 +272,7 @@ input[type=color]{
   #panel{position:fixed;left:0;top:0;height:100vh;z-index:50;transform:translateX(-100%)}
   #panel.open{transform:translateX(0)}
   #panel.hidden{transform:translateX(-100%)}
+  #btn-close-mob{display:block}
   #status{left:0}
   #mob-btn{
     display:flex;position:fixed;top:.75rem;left:.75rem;z-index:60;
@@ -295,6 +303,7 @@ input[type=color]{
     </div>
 
     <div id="panel-scroll">
+      <div style="padding:.6rem 1rem 0"><button id="btn-close-mob">✕ Fermer le panneau</button></div>
 
       <!-- TYPE -->
       <div class="sec">
@@ -926,35 +935,35 @@ document.getElementById('btn-reset').addEventListener('click', () => {
   syncNavUI(); schedRender();
 });
 
-/* toggle panel — mobile-aware */
+/* toggle panel */
 const _backdrop = document.getElementById('backdrop');
-function togglePanel() {
-  const panel = document.getElementById('panel');
-  const mobile = window.innerWidth <= 700;
-  if (mobile) {
-    const opening = !panel.classList.contains('open');
-    panel.classList.toggle('open');
-    _backdrop.style.display = opening ? 'block' : 'none';
-  } else {
-    const hidden = panel.classList.toggle('hidden');
-    document.getElementById('btn-toggle').textContent = hidden ? '›' : '‹';
-    document.getElementById('status').style.left = hidden ? '36px' : 'var(--panel-w)';
-    setTimeout(schedRender, 320);
-  }
+function openPanel() {
+  document.getElementById('panel').classList.add('open');
+  _backdrop.style.display = 'block';
 }
 function closePanel() {
-  const panel = document.getElementById('panel');
-  panel.classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
   _backdrop.style.display = 'none';
 }
-document.getElementById('btn-toggle').addEventListener('click', togglePanel);
-_backdrop.addEventListener('click', closePanel);
-document.getElementById('mob-btn').addEventListener('click', () => {
+function toggleDesktop() {
   const panel = document.getElementById('panel');
-  const opening = !panel.classList.contains('open');
-  panel.classList.toggle('open');
-  _backdrop.style.display = opening ? 'block' : 'none';
+  const hidden = panel.classList.toggle('hidden');
+  document.getElementById('btn-toggle').textContent = hidden ? '›' : '‹';
+  document.getElementById('status').style.left = hidden ? '36px' : 'var(--panel-w)';
+  setTimeout(schedRender, 320);
+}
+// ‹ button : ferme si ouvert en mobile, sinon collapse desktop
+document.getElementById('btn-toggle').addEventListener('click', () => {
+  const panel = document.getElementById('panel');
+  if (panel.classList.contains('open')) { closePanel(); }
+  else { toggleDesktop(); }
 });
+// Gros bouton fermer mobile
+document.getElementById('btn-close-mob').addEventListener('click', closePanel);
+// Backdrop
+_backdrop.addEventListener('click', closePanel);
+// ☰ bouton
+document.getElementById('mob-btn').addEventListener('click', openPanel);
 
 /* ════════════════════════════════════════════════
    EXPORT / SHARE

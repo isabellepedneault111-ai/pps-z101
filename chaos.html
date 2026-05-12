@@ -57,6 +57,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
   display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;
 }
 #btn-tog:hover{background:var(--surf2);color:var(--text)}
+/* Gros bouton fermer visible uniquement sur mobile */
+#btn-close-mob{
+  display:none;width:100%;padding:.75rem;margin-bottom:.5rem;
+  background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.35);
+  border-radius:var(--radius);color:var(--accent);font-family:var(--font);
+  font-size:14px;font-weight:600;cursor:pointer;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
 
 /* ── SECTIONS ────────────────────────────── */
 .sec{padding:.85rem 1rem;border-bottom:1px solid var(--border)}
@@ -229,6 +237,7 @@ select:focus{border-color:var(--accent)}
 @media(max-width:700px){
   #panel{position:fixed;left:0;top:0;z-index:50;transform:translateX(-100%)}
   #panel.open{transform:translateX(0)}
+  #btn-close-mob{display:block}
   #status{left:0}
   #mob-btn{
     display:flex;position:fixed;top:.75rem;left:.75rem;z-index:60;
@@ -256,6 +265,8 @@ select:focus{border-color:var(--accent)}
     </div>
 
     <div id="ps">
+      <!-- Bouton fermer (mobile uniquement) -->
+      <div style="padding:.6rem 1rem 0"><button id="btn-close-mob">✕ Fermer le panneau</button></div>
 
       <!-- MODE -->
       <div class="sec">
@@ -961,33 +972,39 @@ document.getElementById('btn-step').addEventListener('click',()=>{
   if(!state.running){ drawBatch(1); updateDieDisplay(); drawOverlay(); updateStats(); }
 });
 
-// Panel toggle — mobile-aware
+// Panel — ouverture/fermeture
 const _bd = document.getElementById('backdrop');
-function togglePanel(){
-  const panel = document.getElementById('panel');
-  const mobile = window.innerWidth <= 700;
-  if(mobile){
-    const opening = !panel.classList.contains('open');
-    panel.classList.toggle('open');
-    _bd.style.display = opening ? 'block' : 'none';
-  } else {
-    const h = panel.classList.toggle('hidden');
-    document.getElementById('btn-tog').textContent = h ? '›' : '‹';
-    document.getElementById('status').style.left = h ? '36px' : 'var(--panel-w)';
-  }
+
+function openPanel(){
+  document.getElementById('panel').classList.add('open');
+  _bd.style.display = 'block';
 }
 function closePanel(){
   document.getElementById('panel').classList.remove('open');
   _bd.style.display = 'none';
 }
-document.getElementById('btn-tog').addEventListener('click', togglePanel);
-_bd.addEventListener('click', closePanel);
-document.getElementById('mob-btn').addEventListener('click', ()=>{
+function toggleDesktop(){
   const panel = document.getElementById('panel');
-  const opening = !panel.classList.contains('open');
-  panel.classList.toggle('open');
-  _bd.style.display = opening ? 'block' : 'none';
+  const h = panel.classList.toggle('hidden');
+  document.getElementById('btn-tog').textContent = h ? '›' : '‹';
+  document.getElementById('status').style.left = h ? '36px' : 'var(--panel-w)';
+}
+
+// Bouton ‹ : ferme sur mobile (retire .open), collapse sur desktop
+document.getElementById('btn-tog').addEventListener('click', ()=>{
+  const panel = document.getElementById('panel');
+  if(panel.classList.contains('open')){
+    closePanel();          // mobile — ferme
+  } else {
+    toggleDesktop();       // desktop — collapse/expand
+  }
 });
+// Gros bouton mobile "✕ Fermer"
+document.getElementById('btn-close-mob').addEventListener('click', closePanel);
+// Backdrop : tap à l'extérieur ferme
+_bd.addEventListener('click', closePanel);
+// Bouton ☰
+document.getElementById('mob-btn').addEventListener('click', openPanel);
 
 // Export PNG
 document.getElementById('btn-png').addEventListener('click',()=>{
