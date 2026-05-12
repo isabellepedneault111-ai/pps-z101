@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>JEU DU CHAOS ∞ — Fractales probabilistes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07071a;--panel:#0c0c20;--border:rgba(255,255,255,0.07);
+  --surf:rgba(255,255,255,0.04);--surf2:rgba(255,255,255,0.08);
+  --text:#e2e8f0;--dim:#94a3b8;--muted:#475569;
+  --accent:#f59e0b;--accent-g:rgba(245,158,11,0.22);
+  --radius:8px;--font:'Space Grotesk',system-ui,sans-serif;--mono:'Space Mono',monospace;
+  --panel-w:310px;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--font);color:var(--text);font-size:14px}
+
+/* ── LAYOUT ─────────────────────────────── */
+#app{display:flex;width:100vw;height:100vh}
+#canvas-wrap{flex:1;position:relative;overflow:hidden}
+#fc,#oc{position:absolute;inset:0;width:100%;height:100%}
+#oc{pointer-events:none}
+
+/* ── PANEL ───────────────────────────────── */
+#panel{
+  width:var(--panel-w);min-width:var(--panel-w);height:100vh;
+  background:var(--panel);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:10;flex-shrink:0;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+#panel.hidden{transform:translateX(calc(-1 * var(--panel-w) + 36px))}
+#ps{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
+#ps::-webkit-scrollbar{width:3px}
+#ps::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+/* ── HEADER ──────────────────────────────── */
+.ph{
+  padding:1.1rem 1rem 1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.7rem;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(245,158,11,.12) 0%,transparent 60%);
+}
+.ph-mark{
+  width:34px;height:34px;border-radius:9px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  flex-shrink:0;box-shadow:0 0 16px var(--accent-g);
+  animation:glow 3s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 12px var(--accent-g)}50%{box-shadow:0 0 28px var(--accent-g),0 0 50px var(--accent-g)}}
+.ph-text{flex:1}.ph-title{font-size:14px;font-weight:700;letter-spacing:.07em}
+.ph-sub{font-size:10px;color:var(--muted);margin-top:1px}
+#btn-tog{
+  width:24px;height:24px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surf);color:var(--dim);cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;
+}
+#btn-tog:hover{background:var(--surf2);color:var(--text)}
+
+/* ── SECTIONS ────────────────────────────── */
+.sec{padding:.85rem 1rem;border-bottom:1px solid var(--border)}
+.sec-title{
+  font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── CHIP GRIDS ──────────────────────────── */
+.chip-grid{display:flex;flex-wrap:wrap;gap:5px}
+.chip{
+  padding:.3rem .55rem;border:1px solid var(--border);background:var(--surf);
+  color:var(--dim);border-radius:20px;cursor:pointer;font-size:11px;
+  font-family:var(--font);font-weight:600;transition:all .15s;
+}
+.chip:hover{background:var(--surf2);color:var(--text)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#000;box-shadow:0 0 12px var(--accent-g)}
+
+/* ── DIE DISPLAY ─────────────────────────── */
+.die-row{display:flex;align-items:center;gap:.65rem;padding:.5rem 0}
+.die-face{
+  width:54px;height:54px;border-radius:10px;background:var(--surf);
+  border:1.5px solid var(--accent);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1px;
+  box-shadow:0 0 14px var(--accent-g);flex-shrink:0;transition:border-color .2s;
+}
+.die-face.rolling{animation:diceRoll .12s ease-in-out}
+@keyframes diceRoll{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg) scale(.95)}70%{transform:rotate(8deg) scale(.95)}}
+.die-label{font-size:9px;font-family:var(--mono);color:var(--accent);letter-spacing:.05em}
+.die-val{font-size:24px;font-weight:700;font-family:var(--mono);color:var(--text);line-height:1}
+.die-arrow{font-size:16px;color:var(--muted)}
+.die-info{flex:1}
+.die-vertex{font-size:13px;font-weight:600;color:var(--text)}
+.die-vertex span{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.die-mapping{font-size:10px;color:var(--muted);margin-top:2px;font-family:var(--mono)}
+
+/* ── CONTROLS ────────────────────────────── */
+.ctrl-stack{display:flex;flex-direction:column;gap:.8rem}
+.ctrl{display:flex;flex-direction:column;gap:.35rem}
+.ctrl-hd{display:flex;justify-content:space-between;align-items:center}
+.ctrl-hd label{font-size:11.5px;color:var(--dim);font-weight:500}
+.val-badge{
+  font-family:var(--mono);font-size:10px;color:var(--accent);
+  background:var(--accent-g);padding:1px 7px;border-radius:20px;min-width:50px;text-align:center;
+}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;
+  outline:none;cursor:pointer;background:rgba(255,255,255,.08);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);cursor:pointer;transition:transform .1s;box-shadow:0 0 8px var(--accent-g);
+}
+input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.25)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+
+/* ── SELECT ──────────────────────────────── */
+select{
+  width:100%;padding:.4rem .6rem;background:var(--surf);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:12px;
+  outline:none;cursor:pointer;transition:border-color .15s;
+  -webkit-appearance:none;
+}
+select:focus{border-color:var(--accent)}
+
+/* ── SPEED PRESETS ───────────────────────── */
+.speed-chips{display:flex;gap:5px;margin-top:.5rem;flex-wrap:wrap}
+.sp-chip{
+  padding:.25rem .5rem;border:1px solid var(--border);background:var(--surf);
+  color:var(--dim);border-radius:6px;cursor:pointer;font-size:10.5px;
+  font-family:var(--mono);transition:all .15s;
+}
+.sp-chip:hover{background:var(--surf2);color:var(--text)}
+.sp-chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-g)}
+
+/* ── BUTTONS ─────────────────────────────── */
+.btn-row{display:flex;gap:6px}
+.btn-play{
+  flex:1;padding:.58rem;border:none;border-radius:var(--radius);
+  font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;
+  background:var(--accent);color:#000;transition:all .15s;
+  box-shadow:0 4px 14px var(--accent-g);
+}
+.btn-play:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-sec{
+  flex:1;padding:.5rem;background:var(--surf);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--dim);font-family:var(--font);
+  font-size:12px;cursor:pointer;transition:all .15s;
+}
+.btn-sec:hover{background:var(--surf2);color:var(--text)}
+
+/* ── PRESETS ─────────────────────────────── */
+.preset-list{display:flex;flex-direction:column;gap:5px}
+.pst{
+  display:flex;align-items:center;gap:.65rem;padding:.5rem .65rem;
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;transition:all .15s;
+}
+.pst:hover{background:var(--surf2);border-color:var(--accent);transform:translateX(2px)}
+.pst-ico{font-size:20px;width:32px;text-align:center;flex-shrink:0}
+.pst-info{flex:1;min-width:0}
+.pst-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pst-desc{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pst-tag{font-size:9px;font-family:var(--mono);color:var(--accent);opacity:.8;flex-shrink:0}
+
+/* ── STATS BLOCK ─────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.stat-box{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:.45rem .6rem;
+}
+.stat-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.stat-val{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600;margin-top:2px}
+
+/* ── OVERLAYS ────────────────────────────── */
+#info-box{
+  position:fixed;top:1rem;right:1rem;
+  background:rgba(7,7,26,.85);backdrop-filter:blur(14px);
+  border:1px solid var(--border);border-radius:10px;
+  padding:.6rem .9rem;font-family:var(--mono);font-size:10.5px;
+  color:var(--dim);z-index:20;pointer-events:none;line-height:2;min-width:170px;
+}
+#info-box span{color:var(--accent)}
+#info-box .vname{color:var(--text);font-weight:700}
+
+#status{
+  position:fixed;bottom:0;left:var(--panel-w);right:0;height:26px;
+  background:rgba(7,7,26,.88);backdrop-filter:blur(10px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:1.5rem;padding:0 1rem;
+  font-family:var(--mono);font-size:10px;color:var(--muted);z-index:5;
+  transition:left .3s;
+}
+.s-dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.s-dot.paused{background:var(--muted)}
+.s-item{display:flex;align-items:center;gap:.4rem;white-space:nowrap}
+#s-dot-el{animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── TOGGLE ──────────────────────────────── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:.4rem}
+.toggle-label{font-size:11.5px;color:var(--dim)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer}
+.toggle input{display:none}
+.toggle-track{position:absolute;inset:0;border-radius:20px;background:rgba(255,255,255,.1);transition:background .2s}
+.toggle input:checked~.toggle-track{background:var(--accent)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle input:checked~.toggle-thumb{transform:translateX(16px)}
+
+/* ── NAV LINK ────────────────────────────── */
+.nav-link{
+  display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;
+  background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);
+  border-radius:var(--radius);color:rgba(139,92,246,.9);font-size:12px;
+  text-decoration:none;transition:all .15s;cursor:pointer;
+}
+.nav-link:hover{background:rgba(139,92,246,.14);border-color:rgba(139,92,246,.4)}
+
+/* ── TOAST ───────────────────────────────── */
+#toast{
+  position:fixed;bottom:2.2rem;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(20,20,50,.96);border:1px solid var(--accent);
+  border-radius:var(--radius);padding:.55rem 1.2rem;font-size:12.5px;
+  color:var(--text);opacity:0;transition:all .3s;pointer-events:none;z-index:100;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:700px){
+  #panel{position:fixed;left:0;top:0;z-index:50;transform:translateX(-100%)}
+  #panel.open{transform:translateX(0)}
+  #status{left:0}
+  #mob-btn{
+    display:flex;position:fixed;top:.75rem;left:.75rem;z-index:60;
+    background:rgba(12,12,32,.85);backdrop-filter:blur(10px);
+    border:1px solid var(--border);color:var(--text);border-radius:8px;
+    width:38px;height:38px;align-items:center;justify-content:center;
+    font-size:16px;cursor:pointer;
+  }
+}
+@media(min-width:701px){#mob-btn{display:none}}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── PANEL ──────────────────────────────── -->
+  <aside id="panel">
+    <div class="ph">
+      <div class="ph-mark">🎲</div>
+      <div class="ph-text">
+        <div class="ph-title">JEU DU CHAOS</div>
+        <div class="ph-sub">Fractales probabilistes</div>
+      </div>
+      <button id="btn-tog">‹</button>
+    </div>
+
+    <div id="ps">
+
+      <!-- MODE -->
+      <div class="sec">
+        <div class="sec-title">Mode</div>
+        <div class="chip-grid">
+          <button class="chip on" data-mode="chaos">Jeu du chaos</button>
+          <button class="chip" data-mode="ifs">Système IFS</button>
+        </div>
+      </div>
+
+      <!-- DIE -->
+      <div class="sec" id="chaos-sec">
+        <div class="sec-title">Dé &amp; Polygone</div>
+        <div class="die-row">
+          <div class="die-face" id="die-face">
+            <div class="die-label" id="die-label">D6</div>
+            <div class="die-val" id="die-val">—</div>
+          </div>
+          <div class="die-arrow">→</div>
+          <div class="die-info">
+            <div class="die-vertex" id="die-vertex">Sommet <span id="die-vname">—</span></div>
+            <div class="die-mapping" id="die-mapping">en attente…</div>
+          </div>
+        </div>
+
+        <div class="ctrl-stack" style="margin-top:.7rem">
+          <div>
+            <div class="sec-title" style="margin-bottom:.5rem">Nombre de faces du dé</div>
+            <div class="chip-grid" id="die-chips">
+              <button class="chip" data-d="4">D4</button>
+              <button class="chip on" data-d="6">D6</button>
+              <button class="chip" data-d="8">D8</button>
+              <button class="chip" data-d="10">D10</button>
+              <button class="chip" data-d="12">D12</button>
+              <button class="chip" data-d="20">D20</button>
+            </div>
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Sommets du polygone</label><span class="val-badge" id="v-n">3</span></div>
+            <input type="range" id="s-n" min="3" max="12" step="1" value="3">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Ratio de déplacement r</label><span class="val-badge" id="v-r">0.500</span></div>
+            <input type="range" id="s-r" min="0.2" max="0.85" step="0.001" value="0.5">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Règle d'exclusion</label></div>
+            <select id="sel-rule">
+              <option value="none">Aucune restriction</option>
+              <option value="same">Même sommet interdit</option>
+              <option value="adjacent">Sommet adjacent interdit</option>
+              <option value="opposite">Sommet opposé interdit (pair)</option>
+              <option value="same2ago">Même que l'avant-dernier interdit</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- IFS -->
+      <div class="sec" id="ifs-sec" style="display:none">
+        <div class="sec-title">Système IFS</div>
+        <div class="ctrl">
+          <select id="sel-ifs">
+            <option value="barnsley">Fougère de Barnsley</option>
+            <option value="dragon">Dragon de Heighway</option>
+            <option value="levy">Courbe de Lévy</option>
+            <option value="sierpinski">Sierpinski IFS</option>
+            <option value="fern2">Fougère symétrique</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- COULEURS -->
+      <div class="sec">
+        <div class="sec-title">Couleurs</div>
+        <div class="ctrl-stack">
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Mode couleur</label></div>
+            <select id="sel-cm">
+              <option value="vertex">Par sommet (chaos)</option>
+              <option value="iter">Par itération</option>
+              <option value="mono">Blanc monochrome</option>
+              <option value="glow">Lueur ambrée</option>
+            </select>
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Taille des points</label><span class="val-badge" id="v-ps">1 px</span></div>
+            <input type="range" id="s-ps" min="1" max="3" step="0.5" value="1">
+          </div>
+          <div class="ctrl">
+            <div class="ctrl-hd"><label>Opacité</label><span class="val-badge" id="v-op">80%</span></div>
+            <input type="range" id="s-op" min="10" max="100" step="5" value="80">
+          </div>
+          <div class="toggle-row">
+            <span class="toggle-label">Afficher les sommets</span>
+            <label class="toggle"><input type="checkbox" id="chk-verts" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="toggle-row">
+            <span class="toggle-label">Afficher la ligne de saut</span>
+            <label class="toggle"><input type="checkbox" id="chk-line"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- VITESSE -->
+      <div class="sec">
+        <div class="sec-title">Vitesse</div>
+        <div class="ctrl">
+          <div class="ctrl-hd"><label>Points par seconde</label><span class="val-badge" id="v-spd">1 000</span></div>
+          <input type="range" id="s-spd" min="0" max="100" step="1" value="40">
+        </div>
+        <div class="speed-chips">
+          <button class="sp-chip" data-spd="0">1 pt/s</button>
+          <button class="sp-chip" data-spd="18">10/s</button>
+          <button class="sp-chip" data-spd="40">1k/s</button>
+          <button class="sp-chip" data-spd="60">10k/s</button>
+          <button class="sp-chip" data-spd="80">100k/s</button>
+          <button class="sp-chip" data-spd="100">MAX</button>
+        </div>
+      </div>
+
+      <!-- CONTRÔLES -->
+      <div class="sec">
+        <div class="sec-title">Contrôles</div>
+        <div class="btn-row" style="margin-bottom:6px">
+          <button class="btn-play" id="btn-play">▶ Démarrer</button>
+          <button class="btn-sec" id="btn-reset">↺ Reset</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn-sec" id="btn-step">+1 point</button>
+          <button class="btn-sec" id="btn-png">⬇ PNG</button>
+        </div>
+      </div>
+
+      <!-- STATS EN DIRECT -->
+      <div class="sec">
+        <div class="sec-title">Statistiques en direct</div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Points tracés</div><div class="stat-val" id="st-pts">0</div></div>
+          <div class="stat-box"><div class="stat-label">Vitesse réelle</div><div class="stat-val" id="st-spd">—</div></div>
+          <div class="stat-box"><div class="stat-label">Dernier tirage</div><div class="stat-val" id="st-roll">—</div></div>
+          <div class="stat-box"><div class="stat-label">Sommet choisi</div><div class="stat-val" id="st-vert">—</div></div>
+        </div>
+      </div>
+
+      <!-- PRÉRÉGLAGES -->
+      <div class="sec">
+        <div class="sec-title">Préréglages</div>
+        <div class="preset-list" id="preset-list"></div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="sec">
+        <div class="sec-title">Autre outil</div>
+        <a class="nav-link" href="fractales.html">∞ Explorateur de fractales WebGL →</a>
+      </div>
+
+    </div><!-- end #ps -->
+  </aside><!-- end panel -->
+
+  <!-- CANVAS ZONE -->
+  <div id="canvas-wrap">
+    <canvas id="fc"></canvas>
+    <canvas id="oc"></canvas>
+  </div>
+
+</div><!-- end app -->
+
+<!-- MOBILE TOGGLE -->
+<button id="mob-btn" onclick="document.getElementById('panel').classList.toggle('open')">☰</button>
+
+<!-- INFO OVERLAY -->
+<div id="info-box">
+  Dé : <span id="ib-d">D6</span> — roll : <span id="ib-r">—</span><br>
+  Sommet : <span class="vname" id="ib-v">—</span><br>
+  Points : <span id="ib-pts">0</span><br>
+  FPS : <span id="ib-fps">—</span>
+</div>
+
+<!-- STATUS BAR -->
+<div id="status">
+  <div class="s-item"><div class="s-dot" id="s-dot-el"></div><span id="s-mode">Jeu du chaos — △ 3 sommets</span></div>
+  <div class="s-item">pts : <span id="s-pts">0</span></div>
+  <div class="s-item"><span id="s-spd">— pts/s</span></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   CANVAS SETUP  (2 layers: fractal + overlay)
+   ════════════════════════════════════════════════ */
+const fc = document.getElementById('fc');
+const oc = document.getElementById('oc');
+const ctx  = fc.getContext('2d');
+const octx = oc.getContext('2d');
+const wrap = document.getElementById('canvas-wrap');
+
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+function resizeCanvases(){
+  const W = Math.round(wrap.clientWidth  * DPR);
+  const H = Math.round(wrap.clientHeight * DPR);
+  if(fc.width !== W || fc.height !== H){
+    fc.width = oc.width = W;
+    fc.height = oc.height = H;
+    fc.style.width = oc.style.width = wrap.clientWidth + 'px';
+    fc.style.height = oc.style.height = wrap.clientHeight + 'px';
+    clearFractal();
+  }
+}
+
+function clearFractal(){
+  ctx.fillStyle = '#07071a';
+  ctx.fillRect(0, 0, fc.width, fc.height);
+}
+
+/* ════════════════════════════════════════════════
+   VERTEX COLORS  (up to 12)
+   ════════════════════════════════════════════════ */
+const VCOLS = [
+  '#8b5cf6','#06b6d4','#f97316','#22c55e','#ec4899',
+  '#f59e0b','#ef4444','#14b8a6','#a78bfa','#fb923c',
+  '#84cc16','#e879f9',
+];
+
+/* ════════════════════════════════════════════════
+   IFS SYSTEMS
+   ════════════════════════════════════════════════ */
+const IFS = {
+  barnsley:{
+    name:'Fougère de Barnsley',xRange:[-2.7,2.7],yRange:[-.2,10.2],init:[0,0],
+    transforms:[
+      {a:0,   b:0,   c:0,    d:0.16, e:0, f:0,   p:.01, col:'#16a34a'},
+      {a:.85, b:.04, c:-.04, d:.85,  e:0, f:1.6,  p:.85, col:'#4ade80'},
+      {a:.2,  b:-.26,c:.23,  d:.22,  e:0, f:1.6,  p:.07, col:'#86efac'},
+      {a:-.15,b:.28, c:.26,  d:.24,  e:0, f:.44,  p:.07, col:'#a7f3d0'},
+    ]
+  },
+  dragon:{
+    name:'Dragon de Heighway',xRange:[-.3,1.3],yRange:[-.7,.7],init:[0,0],
+    transforms:[
+      {a:.5, b:-.5, c:.5,  d:.5,  e:0, f:0, p:.5, col:'#8b5cf6'},
+      {a:-.5,b:-.5, c:.5,  d:-.5, e:1, f:0, p:.5, col:'#c4b5fd'},
+    ]
+  },
+  levy:{
+    name:'Courbe de Lévy',xRange:[-.2,1.2],yRange:[-.1,1.1],init:[0,0],
+    transforms:[
+      {a:.5, b:-.5, c:.5,  d:.5,  e:0,  f:0,  p:.5, col:'#06b6d4'},
+      {a:.5, b:.5,  c:-.5, d:.5,  e:.5, f:.5, p:.5, col:'#67e8f9'},
+    ]
+  },
+  sierpinski:{
+    name:'Sierpinski IFS',xRange:[0,1],yRange:[0,1],init:[.5,.5],
+    transforms:[
+      {a:.5, b:0,  c:0, d:.5, e:0,  f:0,  p:.33, col:'#8b5cf6'},
+      {a:.5, b:0,  c:0, d:.5, e:.5, f:0,  p:.33, col:'#06b6d4'},
+      {a:.5, b:0,  c:0, d:.5, e:.25,f:.5, p:.34, col:'#f59e0b'},
+    ]
+  },
+  fern2:{
+    name:'Fougère symétrique',xRange:[-3,3],yRange:[0,10],init:[0,0],
+    transforms:[
+      {a:0,   b:0,   c:0,    d:.16,  e:0, f:0,   p:.01, col:'#15803d'},
+      {a:.85, b:-.04,c:.04,  d:.85,  e:0, f:1.6,  p:.84, col:'#22c55e'},
+      {a:.2,  b:.26, c:-.23, d:.22,  e:0, f:1.6,  p:.075,col:'#86efac'},
+      {a:-.2, b:-.26,c:-.23, d:.22,  e:0, f:.44,  p:.075,col:'#a7f3d0'},
+    ]
+  },
+};
+
+/* ════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════ */
+const P = {
+  mode:'chaos',        // 'chaos' | 'ifs'
+  n:3,                 // vertices
+  dFaces:6,            // die faces
+  ratio:.5,            // jump ratio
+  rule:'none',         // exclusion rule
+  ifsKey:'barnsley',   // IFS system
+  colorMode:'vertex',  // color mode
+  pointSize:1,         // px
+  opacity:.8,          // 0-1
+  showVerts:true,      // show vertex labels
+  showLine:false,      // show jump line
+  speed:1000,          // pts/sec
+};
+
+let state = {
+  running:false,
+  x:0, y:0,
+  lastV:-1, prevV:-1, // last two vertex picks
+  count:0,
+  fps:0,
+};
+
+let vertices = [];
+
+/* ════════════════════════════════════════════════
+   VERTEX POSITIONS
+   ════════════════════════════════════════════════ */
+function buildVertices(){
+  const W = fc.width, H = fc.height;
+  const cx = W/2, cy = H/2;
+  const r = Math.min(W, H) * 0.42;
+  vertices = [];
+  for(let i=0;i<P.n;i++){
+    const a = (i/P.n)*Math.PI*2 - Math.PI/2;
+    vertices.push({
+      x: cx + r*Math.cos(a),
+      y: cy + r*Math.sin(a),
+      label: String.fromCharCode(65+i), // A,B,C…
+      col: VCOLS[i % VCOLS.length],
+    });
+  }
+}
+
+function randomStart(){
+  const v1 = vertices[Math.floor(Math.random()*P.n)];
+  const v2 = vertices[Math.floor(Math.random()*P.n)];
+  state.x = (v1.x+v2.x)/2;
+  state.y = (v1.y+v2.y)/2;
+  state.lastV = -1; state.prevV = -1;
+}
+
+/* ════════════════════════════════════════════════
+   PICK VERTEX WITH RULE + DIE ROLL
+   ════════════════════════════════════════════════ */
+function pickVertex(){
+  let allowed = Array.from({length:P.n},(_,i)=>i);
+  const lv = state.lastV, pv = state.prevV;
+
+  if(P.rule === 'same' && lv >= 0)
+    allowed = allowed.filter(i=>i!==lv);
+  else if(P.rule === 'adjacent' && lv >= 0)
+    allowed = allowed.filter(i=>i!==((lv-1+P.n)%P.n) && i!==((lv+1)%P.n));
+  else if(P.rule === 'opposite' && lv >= 0 && P.n%2===0)
+    allowed = allowed.filter(i=>i!==((lv+P.n/2)%P.n));
+  else if(P.rule === 'same2ago' && pv >= 0)
+    allowed = allowed.filter(i=>i!==pv);
+
+  // Simulate die roll: random 1..dFaces, map to allowed vertex via modulo
+  const roll = Math.floor(Math.random()*P.dFaces)+1; // 1..dFaces
+  const picked = allowed[roll % allowed.length];
+  return { v: picked, roll };
+}
+
+/* ════════════════════════════════════════════════
+   PICK IFS TRANSFORM
+   ════════════════════════════════════════════════ */
+function pickTransform(sys){
+  const r = Math.random();
+  let cum=0;
+  for(const t of sys.transforms){ cum+=t.p; if(r<cum) return t; }
+  return sys.transforms[sys.transforms.length-1];
+}
+
+/* ════════════════════════════════════════════════
+   DRAW N POINTS
+   ════════════════════════════════════════════════ */
+let lastRoll=1, lastPickedV=0;
+
+function drawBatch(n){
+  if(n < 1) return;
+  ctx.globalAlpha = P.opacity;
+
+  if(P.mode === 'ifs'){
+    const sys = IFS[P.ifsKey];
+    const W=fc.width,H=fc.height;
+    const [x0,x1]=sys.xRange,[y0,y1]=sys.yRange;
+    const scX=W/(x1-x0), scY=H/(y1-y0);
+
+    for(let i=0;i<n;i++){
+      const t = pickTransform(sys);
+      const nx = t.a*state.x + t.b*state.y + t.e;
+      const ny = t.c*state.x + t.d*state.y + t.f;
+      state.x=nx; state.y=ny;
+      const px = (state.x-x0)*scX;
+      const py = H - (state.y-y0)*scY;
+
+      ctx.fillStyle = t.col;
+      ctx.fillRect(px, py, P.pointSize, P.pointSize);
+      state.count++;
+    }
+  } else {
+    const ps = P.pointSize;
+    for(let i=0;i<n;i++){
+      const {v, roll} = pickVertex();
+      const vx=vertices[v].x, vy=vertices[v].y;
+      state.prevV=state.lastV;
+      state.lastV=v;
+      lastRoll=roll; lastPickedV=v;
+
+      state.x += P.ratio*(vx-state.x);
+      state.y += P.ratio*(vy-state.y);
+
+      ctx.fillStyle = getPointColor(v, state.count);
+      ctx.fillRect(state.x-ps/2, state.y-ps/2, ps, ps);
+      state.count++;
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+function getPointColor(v, iter){
+  switch(P.colorMode){
+    case 'vertex': return vertices[v].col;
+    case 'mono':   return '#ffffff';
+    case 'glow': {
+      const h = (iter*0.1)%360;
+      return `hsl(${h},90%,70%)`;
+    }
+    case 'iter': {
+      const h = (iter*0.05)%360;
+      return `hsl(${h},80%,65%)`;
+    }
+    default: return '#ffffff';
+  }
+}
+
+/* ════════════════════════════════════════════════
+   OVERLAY (vertices + current point + line)
+   ════════════════════════════════════════════════ */
+function drawOverlay(){
+  octx.clearRect(0,0,oc.width,oc.height);
+  if(P.mode === 'ifs') return;
+
+  const showV = P.showVerts;
+  const showL = P.showLine;
+
+  if(showL && state.lastV>=0 && state.count>0){
+    const v=vertices[state.lastV];
+    octx.beginPath();
+    octx.moveTo(state.x, state.y);
+    octx.lineTo(v.x, v.y);
+    octx.strokeStyle = v.col+'66';
+    octx.lineWidth=1;
+    octx.stroke();
+  }
+
+  // Current point glow
+  if(state.count>0){
+    const gradient=octx.createRadialGradient(state.x,state.y,0,state.x,state.y,8);
+    gradient.addColorStop(0,'rgba(255,255,255,0.9)');
+    gradient.addColorStop(1,'rgba(255,255,255,0)');
+    octx.fillStyle=gradient;
+    octx.beginPath();
+    octx.arc(state.x,state.y,8,0,Math.PI*2);
+    octx.fill();
+  }
+
+  if(!showV) return;
+
+  vertices.forEach((v,i)=>{
+    const sel = (i === state.lastV);
+    const r = sel ? 12 : 8;
+
+    // Glow
+    if(sel){
+      const g=octx.createRadialGradient(v.x,v.y,0,v.x,v.y,20);
+      g.addColorStop(0,v.col+'66');
+      g.addColorStop(1,'transparent');
+      octx.fillStyle=g;
+      octx.beginPath();
+      octx.arc(v.x,v.y,20,0,Math.PI*2);
+      octx.fill();
+    }
+
+    // Circle
+    octx.beginPath();
+    octx.arc(v.x,v.y,r,0,Math.PI*2);
+    octx.fillStyle = sel ? v.col : v.col+'bb';
+    octx.fill();
+    octx.strokeStyle='rgba(255,255,255,0.3)';
+    octx.lineWidth=1;
+    octx.stroke();
+
+    // Label
+    octx.fillStyle='#000';
+    octx.font=`bold ${r-2}px Space Mono,'Space Mono',monospace`;
+    octx.textAlign='center';
+    octx.textBaseline='middle';
+    octx.fillText(v.label,v.x,v.y);
+
+    // Outer label with index
+    octx.fillStyle='rgba(255,255,255,0.7)';
+    octx.font=`9px Space Mono,'Space Mono',monospace`;
+    octx.fillText(v.label,v.x+r+8,v.y-r-2);
+  });
+}
+
+/* ════════════════════════════════════════════════
+   ANIMATION LOOP
+   ════════════════════════════════════════════════ */
+let raf=null, lastFrame=performance.now(), fpsTimer=0, fpsCount=0, measuredFPS=0;
+
+function loop(now){
+  const dt = Math.min((now-lastFrame)/1000, 0.1);
+  lastFrame=now;
+
+  if(state.running){
+    const n = Math.max(1, Math.round(P.speed * dt));
+    drawBatch(n);
+    updateDieDisplay();
+    updateStats();
+  }
+
+  drawOverlay();
+
+  // FPS
+  fpsCount++;
+  fpsTimer+=dt;
+  if(fpsTimer>1){ measuredFPS=Math.round(fpsCount/fpsTimer); fpsCount=0; fpsTimer=0; }
+
+  raf=requestAnimationFrame(loop);
+}
+
+/* ════════════════════════════════════════════════
+   DIE DISPLAY UPDATE
+   ════════════════════════════════════════════════ */
+function updateDieDisplay(){
+  if(P.mode!=='chaos'||state.count===0) return;
+  const vName = vertices[lastPickedV]?.label || '—';
+  const dFace=document.getElementById('die-face');
+  dFace.classList.remove('rolling');
+  void dFace.offsetWidth; // force reflow
+  dFace.classList.add('rolling');
+  document.getElementById('die-val').textContent  = lastRoll;
+  document.getElementById('die-vname').textContent = vName;
+  document.getElementById('die-vertex').innerHTML = `Sommet <span id="die-vname" style="color:${vertices[lastPickedV]?.col}">${vName}</span>`;
+  // Die-face border matches vertex color
+  dFace.style.borderColor = vertices[lastPickedV]?.col || 'var(--accent)';
+  dFace.style.boxShadow   = `0 0 14px ${vertices[lastPickedV]?.col+'44' || 'var(--accent-g)'}`;
+
+  // Mapping display
+  const mapping = Array.from({length:P.n},(_,i)=>{
+    const faces=[];
+    for(let f=1;f<=P.dFaces;f++) if((f-1)%P.n===i) faces.push(f);
+    return `${String.fromCharCode(65+i)}:{${faces.join(',')}}`;
+  }).join('  ');
+  document.getElementById('die-mapping').textContent = mapping;
+
+  // Info box
+  document.getElementById('ib-d').textContent = 'D'+P.dFaces;
+  document.getElementById('ib-r').textContent = lastRoll;
+  document.getElementById('ib-v').textContent = vName;
+  document.getElementById('ib-v').style.color = vertices[lastPickedV]?.col || '#fff';
+}
+
+/* ════════════════════════════════════════════════
+   STATS
+   ════════════════════════════════════════════════ */
+function updateStats(){
+  const cnt = state.count;
+  const fmtN = n => n>=1e6?(n/1e6).toFixed(2)+'M': n>=1e3?(n/1e3).toFixed(1)+'k': n;
+  document.getElementById('st-pts').textContent = fmtN(cnt);
+  document.getElementById('st-spd').textContent = fmtN(P.speed)+'/s';
+  document.getElementById('st-roll').textContent = state.count>0 ? lastRoll : '—';
+  document.getElementById('st-vert').textContent = state.count>0 ? vertices[lastPickedV]?.label||'—' : '—';
+  document.getElementById('ib-pts').textContent = fmtN(cnt);
+  document.getElementById('ib-fps').textContent = measuredFPS||'—';
+  document.getElementById('s-pts').textContent  = fmtN(cnt);
+  document.getElementById('s-spd').textContent  = fmtN(P.speed)+' pts/s';
+}
+
+/* ════════════════════════════════════════════════
+   SPEED SLIDER (logarithmic: 0→1, 100→200000)
+   ════════════════════════════════════════════════ */
+const SPD_MIN=1, SPD_MAX=200000;
+function sliderToSpeed(v){ return Math.round(Math.pow(SPD_MAX/SPD_MIN, v/100)*SPD_MIN); }
+function speedToSlider(s){ return Math.round(Math.log(s/SPD_MIN)/Math.log(SPD_MAX/SPD_MIN)*100); }
+function fmtSpeed(s){
+  if(s<1000) return s+' pts/s';
+  if(s<1e6)  return (s/1000).toFixed(s>=10000?0:1)+'k/s';
+  return (s/1e6).toFixed(1)+'M/s';
+}
+
+/* ════════════════════════════════════════════════
+   RESET
+   ════════════════════════════════════════════════ */
+function doReset(){
+  state.count=0; state.lastV=-1; state.prevV=-1;
+  clearFractal();
+  if(P.mode==='ifs'){
+    const sys=IFS[P.ifsKey];
+    [state.x,state.y]=sys.init;
+  } else {
+    buildVertices();
+    randomStart();
+  }
+  updateStats();
+  drawOverlay();
+  updateModeLabel();
+}
+
+function updateModeLabel(){
+  const label = P.mode==='ifs'
+    ? IFS[P.ifsKey].name
+    : `Jeu du chaos — ${['△','◻','⬠','⬡','⭐','⬟','⬠','◯','⬠','⬠','⬠'][P.n-3]||'⬠'} ${P.n} sommets`;
+  document.getElementById('s-mode').textContent = label;
+  document.getElementById('die-label').textContent = 'D'+P.dFaces;
+}
+
+/* ════════════════════════════════════════════════
+   CONTROLS WIRING
+   ════════════════════════════════════════════════ */
+
+// Mode
+document.querySelectorAll('[data-mode]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    P.mode=btn.dataset.mode;
+    document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on',b===btn));
+    document.getElementById('chaos-sec').style.display = P.mode==='chaos'?'':'none';
+    document.getElementById('ifs-sec').style.display   = P.mode==='ifs'?'':'none';
+    doReset();
+  });
+});
+
+// Die faces
+document.querySelectorAll('[data-d]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    P.dFaces=parseInt(btn.dataset.d);
+    document.querySelectorAll('[data-d]').forEach(b=>b.classList.toggle('on',b===btn));
+    document.getElementById('die-label').textContent='D'+P.dFaces;
+  });
+});
+
+// N vertices
+const sN=document.getElementById('s-n');
+sN.addEventListener('input',()=>{
+  P.n=parseInt(sN.value);
+  document.getElementById('v-n').textContent=P.n;
+  doReset();
+});
+
+// Ratio
+const sR=document.getElementById('s-r');
+sR.addEventListener('input',()=>{
+  P.ratio=parseFloat(sR.value);
+  document.getElementById('v-r').textContent=P.ratio.toFixed(3);
+});
+
+// Rule
+document.getElementById('sel-rule').addEventListener('change',e=>{P.rule=e.target.value;});
+
+// IFS
+document.getElementById('sel-ifs').addEventListener('change',e=>{P.ifsKey=e.target.value;doReset();});
+
+// Color mode
+document.getElementById('sel-cm').addEventListener('change',e=>{P.colorMode=e.target.value;});
+
+// Point size
+document.getElementById('s-ps').addEventListener('input',function(){
+  P.pointSize=parseFloat(this.value);
+  document.getElementById('v-ps').textContent=P.pointSize+' px';
+});
+
+// Opacity
+document.getElementById('s-op').addEventListener('input',function(){
+  P.opacity=parseInt(this.value)/100;
+  document.getElementById('v-op').textContent=this.value+'%';
+});
+
+// Toggles
+document.getElementById('chk-verts').addEventListener('change',e=>{P.showVerts=e.target.checked;});
+document.getElementById('chk-line').addEventListener('change',e=>{P.showLine=e.target.checked;});
+
+// Speed slider
+document.getElementById('s-spd').addEventListener('input',function(){
+  P.speed=sliderToSpeed(parseInt(this.value));
+  document.getElementById('v-spd').textContent=fmtSpeed(P.speed);
+  document.querySelectorAll('.sp-chip').forEach(c=>c.classList.remove('on'));
+});
+
+// Speed presets
+document.querySelectorAll('.sp-chip').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const v=parseInt(btn.dataset.spd);
+    document.getElementById('s-spd').value=v;
+    P.speed=sliderToSpeed(v);
+    document.getElementById('v-spd').textContent=fmtSpeed(P.speed);
+    document.querySelectorAll('.sp-chip').forEach(c=>c.classList.toggle('on',c===btn));
+  });
+});
+
+// Play / Pause
+const btnPlay=document.getElementById('btn-play');
+btnPlay.addEventListener('click',()=>{
+  state.running=!state.running;
+  btnPlay.textContent=state.running?'⏸ Pause':'▶ Démarrer';
+  btnPlay.style.background=state.running?'#6d28d9':'var(--accent)';
+  document.getElementById('s-dot-el').classList.toggle('paused',!state.running);
+});
+
+// Reset
+document.getElementById('btn-reset').addEventListener('click',doReset);
+
+// Step (+1 point)
+document.getElementById('btn-step').addEventListener('click',()=>{
+  if(!state.running){ drawBatch(1); updateDieDisplay(); drawOverlay(); updateStats(); }
+});
+
+// Panel toggle
+document.getElementById('btn-tog').addEventListener('click',()=>{
+  const p=document.getElementById('panel');
+  const h=p.classList.toggle('hidden');
+  document.getElementById('btn-tog').textContent=h?'›':'‹';
+  document.getElementById('status').style.left=h?'36px':'var(--panel-w)';
+});
+
+// Export PNG
+document.getElementById('btn-png').addEventListener('click',()=>{
+  fc.toBlob(blob=>{
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='chaos_'+P.mode+'_'+Date.now()+'.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Image exportée !');
+  });
+});
+
+/* ════════════════════════════════════════════════
+   PRESETS
+   ════════════════════════════════════════════════ */
+const PRESETS = [
+  {ico:'🔺',name:'Sierpinski △',desc:'3 sommets · ratio 1/2 · D6',
+   p:{mode:'chaos',n:3,dFaces:6,ratio:.5,rule:'none',colorMode:'vertex',speed:5000}},
+  {ico:'🔮',name:'Anti-Sierpinski',desc:'Même sommet interdit',
+   p:{mode:'chaos',n:3,dFaces:6,ratio:.5,rule:'same',colorMode:'vertex',speed:3000}},
+  {ico:'◻',name:'Carré fractal',desc:'4 sommets · ratio 1/2',
+   p:{mode:'chaos',n:4,dFaces:8,ratio:.5,rule:'none',colorMode:'vertex',speed:5000}},
+  {ico:'⭐',name:'Pentagone d\'or',desc:'5 sommets · ratio φ−1 ≈ 0.618',
+   p:{mode:'chaos',n:5,dFaces:10,ratio:.618,rule:'none',colorMode:'vertex',speed:8000}},
+  {ico:'⬡',name:'Hexagone',desc:'6 sommets · ratio 1/2 · D12',
+   p:{mode:'chaos',n:6,dFaces:12,ratio:.5,rule:'none',colorMode:'vertex',speed:8000}},
+  {ico:'🌟',name:'Étoile à 8',desc:'8 sommets · ratio 1/2 · D8',
+   p:{mode:'chaos',n:8,dFaces:8,ratio:.5,rule:'none',colorMode:'vertex',speed:10000}},
+  {ico:'🎆',name:'Dodécagone',desc:'12 sommets · D12 · arc-en-ciel',
+   p:{mode:'chaos',n:12,dFaces:12,ratio:.5,rule:'none',colorMode:'iter',speed:15000}},
+  {ico:'🌿',name:'Fougère Barnsley',desc:'IFS probabiliste · 4 transformations',
+   p:{mode:'ifs',ifsKey:'barnsley',colorMode:'vertex',speed:20000}},
+  {ico:'🐉',name:'Dragon de Heighway',desc:'IFS · 2 transformations',
+   p:{mode:'ifs',ifsKey:'dragon',colorMode:'vertex',speed:15000}},
+  {ico:'🌊',name:'Courbe de Lévy',desc:'IFS · spirale fractale',
+   p:{mode:'ifs',ifsKey:'levy',colorMode:'vertex',speed:12000}},
+  {ico:'🔵',name:'Sierpinski IFS',desc:'Triangle par IFS pur',
+   p:{mode:'ifs',ifsKey:'sierpinski',colorMode:'vertex',speed:15000}},
+  {ico:'🍃',name:'Fougère symétrique',desc:'Variante symétrique Barnsley',
+   p:{mode:'ifs',ifsKey:'fern2',colorMode:'vertex',speed:20000}},
+  {ico:'🔵',name:'Voisin interdit △',desc:'Carré · sommet adjacent interdit',
+   p:{mode:'chaos',n:4,dFaces:8,ratio:.5,rule:'adjacent',colorMode:'vertex',speed:5000}},
+  {ico:'💎',name:'Vitesse 1 pt/s',desc:'Mode éducatif — regarder chaque tirage',
+   p:{mode:'chaos',n:3,dFaces:6,ratio:.5,rule:'none',colorMode:'vertex',speed:1}},
+];
+
+function buildPresets(){
+  const list=document.getElementById('preset-list');
+  PRESETS.forEach((pr,i)=>{
+    const div=document.createElement('div');
+    div.className='pst';
+    div.innerHTML=`<div class="pst-ico">${pr.ico}</div>
+      <div class="pst-info">
+        <div class="pst-name">${pr.name}</div>
+        <div class="pst-desc">${pr.desc}</div>
+      </div>
+      <div class="pst-tag">#${String(i+1).padStart(2,'0')}</div>`;
+    div.addEventListener('click',()=>applyPreset(pr));
+    list.appendChild(div);
+  });
+}
+
+function applyPreset(pr){
+  Object.assign(P, pr.p);
+  // Sync UI
+  document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on',b.dataset.mode===P.mode));
+  document.getElementById('chaos-sec').style.display=P.mode==='chaos'?'':'none';
+  document.getElementById('ifs-sec').style.display=P.mode==='ifs'?'':'none';
+  document.querySelectorAll('[data-d]').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.d)===P.dFaces));
+  document.getElementById('s-n').value=P.n;
+  document.getElementById('v-n').textContent=P.n;
+  document.getElementById('s-r').value=P.ratio;
+  document.getElementById('v-r').textContent=P.ratio.toFixed(3);
+  if(P.ifsKey) document.getElementById('sel-ifs').value=P.ifsKey;
+  document.getElementById('sel-cm').value=P.colorMode||'vertex';
+  const sv=speedToSlider(P.speed);
+  document.getElementById('s-spd').value=sv;
+  document.getElementById('v-spd').textContent=fmtSpeed(P.speed);
+  document.querySelectorAll('.sp-chip').forEach(c=>c.classList.remove('on'));
+  doReset();
+  // Auto-start
+  if(!state.running){
+    state.running=true;
+    document.getElementById('btn-play').textContent='⏸ Pause';
+    document.getElementById('btn-play').style.background='#6d28d9';
+  }
+  toast('Préréglage : '+pr.name);
+}
+
+/* ════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+   ════════════════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)) return;
+  if(e.key===' '||e.key==='p'||e.key==='P'){ e.preventDefault(); document.getElementById('btn-play').click(); }
+  if(e.key==='r'||e.key==='R') doReset();
+  if(e.key==='e'||e.key==='E') document.getElementById('btn-png').click();
+  if(e.key==='.') document.getElementById('btn-step').click();
+  if(e.key==='Tab'){ e.preventDefault(); document.getElementById('btn-tog').click(); }
+});
+
+/* ════════════════════════════════════════════════
+   TOAST
+   ════════════════════════════════════════════════ */
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+/* ════════════════════════════════════════════════
+   RESIZE
+   ════════════════════════════════════════════════ */
+new ResizeObserver(()=>{resizeCanvases();doReset();}).observe(wrap);
+
+/* ════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════ */
+buildPresets();
+resizeCanvases();
+doReset();
+updateModeLabel();
+document.getElementById('die-label').textContent='D'+P.dFaces;
+document.getElementById('v-spd').textContent=fmtSpeed(P.speed);
+document.getElementById('v-r').textContent=P.ratio.toFixed(3);
+
+// Start loop
+raf=requestAnimationFrame(loop);
+// Auto-start
+state.running=true;
+document.getElementById('btn-play').textContent='⏸ Pause';
+document.getElementById('btn-play').style.background='#6d28d9';
+</script>
+</body>
+</html>
