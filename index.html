@@ -365,11 +365,8 @@ textarea{min-height:90px}
   .prod-grid,.cours-grid{grid-template-columns:repeat(2,1fr)}
   .grille-echelons{grid-template-columns:1fr 1fr}
 }
-
 .tag-violet{background:#F0EAF9;color:#5b2d8e}
-.sc-violet{border-top-color:#5b2d8e}
-.st-violet{color:#5b2d8e}
-.si-violet::before{background:#5b2d8e}
+.sc-violet{border-top-color:#5b2d8e}.st-violet{color:#5b2d8e}.si-violet::before{background:#5b2d8e}
 </style>
 </head>
 <body>
@@ -1315,10 +1312,17 @@ textarea{min-height:90px}
   
     <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
       <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
-      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible. Cliquez pour voir le modèle.</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible.</div>
       <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem"><button onclick="showExemple('z101','Entrevue guidée')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Captation audio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Captation vidéo</span><button onclick="showExemple('z101','Affiche')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Affiche</button><button onclick="showExemple('z101','Jeu de rôle')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Journal de bord</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Portfolio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Questionnaire écrit</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Étude de cas</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Observation en action</span></div>
       <div id="exemple-container-z101" style="display:none;margin-top:1rem"></div>
-    </div></div>
+    </div>
+    <div style="margin-top:1rem;padding:1.25rem 1.5rem;background:var(--bleu-l);border-radius:var(--radius-lg);border:1px solid #C2D5ED">
+      <div style="font-size:14px;font-weight:600;color:#004983;margin-bottom:.4rem">⊞ Grille critérielle spécifique à la production choisie</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme choisie. Les savoirs cochés dans <strong>Savoirs essentiels</strong> apparaîtront automatiquement dans la grille.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem"><button onclick="buildGrilleProd('z101','Entrevue guidée')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button onclick="buildGrilleProd('z101','Captation audio')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button onclick="buildGrilleProd('z101','Captation vidéo')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button onclick="buildGrilleProd('z101','Affiche')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button onclick="buildGrilleProd('z101','Jeu de rôle')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
+      <div id="grille-prod-container-z101" style="display:none"></div>
+    </div>
+    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z101')">← Retour au cours</button></div></div>
 </section>
 <section class="panel" id="panel-savoirs-z113">
   <div class="page-hero">
@@ -1387,10 +1391,17 @@ textarea{min-height:90px}
   
     <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
       <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
-      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible. Cliquez pour voir le modèle.</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible.</div>
       <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem"><button onclick="showExemple('z113','Entrevue guidée')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button onclick="showExemple('z113','Captation audio')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button onclick="showExemple('z113','Captation vidéo')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button onclick="showExemple('z113','Affiche')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Affiche</button><button onclick="showExemple('z113','Jeu de rôle')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Journal de bord</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Portfolio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Questionnaire écrit</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Étude de cas</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Observation en action</span></div>
       <div id="exemple-container-z113" style="display:none;margin-top:1rem"></div>
-    </div></div>
+    </div>
+    <div style="margin-top:1rem;padding:1.25rem 1.5rem;background:var(--bleu-l);border-radius:var(--radius-lg);border:1px solid #C2D5ED">
+      <div style="font-size:14px;font-weight:600;color:#007a47;margin-bottom:.4rem">⊞ Grille critérielle spécifique à la production choisie</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme choisie. Les savoirs cochés dans <strong>Savoirs essentiels</strong> apparaîtront automatiquement dans la grille.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem"><button onclick="buildGrilleProd('z113','Entrevue guidée')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button onclick="buildGrilleProd('z113','Captation audio')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button onclick="buildGrilleProd('z113','Captation vidéo')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button onclick="buildGrilleProd('z113','Affiche')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button onclick="buildGrilleProd('z113','Jeu de rôle')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
+      <div id="grille-prod-container-z113" style="display:none"></div>
+    </div>
+    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z113')">← Retour au cours</button></div></div>
 </section>
 <section class="panel" id="panel-savoirs-z124">
   <div class="page-hero">
@@ -1459,10 +1470,17 @@ textarea{min-height:90px}
   
     <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
       <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
-      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible. Cliquez pour voir le modèle.</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible.</div>
       <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem"><button onclick="showExemple('z124','Entrevue guidée')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button onclick="showExemple('z124','Captation audio')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button onclick="showExemple('z124','Captation vidéo')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button onclick="showExemple('z124','Affiche')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Affiche</button><button onclick="showExemple('z124','Jeu de rôle')" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Journal de bord</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Portfolio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Questionnaire écrit</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Étude de cas</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Observation en action</span></div>
       <div id="exemple-container-z124" style="display:none;margin-top:1rem"></div>
-    </div></div>
+    </div>
+    <div style="margin-top:1rem;padding:1.25rem 1.5rem;background:var(--bleu-l);border-radius:var(--radius-lg);border:1px solid #C2D5ED">
+      <div style="font-size:14px;font-weight:600;color:#5b2d8e;margin-bottom:.4rem">⊞ Grille critérielle spécifique à la production choisie</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme choisie. Les savoirs cochés dans <strong>Savoirs essentiels</strong> apparaîtront automatiquement dans la grille.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem"><button onclick="buildGrilleProd('z124','Entrevue guidée')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button onclick="buildGrilleProd('z124','Captation audio')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button onclick="buildGrilleProd('z124','Captation vidéo')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button onclick="buildGrilleProd('z124','Affiche')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button onclick="buildGrilleProd('z124','Jeu de rôle')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
+      <div id="grille-prod-container-z124" style="display:none"></div>
+    </div>
+    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z124')">← Retour au cours</button></div></div>
 </section>
 </main>
 </div>
@@ -1470,12 +1488,9 @@ textarea{min-height:90px}
 
 // ===== NAVIGATION SOUS-SECTIONS COURS =====
 const COURS_NAV_MAP = {
-  'cours-z101': 'z101', 'apercu': 'z101', 'savoirs-z101': 'z101', 'cours': 'z101',
-  'productions-z101': 'z101', 'grille': 'z101',
-  'cours-z113': 'z113', 'apercu-z113': 'z113', 'grille-z113': 'z113',
-  'savoirs-z113': 'z113', 'productions-z113': 'z113',
-  'cours-z124': 'z124', 'apercu-z124': 'z124', 'grille-z124': 'z124',
-  'savoirs-z124': 'z124', 'productions-z124': 'z124',
+  'cours-z101':'z101','apercu':'z101','savoirs-z101':'z101','cours':'z101','productions-z101':'z101','grille':'z101',
+  'cours-z113':'z113','apercu-z113':'z113','grille-z113':'z113','savoirs-z113':'z113','productions-z113':'z113',
+  'cours-z124':'z124','apercu-z124':'z124','grille-z124':'z124','savoirs-z124':'z124','productions-z124':'z124',
 };
 
 function updateNavSections(id) {
@@ -2879,6 +2894,193 @@ function showExemple(coursId, forme) {
   }
   container.style.display = 'block';
   container.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+
+const GRILLE_PROD_DATA = {"Entrevue guidée": {"z101": {"0": ["Ne répond pas aux questions ou donne des réponses hors sujet.", "Nomme quelques traits ou expériences sans faire de liens avec sa vie quotidienne.", "Répond avec des exemples concrets de sa vie, fait quelques liens entre ses traits et ses expériences.", "Fait des liens clairs entre ses traits de personnalité, ses habiletés et sa vie quotidienne. Nomme ses facteurs de délimitation.", "Établit des liens riches et nuancés. Explique comment ses expériences ont forgé qui il est. Nomme des limites et des forces complémentaires."], "1": ["Ne nomme pas de sources de motivation ni de personnes-ressources.", "Nomme une source de motivation ou une personne sans préciser leur rôle.", "Nomme ses facteurs de motivation et identifie au moins un milieu d'appartenance.", "Explique concrètement ce qui le motive. Identifie plusieurs personnes-ressources avec leur rôle précis.", "Articule clairement ses motivations profondes. Décrit son réseau de soutien de façon structurée et réaliste."], "2": ["Ne décrit pas de projet ou décrit quelque chose de vague et irréaliste.", "Décrit une idée de projet sans buts clairs ni composantes définies.", "Décrit son projet avec ses buts principaux. Nomme au moins un partenaire.", "Présente un projet structuré avec buts, partenaires, besoins de formation et conditions de réussite.", "Décrit un projet détaillé, cohérent avec son profil, avec toutes les composantes clairement articulées."]}, "z113": {"0": ["Ne répond pas ou donne des réponses sans lien avec ses besoins relationnels.", "Nomme une relation ou un besoin sans faire de lien avec ses interactions actuelles.", "Reconnaît ses besoins relationnels et les lie à quelques interactions de sa vie.", "Explique clairement ses besoins relationnels et les types de relations qu'il recherche.", "Décrit avec nuance ses besoins relationnels, les lie à ses interactions et nomme ses obstacles."], "1": ["Ne nomme pas de moyens pour élargir son réseau.", "Nomme un endroit ou un moyen vague sans stratégie concrète.", "Identifie des milieux de socialisation concrets et des moyens réalistes.", "Propose des démarches concrètes et variées pour rencontrer des gens et développer son réseau.", "Présente un plan structuré avec milieux, moyens, ressources communautaires et habiletés à développer."], "2": ["Ne nomme pas de stratégies pour maintenir des relations.", "Nomme une stratégie vague sans lien avec ses relations actuelles.", "Nomme des stratégies de communication positive et de gestion des conflits.", "Décrit des stratégies concrètes pour maintenir des relations saines dans ses milieux.", "Articule des stratégies relationnelles nuancées incluant réciprocité, limites et communication efficace."]}, "z124": {"0": ["Ne nomme pas de ressources de sa collectivité.", "Nomme une ressource sans lien avec ses besoins personnels.", "Identifie des ressources de sa collectivité en lien avec ses besoins.", "Établit des liens clairs entre les ressources disponibles et ses besoins personnels et sociaux.", "Décrit avec précision les ressources de sa collectivité et explique comment elles répondent à ses besoins."], "1": ["Ne nomme pas de façon de s'impliquer.", "Nomme une idée vague d'implication sans plan concret.", "Décrit une forme de participation réaliste dans sa collectivité.", "Présente des façons concrètes de s'impliquer avec des buts et des partenaires identifiés.", "Décrit un engagement citoyen structuré et motivé, avec des formes variées d'implication."]}}, "Captation audio": {"z101": {"0": ["Monologue incompréhensible ou hors sujet.", "Quelques éléments personnels nommés sans liens entre eux.", "Décrit ses traits et expériences avec quelques liens à sa vie quotidienne.", "Fait des liens clairs et cohérents entre ses traits, expériences et vie quotidienne. Nomme ses limites.", "Monologue riche, nuancé, cohérent. Les liens entre les éléments sont explicites et authentiques."], "1": ["Ne mentionne pas de motivation ni de réseau.", "Nomme une motivation ou une personne sans précision.", "Exprime sa motivation principale et identifie au moins un soutien dans son réseau.", "Explique ses motivations avec des exemples concrets et décrit son réseau de soutien.", "Articule avec profondeur ses motivations et son réseau. Le monologue reflète une réflexion authentique."], "2": ["Ne décrit pas de projet.", "Mentionne une idée vague sans structure.", "Décrit son projet avec ses buts principaux. Le fil conducteur est présent.", "Présente un projet complet avec buts, partenaires et conditions de réussite dans le monologue.", "Monologue structuré et détaillé. Toutes les composantes du projet sont articulées avec cohérence."]}, "z113": {"0": ["Monologue incompréhensible ou sans lien avec le réseau social.", "Quelques éléments sur ses relations sans liens clairs.", "Décrit ses besoins relationnels avec quelques liens à ses interactions actuelles.", "Fait des liens clairs entre ses besoins, ses relations et ses obstacles. Monologue cohérent.", "Monologue nuancé et authentique sur ses besoins relationnels et sa démarche de développement."], "1": ["Ne mentionne pas de moyens pour élargir son réseau.", "Nomme un lieu ou une idée vague.", "Identifie des milieux concrets et des moyens réalistes pour élargir son réseau.", "Décrit une démarche structurée avec milieux, moyens et ressources communautaires.", "Présente un plan détaillé et réaliste. Monologue reflète une motivation authentique."], "2": ["Ne parle pas de stratégies relationnelles.", "Nomme une stratégie vague.", "Nomme des stratégies de communication positive et de gestion des conflits.", "Décrit des stratégies concrètes pour maintenir des relations saines à long terme.", "Articule des stratégies nuancées incluant réciprocité, limites personnelles et communication efficace."]}, "z124": {"0": ["Monologue sans lien avec la collectivité.", "Nomme une ressource sans lien.", "Identifie des ressources en lien avec ses besoins. Le fil est présent.", "Fait des liens clairs entre ressources et besoins. Décrit son projet d'implication.", "Monologue structuré et motivé. Toutes les composantes de la participation citoyenne sont présentes."], "1": ["Ne mentionne pas d'implication.", "Nomme une idée vague.", "Décrit une forme de participation réaliste.", "Présente des façons concrètes de s'impliquer avec buts et partenaires.", "Décrit un engagement citoyen structuré, motivé et ancré dans sa réalité."]}}, "Captation vidéo": {"z101": {"0": ["Présentation incompréhensible ou hors sujet.", "Quelques éléments nommés sans cohérence. Regard fuyant, pas de structure.", "Se présente avec quelques liens entre ses traits, expériences et vie quotidienne. Utilise son aide-mémoire.", "Présentation structurée avec liens clairs. Regard caméra présent. Nomme ses forces et limites.", "Présentation assurée, cohérente et nuancée. L'aide-mémoire est utilisé comme repère, non comme béquille."], "1": ["Ne mentionne pas de motivation ni de réseau.", "Nomme un élément sans précision. Peu d'assurance.", "Exprime sa motivation et identifie son réseau. Présentation compréhensible.", "Explique ses motivations avec exemples. Décrit son réseau de soutien à la caméra.", "Présentation assurée sur ses motivations et son réseau. Lien naturel entre les éléments."], "2": ["Ne présente pas de projet.", "Présente une idée vague. Pas de structure.", "Présente son projet avec ses buts principaux. L'aide-mémoire guide la structure.", "Présentation complète du projet avec buts, partenaires et conditions. Regard caméra maintenu.", "Présentation détaillée et structurée. Toutes les composantes sont couvertes avec aisance."]}, "z113": {"0": ["Présentation hors sujet ou incompréhensible.", "Quelques éléments sans liens. Peu d'assurance à la caméra.", "Se présente avec quelques liens entre besoins relationnels et interactions actuelles.", "Présentation structurée avec liens clairs sur ses besoins, types de relations et obstacles.", "Présentation assurée et nuancée. Reflète une réflexion authentique sur sa vie sociale."], "1": ["Ne présente pas de démarche pour son réseau.", "Nomme un lieu vague. Peu de structure.", "Identifie des milieux et moyens concrets. Présentation compréhensible.", "Présente une démarche structurée avec milieux, moyens et ressources.", "Présentation détaillée et motivée. Plan d'élargissement du réseau clair et réaliste."], "2": ["Ne présente pas de stratégies relationnelles.", "Nomme une stratégie vague.", "Nomme des stratégies de communication et de gestion des conflits.", "Présente des stratégies concrètes pour maintenir des relations saines.", "Présentation assurée de stratégies nuancées incluant réciprocité et limites personnelles."]}, "z124": {"0": ["Présentation hors sujet.", "Quelques ressources nommées sans lien avec ses besoins.", "Identifie des ressources et les lie à ses besoins. Présentation structurée de base.", "Présentation claire des ressources et de son projet d'implication. Regard caméra présent.", "Présentation détaillée et engagée. Toutes les composantes de la participation citoyenne."], "1": ["Ne présente pas de projet d'implication.", "Nomme une idée vague.", "Décrit une forme de participation réaliste à la caméra.", "Présente des façons concrètes de s'impliquer avec buts et partenaires nommés.", "Présentation assurée d'un engagement citoyen structuré et motivé."]}}, "Affiche": {"z101": {"0": ["Affiche vide, illisible ou sans lien avec le cours.", "Quelques éléments présents sans organisation ni liens entre eux.", "Les 3 sections (Je suis / Je peux / Je veux) sont présentes avec contenu minimal.", "Affiche complète et organisée. Les liens entre les sections sont visibles. Contenu authentique.", "Affiche riche, soignée et cohérente. Chaque section illustre les critères avec des exemples personnels précis."], "1": ["Aucune information sur la motivation ou le réseau.", "Un élément nommé sans précision.", "Motivations et au moins une personne-ressource sont identifiées dans l'affiche.", "Motivations expliquées et réseau de soutien structuré visuellement dans l'affiche.", "Section potentiel très développée. Les motivations et le réseau sont présentés avec richesse."], "2": ["Aucun projet décrit.", "Idée vague sans structure dans l'affiche.", "Les buts principaux du projet sont présents dans l'affiche.", "Projet complet avec buts, partenaires et conditions de réussite représentés visuellement.", "Projet détaillé et cohérent. Toutes les composantes sont présentes et visuellement claires."]}, "z113": {"0": ["Affiche sans lien avec le réseau social.", "Quelques éléments sans organisation.", "Les besoins relationnels et quelques stratégies sont présents dans l'affiche.", "Affiche complète couvrant besoins, réseau et stratégies. Liens visibles entre les sections.", "Affiche riche et cohérente. Présentation nuancée du parcours relationnel de l'élève."], "1": ["Aucune démarche pour le réseau.", "Un lieu ou moyen vague.", "Des milieux et moyens concrets sont identifiés dans l'affiche.", "Démarche d'élargissement structurée visuellement avec milieux, moyens et ressources.", "Section réseau très développée. Plan clair et réaliste présenté dans l'affiche."], "2": ["Aucune stratégie relationnelle.", "Une stratégie vague.", "Des stratégies de maintien des relations sont présentées dans l'affiche.", "Stratégies concrètes illustrées visuellement incluant communication et gestion des conflits.", "Stratégies nuancées et illustrées. Affiche démontre une compréhension profonde des relations saines."]}, "z124": {"0": ["Affiche sans lien avec la collectivité.", "Quelques ressources sans organisation.", "Des ressources de la collectivité sont identifiées en lien avec les besoins.", "Affiche complète avec ressources, liens aux besoins et projet d'implication.", "Affiche riche et engagée. Toutes les composantes de la vie citoyenne sont présentes."], "1": ["Aucune implication dans l'affiche.", "Une idée vague d'implication.", "Une forme de participation est présentée de façon réaliste.", "Façons concrètes de s'impliquer avec buts et partenaires visuellement représentés.", "Engagement citoyen structuré et motivé. Affiche démontre une réflexion approfondie."]}}, "Jeu de rôle": {"z101": {"0": ["Ne participe pas au jeu de rôle ou sort complètement du scénario.", "Répond aux questions de façon minimale sans spontanéité ni lien avec ses réalités.", "Joue la situation avec quelques liens entre son profil et ses actions dans le scénario.", "Joue de façon authentique. Nomme ses traits, expériences et limites dans l'interaction simulée.", "Performance assurée et nuancée. Les liens entre son identité et le scénario sont riches et spontanés."], "1": ["Ne mentionne pas de motivation ni de réseau dans le jeu de rôle.", "Nomme un élément sans le lier à la situation jouée.", "Exprime sa motivation et mobilise son réseau de façon appropriée dans le scénario.", "Articule clairement ses motivations dans le contexte du jeu de rôle. Réseau bien intégré.", "Performance assurée. Motivations et réseau de soutien exprimés naturellement dans l'interaction."], "2": ["Ne présente pas de projet dans le jeu de rôle.", "Mentionne une idée vague sans composantes.", "Présente les éléments principaux de son projet dans l'interaction simulée.", "Décrit son projet avec buts, conditions et partenaires de façon adaptée au scénario.", "Présentation détaillée du projet dans le jeu de rôle. Toutes les composantes intégrées naturellement."]}, "z113": {"0": ["Ne participe pas ou sort du scénario relationnel.", "Réponses minimales sans liens avec les besoins relationnels.", "Joue la situation avec quelques liens à ses besoins et interactions sociales.", "Performance authentique. Exprime ses besoins relationnels et utilise des habiletés sociales appropriées.", "Performance assurée et nuancée. Les comportements relationnels sont spontanés et efficaces."], "1": ["Ne fait aucune démarche dans le jeu de rôle.", "Un geste timide sans suite.", "Initie un contact social ou répond à une invitation de façon appropriée.", "Démontre des habiletés sociales concrètes pour élargir son réseau dans le scénario.", "Performance assurée. Stratégies de socialisation naturelles et efficaces dans l'interaction simulée."], "2": ["Aucune stratégie relationnelle observable.", "Réaction passive ou inappropriée.", "Utilise des stratégies de communication positive dans l'interaction simulée.", "Démontre des stratégies de maintien de relation incluant écoute, réciprocité et respect des limites.", "Performance nuancée. Gestion des échanges relationnels efficace et spontanée."]}, "z124": {"0": ["Ne participe pas ou sort du scénario citoyen.", "Réponses minimales sans lien avec la collectivité.", "Joue la situation avec quelques liens aux ressources ou à l'implication citoyenne.", "Performance authentique. Identifie des ressources et démontre une démarche d'implication.", "Performance assurée et engagée. Les comportements citoyens sont spontanés et articulés."], "1": ["Aucune démarche d'implication observable.", "Une initiative vague sans suite.", "Fait une démarche concrète d'implication dans le scénario simulé.", "Démontre un engagement citoyen actif avec des actions concrètes et motivées.", "Performance assurée. L'implication citoyenne est naturelle, motivée et bien articulée."]}}};
+
+// ECHELONS_LABELS already declared above
+const CRIT_LABELS_FULL = {
+  'z101': ['Détermination rigoureuse de ses réalités personnelles et sociales', "Reconnaissance réaliste de son potentiel d\'action", 'Élaboration méthodique du projet de participation sociale'],
+  'z113': ['Reconnaissance juste de ses besoins relationnels', 'Élargissement réaliste de son réseau social', 'Maintien actif de relations sociales saines'],
+  'z124': ['Reconnaissance juste des ressources de sa collectivité', 'Participation active à la vie de sa collectivité']
+};
+const CRIT_COLORS_FULL = ['#004983','#007a47','#9a6e00'];
+const CRIT_BG_FULL = ['#EEF4FC','#EAF4EE','#FDF8EE'];
+const CRIT_BORDER_FULL = ['#C2D5ED','#B8DFC9','#E0CC80'];
+const COURS_COLOR_FULL = {'z101':'#004983','z113':'#007a47','z124':'#5b2d8e'};
+
+// Sélections de grille dynamique
+const grilleSelDyn2 = {};
+
+function buildGrilleProd(coursId, forme) {
+  const container = document.getElementById('grille-prod-container-' + coursId);
+  if (!container) return;
+  
+  const crits = CRIT_LABELS_FULL[coursId] || [];
+  const prodData = (GRILLE_PROD_DATA[forme] || {})[coursId] || {};
+  const color = COURS_COLOR_FULL[coursId];
+  const forme_label = forme || 'DDE générale';
+  
+  // Récupérer les savoirs cochés
+  const savoirs_coches = [];
+  const boxes = document.querySelectorAll(`#savoirCboxes-${coursId} input:checked`);
+  boxes.forEach(b => {
+    const label = b.parentElement?.textContent?.trim();
+    if (label) savoirs_coches.push(label);
+  });
+  
+  if (!grilleSelDyn2[coursId]) grilleSelDyn2[coursId] = {};
+  
+  let header = `<div style="background:${color};color:#fff;padding:1.25rem 1.5rem;border-radius:var(--radius-lg) var(--radius-lg) 0 0">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:3px">Grille critérielle · DDE prescrite MEQ</div>
+    <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600">${forme_label}</div>
+    <div style="font-size:12px;opacity:.65;margin-top:2px">Seuil : Acceptable (60%) pour chaque critère · Résultat : Succès ou Échec</div>
+  </div>`;
+  
+  // Section savoirs retenus
+  let savoirs_section = '';
+  if (savoirs_coches.length > 0) {
+    const chips = savoirs_coches.map(s => `<span style="background:white;color:${color};font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;border:1px solid ${color}">${s}</span>`).join('');
+    savoirs_section = `<div style="background:${color}15;padding:.85rem 1.25rem;border-bottom:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${color};margin-bottom:.5rem">◈ Savoirs essentiels retenus pour cette évaluation</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">${chips}</div>
+    </div>`;
+  } else {
+    savoirs_section = `<div style="background:var(--paper2);padding:.75rem 1.25rem;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--ink3);font-style:italic">Aucun savoir coché — allez dans Savoirs essentiels pour cocher ceux retenus avant de générer la grille.</div>
+    </div>`;
+  }
+  
+  // Grille critères
+  let crits_html = '';
+  crits.forEach((crit, ci) => {
+    const indicateurs = prodData[ci] || [];
+    let echelons_html = '';
+    
+    ECHELONS_PROD.forEach((e, ei) => {
+      const isSelected = grilleSelDyn2[coursId][ci] === ei;
+      const isSeuil = ei === 2;
+      const indicateur = indicateurs[ei] || '';
+      
+      echelons_html += `<div class="echelon2" id="gp_${coursId}_${ci}_${ei}" 
+        onclick="selGrilleProd('${coursId}',${ci},${ei})"
+        style="border:${isSelected ? '2px solid '+CRIT_COLORS_FULL[ci] : '1px solid var(--border2)'};
+               border-radius:var(--radius);padding:.75rem .65rem;cursor:pointer;
+               background:${isSelected ? CRIT_BG_FULL[ci] : 'var(--paper)'};
+               box-shadow:${isSelected ? '0 0 0 2px '+CRIT_COLORS_FULL[ci]+'33' : 'none'};
+               transition:all .14s">
+        <div style="font-size:10px;font-weight:700;color:${isSelected ? CRIT_COLORS_FULL[ci] : 'var(--ink3)'};margin-bottom:4px">
+          ${e}${isSeuil ? ' ✓' : ''}
+        </div>
+        <div style="font-size:10px;color:${isSelected ? 'var(--ink)' : 'var(--ink3)'};line-height:1.4">
+          ${indicateur ? '<em style="display:block;margin-top:4px;color:'+CRIT_COLORS_FULL[ci]+'88;font-size:9px">'+indicateur+'</em>' : ''}
+        </div>
+      </div>`;
+    });
+    
+    const crit_sel = grilleSelDyn2[coursId][ci];
+    const status = crit_sel === undefined ? '' : 
+      crit_sel >= 2 ? '<span style="color:var(--vert);font-weight:600;font-size:12px">✓ Seuil atteint</span>' : 
+                      '<span style="color:var(--rouge);font-weight:600;font-size:12px">✗ Seuil non atteint</span>';
+    
+    crits_html += `<div style="border-bottom:1px solid var(--border)">
+      <div style="padding:.9rem 1.25rem;background:${CRIT_BG_FULL[ci]};border-left:4px solid ${CRIT_COLORS_FULL[ci]}">
+        <span style="font-size:11px;font-weight:700;color:${CRIT_COLORS_FULL[ci]}">CRITÈRE ${ci+1}</span>
+        <span style="font-size:13px;font-weight:600;color:var(--ink);margin-left:8px">${crit}</span>
+      </div>
+      <div style="padding:.85rem 1.25rem;display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+        ${echelons_html}
+      </div>
+      <div style="padding:.25rem 1.25rem .75rem;min-height:24px">${status}</div>
+    </div>`;
+  });
+  
+  // Info élève
+  const nom_eleve = document.getElementById('gNom-' + coursId)?.value || '—';
+  const ens = document.getElementById('gEns-' + coursId)?.value || '—';
+  const date = document.getElementById('gDate-' + coursId)?.value || new Date().toLocaleDateString('fr-CA');
+  
+  let info_html = `<div style="padding:.85rem 1.25rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-bottom:1px solid var(--border);background:var(--paper2)">
+    <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);margin-bottom:2px">Élève</div><div style="font-size:13px;color:var(--ink)">${nom_eleve}</div></div>
+    <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);margin-bottom:2px">Enseignant·e</div><div style="font-size:13px;color:var(--ink)">${ens}</div></div>
+    <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);margin-bottom:2px">Date</div><div style="font-size:13px;color:var(--ink)">${date}</div></div>
+  </div>`;
+  
+  container.innerHTML = `<div style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg);margin-top:1.5rem">
+    ${header}${info_html}${savoirs_section}${crits_html}
+    <div id="grille-prod-resultat-${coursId}" style="display:none;padding:1.25rem"></div>
+    <div style="padding:1rem 1.25rem;background:var(--paper2);display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="calcGrilleProd('${coursId}',${crits.length})">Calculer le résultat</button>
+      <button class="btn btn-or" onclick="window.print()">Imprimer / PDF</button>
+      <button class="btn" onclick="resetGrilleProd('${coursId}',${crits.length})">Réinitialiser</button>
+    </div>
+    <div style="padding:.6rem 1.25rem;font-size:10px;color:var(--ink3);border-top:1px solid var(--border)">DDE prescrite · MEQ octobre 2022 · CSSDLJ · CFGA De La Jonquière</div>
+  </div>`;
+  
+  container.style.display = 'block';
+  container.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function selGrilleProd(coursId, ci, ei) {
+  if (!grilleSelDyn2[coursId]) grilleSelDyn2[coursId] = {};
+  grilleSelDyn2[coursId][ci] = ei;
+  
+  // Mise à jour visuelle
+  for (let i = 0; i < 5; i++) {
+    const el = document.getElementById(`gp_${coursId}_${ci}_${i}`);
+    if (!el) continue;
+    const isSelected = i === ei;
+    el.style.border = isSelected ? '2px solid '+CRIT_COLORS_FULL[ci] : '1px solid var(--border2)';
+    el.style.background = isSelected ? CRIT_BG_FULL[ci] : 'var(--paper)';
+    el.style.boxShadow = isSelected ? '0 0 0 2px '+CRIT_COLORS_FULL[ci]+'33' : 'none';
+    const numEl = el.querySelector('div');
+    if (numEl) numEl.style.color = isSelected ? CRIT_COLORS_FULL[ci] : 'var(--ink3)';
+  }
+  
+  // Statut du critère
+  const nb_crits = (CRIT_LABELS_FULL[coursId]||[]).length;
+  // Reconstruire juste le statut
+  const container = document.getElementById('grille-prod-container-' + coursId);
+  if (!container) return;
+  document.getElementById('grille-prod-resultat-' + coursId)?.style && (document.getElementById('grille-prod-resultat-' + coursId).style.display = 'none');
+}
+
+function calcGrilleProd(coursId, nbCrits) {
+  const sel = grilleSelDyn2[coursId] || {};
+  for (let i = 0; i < nbCrits; i++) {
+    if (sel[i] === undefined) { alert('Sélectionnez un échelon pour chaque critère.'); return; }
+  }
+  const vals = Array.from({length: nbCrits}, (_, i) => sel[i]);
+  const ok = vals.every(v => v >= 2);
+  const nom = document.getElementById('gNom-' + coursId)?.value || "l'adulte";
+  const color = COURS_COLOR_FULL[coursId];
+  const res = document.getElementById('grille-prod-resultat-' + coursId);
+  if (!res) return;
+  res.style.display = 'block';
+  res.innerHTML = `<div style="border-radius:var(--radius);padding:1.1rem 1.25rem;border:2px solid ${ok?'var(--vert)':'var(--rouge)'};background:${ok?'var(--vert-l)':'var(--rouge-l)'}">
+    <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:${ok?'var(--vert)':'var(--rouge)'};margin-bottom:.4rem">${ok?'✓ SUCCÈS':'✗ ÉCHEC'} — Compétence ${ok?'développée avec succès':'non développée'}</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.7">${ok
+      ? `${nom} atteint le seuil de réussite (Acceptable) pour chaque critère.`
+      : `${nom} n'atteint pas le seuil pour ${vals.filter(v=>v<2).length} critère(s). Une reprise ciblée est possible.`
+    }</div>
+  </div>`;
+  res.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function resetGrilleProd(coursId, nbCrits) {
+  grilleSelDyn2[coursId] = {};
+  for (let ci = 0; ci < nbCrits; ci++) {
+    for (let ei = 0; ei < 5; ei++) {
+      const el = document.getElementById(`gp_${coursId}_${ci}_${ei}`);
+      if (!el) continue;
+      el.style.border = '1px solid var(--border2)';
+      el.style.background = 'var(--paper)';
+      el.style.boxShadow = 'none';
+    }
+  }
+  const res = document.getElementById('grille-prod-resultat-' + coursId);
+  if (res) res.style.display = 'none';
 }
 
 window.addEventListener('DOMContentLoaded', () => {
