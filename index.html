@@ -365,8 +365,40 @@ textarea{min-height:90px}
   .prod-grid,.cours-grid{grid-template-columns:repeat(2,1fr)}
   .grille-echelons{grid-template-columns:1fr 1fr}
 }
+
 .tag-violet{background:#F0EAF9;color:#5b2d8e}
 .sc-violet{border-top-color:#5b2d8e}.st-violet{color:#5b2d8e}.si-violet::before{background:#5b2d8e}
+.sc-teal{border-top-color:#007a5e}.st-teal{color:#007a5e}.si-teal::before{background:#007a5e}
+.sc-turquoise{border-top-color:#008570}.st-turquoise{color:#008570}.si-turquoise::before{background:#008570}
+.sc-vert-dk{border-top-color:#006b3c}.st-vert-dk{color:#006b3c}.si-vert-dk::before{background:#006b3c}
+.tag-teal{background:#E0F4EF;color:#007a5e}
+.tag-turquoise{background:#E6F8F4;color:#008570}
+.tag-vert-dk{background:#E8F4EE;color:#006b3c}
+.tag-violet-med{background:#EAE4F8;color:#6b3aa0}
+
+/* Productions pro */
+.prod-card-pro{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;cursor:pointer;transition:all .18s;display:flex;align-items:flex-start;gap:1rem}
+.prod-card-pro:hover{box-shadow:var(--shadow-lg);border-color:var(--bleu2);transform:translateY(-1px)}
+.prod-card-pro.active{border-color:var(--bleu);background:var(--bleu-l);box-shadow:var(--shadow-lg)}
+.prod-icon-wrap{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prod-icon-wrap svg{width:22px;height:22px}
+.prod-card-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.prod-card-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.prod-card-sub{font-size:12px;color:var(--ink3);line-height:1.4}
+
+/* Ressources */
+.ressource-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:.9rem;transition:all .14s;text-decoration:none;color:inherit}
+.ressource-card:hover{border-color:var(--bleu);box-shadow:var(--shadow)}
+.ressource-type{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.rt-meq{background:#E8F1FB;color:#004983}
+.rt-outil{background:#EAF4EE;color:#007a47}
+.rt-communaute{background:#F0EAF9;color:#5b2d8e}
+.rt-drive{background:#FDF8EE;color:#9a6e00}
+.ressource-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ressource-desc{font-size:12px;color:var(--ink3)}
+
+/* Documents maison */
+.doc-upload-zone{border:2px dashed var(--border2);border-radius:var(--radius-lg);padding:2rem;text-align:center;color:var(--ink3);font-size:13px}
 </style>
 </head>
 <body>
@@ -537,6 +569,14 @@ textarea{min-height:90px}
       </div>
       <div class="card" style="cursor:pointer;border-left:4px solid #004983" onclick="go('cours')"><div style="font-size:20px;margin-bottom:.5rem">◇</div><div class="card-title">Les 29 cours du programme</div><div class="card-body">Explorez tous les cours disponibles dans le programme, organisés par axe thématique.</div><div style="margin-top:.75rem;font-size:13px;font-weight:600;color:#004983">Explorer →</div></div>
     </div>
+    <div class="card" style="cursor:pointer;border-left:4px solid #004983" onclick="go('ressources-z101')">
+      <div style="width:36px;height:36px;border-radius:8px;background:#00498315;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#004983" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      </div>
+      <div class="card-title">Ressources et documents</div>
+      <div class="card-body">Références MEQ, outils pédagogiques, ressources communautaires et documents maison partagés.</div>
+      <div style="margin-top:.75rem;font-size:13px;font-weight:600;color:#004983">Consulter →</div>
+    </div>
     <div class="btn-row">
       <button class="btn" onclick="go('accueil')">← Retour à l'accueil</button>
     </div>
@@ -576,6 +616,14 @@ textarea{min-height:90px}
       </div>
       
     </div>
+    <div class="card" style="cursor:pointer;border-left:4px solid #007a47" onclick="go('ressources-z113')">
+      <div style="width:36px;height:36px;border-radius:8px;background:#007a4715;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#007a47" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      </div>
+      <div class="card-title">Ressources et documents</div>
+      <div class="card-body">Références MEQ, outils pédagogiques, ressources communautaires et documents maison partagés.</div>
+      <div style="margin-top:.75rem;font-size:13px;font-weight:600;color:#007a47">Consulter →</div>
+    </div>
     <div class="btn-row">
       <button class="btn" onclick="go('accueil')">← Retour à l'accueil</button>
     </div>
@@ -614,6 +662,14 @@ textarea{min-height:90px}
         <div style="margin-top:.75rem;font-size:13px;font-weight:600;color:#5b2d8e">Évaluer →</div>
       </div>
       
+    </div>
+    <div class="card" style="cursor:pointer;border-left:4px solid #5b2d8e" onclick="go('ressources-z124')">
+      <div style="width:36px;height:36px;border-radius:8px;background:#5b2d8e15;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5b2d8e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      </div>
+      <div class="card-title">Ressources et documents</div>
+      <div class="card-body">Références MEQ, outils pédagogiques, ressources communautaires et documents maison partagés.</div>
+      <div style="margin-top:.75rem;font-size:13px;font-weight:600;color:#5b2d8e">Consulter →</div>
     </div>
     <div class="btn-row">
       <button class="btn" onclick="go('accueil')">← Retour à l'accueil</button>
@@ -1247,240 +1303,492 @@ textarea{min-height:90px}
 </section>
 <section class="panel" id="panel-savoirs-z101">
   <div class="page-hero">
-    <div class="page-hero-eyebrow">Savoirs essentiels · PPS-Z101-3 · Projection vers l'avenir</div>
+    <div class="page-hero-eyebrow">Savoirs essentiels · PPS-Z101-3</div>
     <div class="page-hero-title" style="color:#004983">Savoirs essentiels</div>
-    <div class="page-hero-sub">L'épreuve doit toucher au moins la moitié des 12 savoirs, en couvrant obligatoirement les 3 catégories.</div>
+    <div class="page-hero-sub">L'épreuve doit toucher au moins 6 des 12 savoirs, en couvrant obligatoirement les 3 catégories.</div>
   </div>
   <div class="page-content">
     <div class="savoir-cols" style="grid-template-columns:repeat(3,1fr)"><div class="savoir-col sc-bleu"><div class="savoir-col-title st-bleu">Dispositions personnelles et sociales</div><div class="savoir-item si-bleu">Traits de personnalité</div><div class="savoir-item si-bleu">Habiletés</div><div class="savoir-item si-bleu">Expériences</div><div class="savoir-item si-bleu">Facteurs de délimitation</div></div><div class="savoir-col sc-vert"><div class="savoir-col-title st-vert">Potentiel d'action</div><div class="savoir-item si-vert">Facteurs de motivation</div><div class="savoir-item si-vert">Habitudes de vie</div><div class="savoir-item si-vert">Fonctionnement en groupe</div><div class="savoir-item si-vert">Milieux d'appartenance</div></div><div class="savoir-col sc-or"><div class="savoir-col-title st-or">Composantes du projet</div><div class="savoir-item si-or">Buts</div><div class="savoir-item si-or">Besoins de formation</div><div class="savoir-item si-or">Conditions de réussite</div><div class="savoir-item si-or">Partenaires</div></div></div>
     <div class="card">
       <div class="card-title">Planificateur de couverture d'épreuve</div>
-      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs couverts pour vérifier la conformité MEQ (min. 6 savoirs, 3 catégories).</div>
-      <div id="savoirCboxes-z101"><label class="cb-row"><input type="checkbox" id="sv-z101-0" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Dispositions</span>Traits de personnalité</label><label class="cb-row"><input type="checkbox" id="sv-z101-1" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Dispositions</span>Habiletés</label><label class="cb-row"><input type="checkbox" id="sv-z101-2" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Dispositions</span>Expériences</label><label class="cb-row"><input type="checkbox" id="sv-z101-3" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Dispositions</span>Facteurs de délimitation</label><label class="cb-row"><input type="checkbox" id="sv-z101-4" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'</span>Facteurs de motivation</label><label class="cb-row"><input type="checkbox" id="sv-z101-5" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'</span>Habitudes de vie</label><label class="cb-row"><input type="checkbox" id="sv-z101-6" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'</span>Fonctionnement en groupe</label><label class="cb-row"><input type="checkbox" id="sv-z101-7" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'</span>Milieux d'appartenance</label><label class="cb-row"><input type="checkbox" id="sv-z101-8" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Composantes </span>Buts</label><label class="cb-row"><input type="checkbox" id="sv-z101-9" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Composantes </span>Besoins de formation</label><label class="cb-row"><input type="checkbox" id="sv-z101-10" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Composantes </span>Conditions de réussite</label><label class="cb-row"><input type="checkbox" id="sv-z101-11" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Composantes </span>Partenaires</label></div>
+      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs retenus — ils apparaîtront automatiquement dans la grille critérielle spécifique à la production.</div>
+      <div id="savoirCboxes-z101"><label class="cb-row"><input type="checkbox" id="sv-z101-0" onchange="updateSavoirsD('z101')"><span class="tag tag-bleu" style="font-size:11px">Dispositions p</span>Traits de personnalité</label><label class="cb-row"><input type="checkbox" id="sv-z101-1" onchange="updateSavoirsD('z101')"><span class="tag tag-bleu" style="font-size:11px">Dispositions p</span>Habiletés</label><label class="cb-row"><input type="checkbox" id="sv-z101-2" onchange="updateSavoirsD('z101')"><span class="tag tag-bleu" style="font-size:11px">Dispositions p</span>Expériences</label><label class="cb-row"><input type="checkbox" id="sv-z101-3" onchange="updateSavoirsD('z101')"><span class="tag tag-bleu" style="font-size:11px">Dispositions p</span>Facteurs de délimitation</label><label class="cb-row"><input type="checkbox" id="sv-z101-4" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'ac</span>Facteurs de motivation</label><label class="cb-row"><input type="checkbox" id="sv-z101-5" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'ac</span>Habitudes de vie</label><label class="cb-row"><input type="checkbox" id="sv-z101-6" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'ac</span>Fonctionnement en groupe</label><label class="cb-row"><input type="checkbox" id="sv-z101-7" onchange="updateSavoirsD('z101')"><span class="tag tag-vert" style="font-size:11px">Potentiel d'ac</span>Milieux d'appartenance</label><label class="cb-row"><input type="checkbox" id="sv-z101-8" onchange="updateSavoirsD('z101')"><span class="tag tag-or" style="font-size:11px">Composantes du</span>Buts</label><label class="cb-row"><input type="checkbox" id="sv-z101-9" onchange="updateSavoirsD('z101')"><span class="tag tag-or" style="font-size:11px">Composantes du</span>Besoins de formation</label><label class="cb-row"><input type="checkbox" id="sv-z101-10" onchange="updateSavoirsD('z101')"><span class="tag tag-or" style="font-size:11px">Composantes du</span>Conditions de réussite</label><label class="cb-row"><input type="checkbox" id="sv-z101-11" onchange="updateSavoirsD('z101')"><span class="tag tag-or" style="font-size:11px">Composantes du</span>Partenaires</label></div>
       <div class="prog-wrap">
         <div class="prog-meta"><span>Savoirs couverts</span><span id="sCount-z101" style="font-weight:600">0 / 12</span></div>
         <div class="prog-bar"><div class="prog-fill" id="sProg-z101" style="width:0%"></div></div>
         <div class="prog-status" id="sStatus-z101"></div>
       </div>
     </div>
-    <div class="btn-row"><button class="btn" onclick="go('cours-z101')">← Retour au cours</button></div>
-  
-    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z101')">← Retour à PPS-Z101-3</button></div></div>
+    <div class="btn-row" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z101')">← Retour à PPS-Z101-3</button>
+    </div>
+  </div>
 </section>
 <section class="panel" id="panel-productions-z101">
   <div class="page-hero">
-    <div class="page-hero-eyebrow">Formes de production · PPS-Z101-3 · Projection vers l'avenir</div>
-    <div class="page-hero-title" style="color:#004983">Productions finales</div>
-    <div class="page-hero-sub">Choisissez une forme. La grille critérielle s'adapte automatiquement à la forme choisie et au cours, en cohérence avec la DDE prescrite.</div>
+    <div class="page-hero-eyebrow">Productions finales · PPS-Z101-3</div>
+    <div class="page-hero-title" style="color:#004983">Formes de production</div>
+    <div class="page-hero-sub">Sélectionnez une forme pour voir sa description détaillée, les exemples d'élèves et générer la grille critérielle adaptée.</div>
   </div>
   <div class="page-content">
-    <div class="prod-grid"><div class="prod-card" id="pc-z101-Entrevue-guidée" onclick="selectProdD('z101','Entrevue guidée')">
-          <div class="prod-ico">💬</div>
-          <div class="prod-nom">Entrevue guidée</div>
-          <div class="prod-desc-short">Dialogue structuré avec l'enseignant·e</div>
-        </div><div class="prod-card" id="pc-z101-Journal-de-bord" onclick="selectProdD('z101','Journal de bord')">
-          <div class="prod-ico">📓</div>
-          <div class="prod-nom">Journal de bord</div>
-          <div class="prod-desc-short">Traces réflexives accumulées au fil du cours</div>
-        </div><div class="prod-card" id="pc-z101-Portfolio" onclick="selectProdD('z101','Portfolio')">
-          <div class="prod-ico">📂</div>
-          <div class="prod-nom">Portfolio</div>
-          <div class="prod-desc-short">Recueil de documents illustrant le parcours</div>
-        </div><div class="prod-card" id="pc-z101-Exposé-oral" onclick="selectProdD('z101','Exposé oral')">
-          <div class="prod-ico">🎤</div>
-          <div class="prod-nom">Exposé oral</div>
-          <div class="prod-desc-short">Présentation structurée devant l'enseignant·e</div>
-        </div><div class="prod-card" id="pc-z101-Questionnaire-écrit" onclick="selectProdD('z101','Questionnaire écrit')">
-          <div class="prod-ico">📋</div>
-          <div class="prod-nom">Questionnaire écrit</div>
-          <div class="prod-desc-short">Réponses développées à des questions structurées</div>
-        </div><div class="prod-card" id="pc-z101-Jeu-de-rôle" onclick="selectProdD('z101','Jeu de rôle')">
-          <div class="prod-ico">🎭</div>
-          <div class="prod-nom">Jeu de rôle</div>
-          <div class="prod-desc-short">Mise en situation authentique</div>
-        </div><div class="prod-card" id="pc-z101-Étude-de-cas" onclick="selectProdD('z101','Étude de cas')">
-          <div class="prod-ico">🔍</div>
-          <div class="prod-nom">Étude de cas</div>
-          <div class="prod-desc-short">Analyse d'une situation réelle ou fictive</div>
-        </div><div class="prod-card" id="pc-z101-Observation-en-action" onclick="selectProdD('z101','Observation en action')">
-          <div class="prod-ico">👁</div>
-          <div class="prod-nom">Observation en action</div>
-          <div class="prod-desc-short">Évaluation dans une activité authentique</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem">Formes disponibles</div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div class="prod-card-pro" id="pc-z101-Entrevue-guidée" 
+          data-cours="z101" data-forme="Entrevue guidée" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Entrevue guidée</div>
+            <div class="prod-card-sub">Dialogue structuré avec l'enseignant·e</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Journal-de-bord" 
+          data-cours="z101" data-forme="Journal de bord" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Journal de bord</div>
+            <div class="prod-card-sub">Traces réflexives accumulées au fil du cours</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Portfolio" 
+          data-cours="z101" data-forme="Portfolio" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Portfolio</div>
+            <div class="prod-card-sub">Recueil de documents illustrant le parcours</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Exposé-oral" 
+          data-cours="z101" data-forme="Exposé oral" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Exposé oral</div>
+            <div class="prod-card-sub">Présentation structurée devant l'enseignant·e</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Questionnaire-écrit" 
+          data-cours="z101" data-forme="Questionnaire écrit" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Questionnaire écrit</div>
+            <div class="prod-card-sub">Réponses développées à des questions structurées</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Jeu-de-rôle" 
+          data-cours="z101" data-forme="Jeu de rôle" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Jeu de rôle</div>
+            <div class="prod-card-sub">Mise en situation authentique</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Étude-de-cas" 
+          data-cours="z101" data-forme="Étude de cas" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Étude de cas</div>
+            <div class="prod-card-sub">Analyse d'une situation réelle ou fictive</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z101-Observation-en-action" 
+          data-cours="z101" data-forme="Observation en action" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#00498315;color:#004983"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#004983">Observation en action</div>
+            <div class="prod-card-sub">Évaluation dans une activité authentique</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
         </div></div>
-    <div class="prod-detail" id="prodDetail-z101"></div>
-    <div class="btn-row" style="margin-top:1rem"><button class="btn" onclick="go('cours-z101')">← Retour au cours</button></div>
-  
-    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
-      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
-      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem"><button data-cours="z101" data-forme="Entrevue guidée" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Captation audio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Captation vidéo</span><button data-cours="z101" data-forme="Affiche" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z101" data-forme="Jeu de rôle" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Journal de bord</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Portfolio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Questionnaire écrit</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Étude de cas</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Observation en action</span></div>
+      </div>
+      <div id="prodDetail-z101" style="position:sticky;top:1rem"></div>
+    </div>
+    
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:.85rem">Formes encadrées = exemple disponible</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem"><button data-cours="z101" data-forme="Entrevue guidée" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Entrevue guidée</button><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Captation audio</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Captation vidéo</span><button data-cours="z101" data-forme="Affiche" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Affiche</button><button data-cours="z101" data-forme="Jeu de rôle" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #004983;color:#004983;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Jeu de rôle</button><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Journal de bord</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Portfolio</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Questionnaire écrit</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Étude de cas</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Observation en action</span></div>
       <div id="exemple-container-z101" style="display:none;margin-top:1rem"></div>
     </div>
-    <div style="margin-top:1rem;padding:1.25rem 1.5rem;background:var(--bleu-l);border-radius:var(--radius-lg);border:1px solid #C2D5ED">
-      <div style="font-size:14px;font-weight:600;color:#004983;margin-bottom:.4rem">⊞ Grille critérielle spécifique à la production choisie</div>
-      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme choisie. Les savoirs cochés dans <strong>Savoirs essentiels</strong> apparaîtront automatiquement dans la grille.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem"><button data-cours="z101" data-forme="Entrevue guidée" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z101" data-forme="Captation audio" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z101" data-forme="Captation vidéo" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z101" data-forme="Affiche" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z101" data-forme="Jeu de rôle" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #004983;color:white;background:#004983;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
+    
+    <div style="margin-top:1rem;padding:1.25rem 1.5rem;border-radius:var(--radius-lg);border:1px solid #C2D5ED;background:var(--bleu-l)">
+      <div style="font-size:13px;font-weight:600;color:#004983;margin-bottom:.4rem">Grille critérielle — spécifique à la production</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme et au cours. Les savoirs cochés dans <strong>Savoirs essentiels</strong> s'affichent automatiquement.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.5rem"><button data-cours="z101" data-forme="Entrevue guidée" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#004983;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z101" data-forme="Captation audio" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#004983;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z101" data-forme="Captation vidéo" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#004983;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z101" data-forme="Affiche" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#004983;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z101" data-forme="Jeu de rôle" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#004983;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
       <div id="grille-prod-container-z101" style="display:none"></div>
     </div>
-    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z101')">← Retour au cours</button></div></div>
+    
+    <div class="btn-row" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z101')">← Retour à PPS-Z101-3</button>
+    </div>
+  </div>
 </section>
 <section class="panel" id="panel-savoirs-z113">
   <div class="page-hero">
-    <div class="page-hero-eyebrow">Savoirs essentiels · PPS-Z113-3 · Réseau social sain</div>
+    <div class="page-hero-eyebrow">Savoirs essentiels · PPS-Z113-3</div>
     <div class="page-hero-title" style="color:#007a47">Savoirs essentiels</div>
-    <div class="page-hero-sub">L'épreuve doit toucher au moins la moitié des 12 savoirs, en couvrant obligatoirement les 3 catégories.</div>
+    <div class="page-hero-sub">L'épreuve doit toucher au moins 6 des 12 savoirs, en couvrant obligatoirement les 3 catégories.</div>
   </div>
   <div class="page-content">
-    <div class="savoir-cols" style="grid-template-columns:repeat(3,1fr)"><div class="savoir-col sc-bleu"><div class="savoir-col-title st-bleu">Besoins relationnels</div><div class="savoir-item si-bleu">Besoins relationnels</div><div class="savoir-item si-vert">Types de relations</div><div class="savoir-item si-or">Qualités relationnelles</div><div class="savoir-item si-or">Obstacles aux relations</div></div><div class="savoir-col sc-vert"><div class="savoir-col-title st-vert">Réseau social</div><div class="savoir-item si-or">Milieux de socialisation</div><div class="savoir-item si-or">Moyens de rencontre</div><div class="savoir-item si-or">Habiletés sociales</div><div class="savoir-item si-or">Ressources communautaires</div></div><div class="savoir-col sc-or"><div class="savoir-col-title st-or">Relations saines</div><div class="savoir-item si-or">Communication positive</div><div class="savoir-item si-or">Gestion des conflits</div><div class="savoir-item si-or">Réciprocité</div><div class="savoir-item si-or">Limites personnelles</div></div></div>
+    <div class="savoir-cols" style="grid-template-columns:repeat(3,1fr)"><div class="savoir-col sc-vert-dk"><div class="savoir-col-title st-vert-dk">Besoins relationnels</div><div class="savoir-item si-vert-dk">Besoins relationnels</div><div class="savoir-item si-vert-dk">Types de relations</div><div class="savoir-item si-vert-dk">Qualités relationnelles</div><div class="savoir-item si-vert-dk">Obstacles aux relations</div></div><div class="savoir-col sc-teal"><div class="savoir-col-title st-teal">Réseau social</div><div class="savoir-item si-teal">Milieux de socialisation</div><div class="savoir-item si-teal">Moyens de rencontre</div><div class="savoir-item si-teal">Habiletés sociales</div><div class="savoir-item si-teal">Ressources communautaires</div></div><div class="savoir-col sc-turquoise"><div class="savoir-col-title st-turquoise">Relations saines</div><div class="savoir-item si-turquoise">Communication positive</div><div class="savoir-item si-turquoise">Gestion des conflits</div><div class="savoir-item si-turquoise">Réciprocité</div><div class="savoir-item si-turquoise">Limites personnelles</div></div></div>
     <div class="card">
       <div class="card-title">Planificateur de couverture d'épreuve</div>
-      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs couverts pour vérifier la conformité MEQ (min. 6 savoirs, 3 catégories).</div>
-      <div id="savoirCboxes-z113"><label class="cb-row"><input type="checkbox" id="sv-z113-0" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Besoins rela</span>Besoins relationnels</label><label class="cb-row"><input type="checkbox" id="sv-z113-1" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Besoins rela</span>Types de relations</label><label class="cb-row"><input type="checkbox" id="sv-z113-2" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Besoins rela</span>Qualités relationnelles</label><label class="cb-row"><input type="checkbox" id="sv-z113-3" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Besoins rela</span>Obstacles aux relations</label><label class="cb-row"><input type="checkbox" id="sv-z113-4" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Réseau socia</span>Milieux de socialisation</label><label class="cb-row"><input type="checkbox" id="sv-z113-5" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Réseau socia</span>Moyens de rencontre</label><label class="cb-row"><input type="checkbox" id="sv-z113-6" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Réseau socia</span>Habiletés sociales</label><label class="cb-row"><input type="checkbox" id="sv-z113-7" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Réseau socia</span>Ressources communautaires</label><label class="cb-row"><input type="checkbox" id="sv-z113-8" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Relations sa</span>Communication positive</label><label class="cb-row"><input type="checkbox" id="sv-z113-9" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Relations sa</span>Gestion des conflits</label><label class="cb-row"><input type="checkbox" id="sv-z113-10" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Relations sa</span>Réciprocité</label><label class="cb-row"><input type="checkbox" id="sv-z113-11" onchange="updateSavoirsD('z113')"><span class="tag tag-vert" style="font-size:11px">Relations sa</span>Limites personnelles</label></div>
+      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs retenus — ils apparaîtront automatiquement dans la grille critérielle spécifique à la production.</div>
+      <div id="savoirCboxes-z113"><label class="cb-row"><input type="checkbox" id="sv-z113-0" onchange="updateSavoirsD('z113')"><span class="tag tag-vert-dk" style="font-size:11px">Besoins relati</span>Besoins relationnels</label><label class="cb-row"><input type="checkbox" id="sv-z113-1" onchange="updateSavoirsD('z113')"><span class="tag tag-vert-dk" style="font-size:11px">Besoins relati</span>Types de relations</label><label class="cb-row"><input type="checkbox" id="sv-z113-2" onchange="updateSavoirsD('z113')"><span class="tag tag-vert-dk" style="font-size:11px">Besoins relati</span>Qualités relationnelles</label><label class="cb-row"><input type="checkbox" id="sv-z113-3" onchange="updateSavoirsD('z113')"><span class="tag tag-vert-dk" style="font-size:11px">Besoins relati</span>Obstacles aux relations</label><label class="cb-row"><input type="checkbox" id="sv-z113-4" onchange="updateSavoirsD('z113')"><span class="tag tag-teal" style="font-size:11px">Réseau social</span>Milieux de socialisation</label><label class="cb-row"><input type="checkbox" id="sv-z113-5" onchange="updateSavoirsD('z113')"><span class="tag tag-teal" style="font-size:11px">Réseau social</span>Moyens de rencontre</label><label class="cb-row"><input type="checkbox" id="sv-z113-6" onchange="updateSavoirsD('z113')"><span class="tag tag-teal" style="font-size:11px">Réseau social</span>Habiletés sociales</label><label class="cb-row"><input type="checkbox" id="sv-z113-7" onchange="updateSavoirsD('z113')"><span class="tag tag-teal" style="font-size:11px">Réseau social</span>Ressources communautaires</label><label class="cb-row"><input type="checkbox" id="sv-z113-8" onchange="updateSavoirsD('z113')"><span class="tag tag-turquoise" style="font-size:11px">Relations sain</span>Communication positive</label><label class="cb-row"><input type="checkbox" id="sv-z113-9" onchange="updateSavoirsD('z113')"><span class="tag tag-turquoise" style="font-size:11px">Relations sain</span>Gestion des conflits</label><label class="cb-row"><input type="checkbox" id="sv-z113-10" onchange="updateSavoirsD('z113')"><span class="tag tag-turquoise" style="font-size:11px">Relations sain</span>Réciprocité</label><label class="cb-row"><input type="checkbox" id="sv-z113-11" onchange="updateSavoirsD('z113')"><span class="tag tag-turquoise" style="font-size:11px">Relations sain</span>Limites personnelles</label></div>
       <div class="prog-wrap">
         <div class="prog-meta"><span>Savoirs couverts</span><span id="sCount-z113" style="font-weight:600">0 / 12</span></div>
         <div class="prog-bar"><div class="prog-fill" id="sProg-z113" style="width:0%"></div></div>
         <div class="prog-status" id="sStatus-z113"></div>
       </div>
     </div>
-    <div class="btn-row"><button class="btn" onclick="go('cours-z113')">← Retour au cours</button></div>
-  
-    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z113')">← Retour à PPS-Z113-3</button></div></div>
+    <div class="btn-row" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z113')">← Retour à PPS-Z113-3</button>
+    </div>
+  </div>
 </section>
 <section class="panel" id="panel-productions-z113">
   <div class="page-hero">
-    <div class="page-hero-eyebrow">Formes de production · PPS-Z113-3 · Réseau social sain</div>
-    <div class="page-hero-title" style="color:#007a47">Productions finales</div>
-    <div class="page-hero-sub">Choisissez une forme. La grille critérielle s'adapte automatiquement à la forme choisie et au cours, en cohérence avec la DDE prescrite.</div>
+    <div class="page-hero-eyebrow">Productions finales · PPS-Z113-3</div>
+    <div class="page-hero-title" style="color:#007a47">Formes de production</div>
+    <div class="page-hero-sub">Sélectionnez une forme pour voir sa description détaillée, les exemples d'élèves et générer la grille critérielle adaptée.</div>
   </div>
   <div class="page-content">
-    <div class="prod-grid"><div class="prod-card" id="pc-z113-Entrevue-guidée" onclick="selectProdD('z113','Entrevue guidée')">
-          <div class="prod-ico">💬</div>
-          <div class="prod-nom">Entrevue guidée</div>
-          <div class="prod-desc-short">Dialogue structuré avec l'enseignant·e</div>
-        </div><div class="prod-card" id="pc-z113-Journal-de-bord" onclick="selectProdD('z113','Journal de bord')">
-          <div class="prod-ico">📓</div>
-          <div class="prod-nom">Journal de bord</div>
-          <div class="prod-desc-short">Traces réflexives accumulées au fil du cours</div>
-        </div><div class="prod-card" id="pc-z113-Portfolio" onclick="selectProdD('z113','Portfolio')">
-          <div class="prod-ico">📂</div>
-          <div class="prod-nom">Portfolio</div>
-          <div class="prod-desc-short">Recueil de documents illustrant le parcours</div>
-        </div><div class="prod-card" id="pc-z113-Exposé-oral" onclick="selectProdD('z113','Exposé oral')">
-          <div class="prod-ico">🎤</div>
-          <div class="prod-nom">Exposé oral</div>
-          <div class="prod-desc-short">Présentation structurée devant l'enseignant·e</div>
-        </div><div class="prod-card" id="pc-z113-Questionnaire-écrit" onclick="selectProdD('z113','Questionnaire écrit')">
-          <div class="prod-ico">📋</div>
-          <div class="prod-nom">Questionnaire écrit</div>
-          <div class="prod-desc-short">Réponses développées à des questions structurées</div>
-        </div><div class="prod-card" id="pc-z113-Jeu-de-rôle" onclick="selectProdD('z113','Jeu de rôle')">
-          <div class="prod-ico">🎭</div>
-          <div class="prod-nom">Jeu de rôle</div>
-          <div class="prod-desc-short">Mise en situation authentique</div>
-        </div><div class="prod-card" id="pc-z113-Étude-de-cas" onclick="selectProdD('z113','Étude de cas')">
-          <div class="prod-ico">🔍</div>
-          <div class="prod-nom">Étude de cas</div>
-          <div class="prod-desc-short">Analyse d'une situation réelle ou fictive</div>
-        </div><div class="prod-card" id="pc-z113-Observation-en-action" onclick="selectProdD('z113','Observation en action')">
-          <div class="prod-ico">👁</div>
-          <div class="prod-nom">Observation en action</div>
-          <div class="prod-desc-short">Évaluation dans une activité authentique</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem">Formes disponibles</div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div class="prod-card-pro" id="pc-z113-Entrevue-guidée" 
+          data-cours="z113" data-forme="Entrevue guidée" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Entrevue guidée</div>
+            <div class="prod-card-sub">Dialogue structuré avec l'enseignant·e</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Journal-de-bord" 
+          data-cours="z113" data-forme="Journal de bord" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Journal de bord</div>
+            <div class="prod-card-sub">Traces réflexives accumulées au fil du cours</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Portfolio" 
+          data-cours="z113" data-forme="Portfolio" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Portfolio</div>
+            <div class="prod-card-sub">Recueil de documents illustrant le parcours</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Exposé-oral" 
+          data-cours="z113" data-forme="Exposé oral" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Exposé oral</div>
+            <div class="prod-card-sub">Présentation structurée devant l'enseignant·e</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Questionnaire-écrit" 
+          data-cours="z113" data-forme="Questionnaire écrit" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Questionnaire écrit</div>
+            <div class="prod-card-sub">Réponses développées à des questions structurées</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Jeu-de-rôle" 
+          data-cours="z113" data-forme="Jeu de rôle" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Jeu de rôle</div>
+            <div class="prod-card-sub">Mise en situation authentique</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Étude-de-cas" 
+          data-cours="z113" data-forme="Étude de cas" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Étude de cas</div>
+            <div class="prod-card-sub">Analyse d'une situation réelle ou fictive</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z113-Observation-en-action" 
+          data-cours="z113" data-forme="Observation en action" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#007a4715;color:#007a47"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#007a47">Observation en action</div>
+            <div class="prod-card-sub">Évaluation dans une activité authentique</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
         </div></div>
-    <div class="prod-detail" id="prodDetail-z113"></div>
-    <div class="btn-row" style="margin-top:1rem"><button class="btn" onclick="go('cours-z113')">← Retour au cours</button></div>
-  
-    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
-      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
-      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem"><button data-cours="z113" data-forme="Entrevue guidée" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z113" data-forme="Captation audio" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z113" data-forme="Captation vidéo" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z113" data-forme="Affiche" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z113" data-forme="Jeu de rôle" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Journal de bord</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Portfolio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Questionnaire écrit</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Étude de cas</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Observation en action</span></div>
+      </div>
+      <div id="prodDetail-z113" style="position:sticky;top:1rem"></div>
+    </div>
+    
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:.85rem">Formes encadrées = exemple disponible</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem"><button data-cours="z113" data-forme="Entrevue guidée" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Entrevue guidée</button><button data-cours="z113" data-forme="Captation audio" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Captation audio</button><button data-cours="z113" data-forme="Captation vidéo" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Captation vidéo</button><button data-cours="z113" data-forme="Affiche" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Affiche</button><button data-cours="z113" data-forme="Jeu de rôle" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #007a47;color:#007a47;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Jeu de rôle</button><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Journal de bord</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Portfolio</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Questionnaire écrit</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Étude de cas</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Observation en action</span></div>
       <div id="exemple-container-z113" style="display:none;margin-top:1rem"></div>
     </div>
-    <div style="margin-top:1rem;padding:1.25rem 1.5rem;background:var(--bleu-l);border-radius:var(--radius-lg);border:1px solid #C2D5ED">
-      <div style="font-size:14px;font-weight:600;color:#007a47;margin-bottom:.4rem">⊞ Grille critérielle spécifique à la production choisie</div>
-      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme choisie. Les savoirs cochés dans <strong>Savoirs essentiels</strong> apparaîtront automatiquement dans la grille.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem"><button data-cours="z113" data-forme="Entrevue guidée" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z113" data-forme="Captation audio" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z113" data-forme="Captation vidéo" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z113" data-forme="Affiche" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z113" data-forme="Jeu de rôle" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #007a47;color:white;background:#007a47;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
+    
+    <div style="margin-top:1rem;padding:1.25rem 1.5rem;border-radius:var(--radius-lg);border:1px solid #C2D5ED;background:var(--bleu-l)">
+      <div style="font-size:13px;font-weight:600;color:#007a47;margin-bottom:.4rem">Grille critérielle — spécifique à la production</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme et au cours. Les savoirs cochés dans <strong>Savoirs essentiels</strong> s'affichent automatiquement.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.5rem"><button data-cours="z113" data-forme="Entrevue guidée" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#007a47;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z113" data-forme="Captation audio" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#007a47;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z113" data-forme="Captation vidéo" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#007a47;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z113" data-forme="Affiche" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#007a47;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z113" data-forme="Jeu de rôle" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#007a47;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
       <div id="grille-prod-container-z113" style="display:none"></div>
     </div>
-    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z113')">← Retour au cours</button></div></div>
+    
+    <div class="btn-row" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z113')">← Retour à PPS-Z113-3</button>
+    </div>
+  </div>
 </section>
 <section class="panel" id="panel-savoirs-z124">
   <div class="page-hero">
-    <div class="page-hero-eyebrow">Savoirs essentiels · PPS-Z124-2 · Vie dans une collectivité</div>
+    <div class="page-hero-eyebrow">Savoirs essentiels · PPS-Z124-2</div>
     <div class="page-hero-title" style="color:#5b2d8e">Savoirs essentiels</div>
-    <div class="page-hero-sub">L'épreuve doit toucher au moins la moitié des 8 savoirs, en couvrant obligatoirement les 2 catégories.</div>
+    <div class="page-hero-sub">L'épreuve doit toucher au moins 4 des 8 savoirs, en couvrant obligatoirement les 2 catégories.</div>
   </div>
   <div class="page-content">
     <div class="savoir-cols" style="grid-template-columns:repeat(2,1fr)"><div class="savoir-col sc-violet"><div class="savoir-col-title st-violet">Ressources de la collectivité</div><div class="savoir-item si-violet">Ressources communautaires</div><div class="savoir-item si-violet">Services de proximité</div><div class="savoir-item si-violet">Organismes locaux</div><div class="savoir-item si-violet">Droits et responsabilités citoyens</div></div><div class="savoir-col sc-violet"><div class="savoir-col-title st-violet">Participation citoyenne</div><div class="savoir-item si-violet">Formes de participation</div><div class="savoir-item si-violet">Bénévolat</div><div class="savoir-item si-violet">Vie de quartier</div><div class="savoir-item si-violet">Engagement citoyen</div></div></div>
     <div class="card">
       <div class="card-title">Planificateur de couverture d'épreuve</div>
-      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs couverts pour vérifier la conformité MEQ (min. 4 savoirs, 2 catégories).</div>
-      <div id="savoirCboxes-z124"><label class="cb-row"><input type="checkbox" id="sv-z124-0" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Ressources d</span>Ressources communautaires</label><label class="cb-row"><input type="checkbox" id="sv-z124-1" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Ressources d</span>Services de proximité</label><label class="cb-row"><input type="checkbox" id="sv-z124-2" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Ressources d</span>Organismes locaux</label><label class="cb-row"><input type="checkbox" id="sv-z124-3" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Ressources d</span>Droits et responsabilités citoyens</label><label class="cb-row"><input type="checkbox" id="sv-z124-4" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Participatio</span>Formes de participation</label><label class="cb-row"><input type="checkbox" id="sv-z124-5" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Participatio</span>Bénévolat</label><label class="cb-row"><input type="checkbox" id="sv-z124-6" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Participatio</span>Vie de quartier</label><label class="cb-row"><input type="checkbox" id="sv-z124-7" onchange="updateSavoirsD('z124')"><span class="tag tag-vert" style="font-size:11px">Participatio</span>Engagement citoyen</label></div>
+      <div class="card-body" style="margin-bottom:1rem">Cochez les savoirs retenus — ils apparaîtront automatiquement dans la grille critérielle spécifique à la production.</div>
+      <div id="savoirCboxes-z124"><label class="cb-row"><input type="checkbox" id="sv-z124-0" onchange="updateSavoirsD('z124')"><span class="tag tag-violet" style="font-size:11px">Ressources de </span>Ressources communautaires</label><label class="cb-row"><input type="checkbox" id="sv-z124-1" onchange="updateSavoirsD('z124')"><span class="tag tag-violet" style="font-size:11px">Ressources de </span>Services de proximité</label><label class="cb-row"><input type="checkbox" id="sv-z124-2" onchange="updateSavoirsD('z124')"><span class="tag tag-violet" style="font-size:11px">Ressources de </span>Organismes locaux</label><label class="cb-row"><input type="checkbox" id="sv-z124-3" onchange="updateSavoirsD('z124')"><span class="tag tag-violet" style="font-size:11px">Ressources de </span>Droits et responsabilités citoyens</label><label class="cb-row"><input type="checkbox" id="sv-z124-4" onchange="updateSavoirsD('z124')"><span class="tag tag-violet-med" style="font-size:11px">Participation </span>Formes de participation</label><label class="cb-row"><input type="checkbox" id="sv-z124-5" onchange="updateSavoirsD('z124')"><span class="tag tag-violet-med" style="font-size:11px">Participation </span>Bénévolat</label><label class="cb-row"><input type="checkbox" id="sv-z124-6" onchange="updateSavoirsD('z124')"><span class="tag tag-violet-med" style="font-size:11px">Participation </span>Vie de quartier</label><label class="cb-row"><input type="checkbox" id="sv-z124-7" onchange="updateSavoirsD('z124')"><span class="tag tag-violet-med" style="font-size:11px">Participation </span>Engagement citoyen</label></div>
       <div class="prog-wrap">
         <div class="prog-meta"><span>Savoirs couverts</span><span id="sCount-z124" style="font-weight:600">0 / 8</span></div>
         <div class="prog-bar"><div class="prog-fill" id="sProg-z124" style="width:0%"></div></div>
         <div class="prog-status" id="sStatus-z124"></div>
       </div>
     </div>
-    <div class="btn-row"><button class="btn" onclick="go('cours-z124')">← Retour au cours</button></div>
-  
-    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z124')">← Retour à PPS-Z124-2</button></div></div>
+    <div class="btn-row" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z124')">← Retour à PPS-Z124-2</button>
+    </div>
+  </div>
 </section>
 <section class="panel" id="panel-productions-z124">
   <div class="page-hero">
-    <div class="page-hero-eyebrow">Formes de production · PPS-Z124-2 · Vie dans une collectivité</div>
-    <div class="page-hero-title" style="color:#5b2d8e">Productions finales</div>
-    <div class="page-hero-sub">Choisissez une forme. La grille critérielle s'adapte automatiquement à la forme choisie et au cours, en cohérence avec la DDE prescrite.</div>
+    <div class="page-hero-eyebrow">Productions finales · PPS-Z124-2</div>
+    <div class="page-hero-title" style="color:#5b2d8e">Formes de production</div>
+    <div class="page-hero-sub">Sélectionnez une forme pour voir sa description détaillée, les exemples d'élèves et générer la grille critérielle adaptée.</div>
   </div>
   <div class="page-content">
-    <div class="prod-grid"><div class="prod-card" id="pc-z124-Entrevue-guidée" onclick="selectProdD('z124','Entrevue guidée')">
-          <div class="prod-ico">💬</div>
-          <div class="prod-nom">Entrevue guidée</div>
-          <div class="prod-desc-short">Dialogue structuré avec l'enseignant·e</div>
-        </div><div class="prod-card" id="pc-z124-Journal-de-bord" onclick="selectProdD('z124','Journal de bord')">
-          <div class="prod-ico">📓</div>
-          <div class="prod-nom">Journal de bord</div>
-          <div class="prod-desc-short">Traces réflexives accumulées au fil du cours</div>
-        </div><div class="prod-card" id="pc-z124-Portfolio" onclick="selectProdD('z124','Portfolio')">
-          <div class="prod-ico">📂</div>
-          <div class="prod-nom">Portfolio</div>
-          <div class="prod-desc-short">Recueil de documents illustrant le parcours</div>
-        </div><div class="prod-card" id="pc-z124-Exposé-oral" onclick="selectProdD('z124','Exposé oral')">
-          <div class="prod-ico">🎤</div>
-          <div class="prod-nom">Exposé oral</div>
-          <div class="prod-desc-short">Présentation structurée devant l'enseignant·e</div>
-        </div><div class="prod-card" id="pc-z124-Questionnaire-écrit" onclick="selectProdD('z124','Questionnaire écrit')">
-          <div class="prod-ico">📋</div>
-          <div class="prod-nom">Questionnaire écrit</div>
-          <div class="prod-desc-short">Réponses développées à des questions structurées</div>
-        </div><div class="prod-card" id="pc-z124-Jeu-de-rôle" onclick="selectProdD('z124','Jeu de rôle')">
-          <div class="prod-ico">🎭</div>
-          <div class="prod-nom">Jeu de rôle</div>
-          <div class="prod-desc-short">Mise en situation authentique</div>
-        </div><div class="prod-card" id="pc-z124-Étude-de-cas" onclick="selectProdD('z124','Étude de cas')">
-          <div class="prod-ico">🔍</div>
-          <div class="prod-nom">Étude de cas</div>
-          <div class="prod-desc-short">Analyse d'une situation réelle ou fictive</div>
-        </div><div class="prod-card" id="pc-z124-Observation-en-action" onclick="selectProdD('z124','Observation en action')">
-          <div class="prod-ico">👁</div>
-          <div class="prod-nom">Observation en action</div>
-          <div class="prod-desc-short">Évaluation dans une activité authentique</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem">Formes disponibles</div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div class="prod-card-pro" id="pc-z124-Entrevue-guidée" 
+          data-cours="z124" data-forme="Entrevue guidée" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Entrevue guidée</div>
+            <div class="prod-card-sub">Dialogue structuré avec l'enseignant·e</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Journal-de-bord" 
+          data-cours="z124" data-forme="Journal de bord" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Journal de bord</div>
+            <div class="prod-card-sub">Traces réflexives accumulées au fil du cours</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Portfolio" 
+          data-cours="z124" data-forme="Portfolio" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Portfolio</div>
+            <div class="prod-card-sub">Recueil de documents illustrant le parcours</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Exposé-oral" 
+          data-cours="z124" data-forme="Exposé oral" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Exposé oral</div>
+            <div class="prod-card-sub">Présentation structurée devant l'enseignant·e</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Questionnaire-écrit" 
+          data-cours="z124" data-forme="Questionnaire écrit" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Questionnaire écrit</div>
+            <div class="prod-card-sub">Réponses développées à des questions structurées</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Jeu-de-rôle" 
+          data-cours="z124" data-forme="Jeu de rôle" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Jeu de rôle</div>
+            <div class="prod-card-sub">Mise en situation authentique</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Étude-de-cas" 
+          data-cours="z124" data-forme="Étude de cas" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Étude de cas</div>
+            <div class="prod-card-sub">Analyse d'une situation réelle ou fictive</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
+        </div><div class="prod-card-pro" id="pc-z124-Observation-en-action" 
+          data-cours="z124" data-forme="Observation en action" 
+          onclick="selectProdD(this.dataset.cours,this.dataset.forme)">
+          <div class="prod-icon-wrap" style="background:#5b2d8e15;color:#5b2d8e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div style="flex:1">
+            <div class="prod-card-label" style="color:#5b2d8e">Observation en action</div>
+            <div class="prod-card-sub">Évaluation dans une activité authentique</div>
+          </div>
+          <div style="color:var(--ink3);font-size:12px;flex-shrink:0;margin-top:2px">→</div>
         </div></div>
-    <div class="prod-detail" id="prodDetail-z124"></div>
-    <div class="btn-row" style="margin-top:1rem"><button class="btn" onclick="go('cours-z124')">← Retour au cours</button></div>
-  
-    <div style="margin-top:1.5rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
-      <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
-      <div style="font-size:12px;color:var(--ink3);margin-bottom:1rem">Boutons colorés = exemple disponible.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem"><button data-cours="z124" data-forme="Entrevue guidée" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z124" data-forme="Captation audio" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z124" data-forme="Captation vidéo" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z124" data-forme="Affiche" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z124" data-forme="Jeu de rôle" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Journal de bord</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Portfolio</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Questionnaire écrit</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Étude de cas</span><span style="padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink3);background:var(--paper2);font-size:12px">Observation en action</span></div>
+      </div>
+      <div id="prodDetail-z124" style="position:sticky;top:1rem"></div>
+    </div>
+    
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;background:var(--paper2);border-radius:var(--radius-lg);border:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Exemples d'élèves — niveau Assuré</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:.85rem">Formes encadrées = exemple disponible</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem"><button data-cours="z124" data-forme="Entrevue guidée" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Entrevue guidée</button><button data-cours="z124" data-forme="Captation audio" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Captation audio</button><button data-cours="z124" data-forme="Captation vidéo" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Captation vidéo</button><button data-cours="z124" data-forme="Affiche" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Affiche</button><button data-cours="z124" data-forme="Jeu de rôle" onclick="showExemple(this.dataset.cours,this.dataset.forme)" style="padding:5px 13px;border-radius:4px;border:1px solid #5b2d8e;color:#5b2d8e;background:white;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .12s">Jeu de rôle</button><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Journal de bord</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Portfolio</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Questionnaire écrit</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Étude de cas</span><span style="padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--ink3);font-size:12px">Observation en action</span></div>
       <div id="exemple-container-z124" style="display:none;margin-top:1rem"></div>
     </div>
-    <div style="margin-top:1rem;padding:1.25rem 1.5rem;background:var(--bleu-l);border-radius:var(--radius-lg);border:1px solid #C2D5ED">
-      <div style="font-size:14px;font-weight:600;color:#5b2d8e;margin-bottom:.4rem">⊞ Grille critérielle spécifique à la production choisie</div>
-      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme choisie. Les savoirs cochés dans <strong>Savoirs essentiels</strong> apparaîtront automatiquement dans la grille.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem"><button data-cours="z124" data-forme="Entrevue guidée" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z124" data-forme="Captation audio" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z124" data-forme="Captation vidéo" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z124" data-forme="Affiche" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z124" data-forme="Jeu de rôle" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:20px;border:1.5px solid #5b2d8e;color:white;background:#5b2d8e;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
+    
+    <div style="margin-top:1rem;padding:1.25rem 1.5rem;border-radius:var(--radius-lg);border:1px solid #C2D5ED;background:var(--bleu-l)">
+      <div style="font-size:13px;font-weight:600;color:#5b2d8e;margin-bottom:.4rem">Grille critérielle — spécifique à la production</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:.75rem">Les descripteurs sont adaptés à la forme et au cours. Les savoirs cochés dans <strong>Savoirs essentiels</strong> s'affichent automatiquement.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.5rem"><button data-cours="z124" data-forme="Entrevue guidée" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#5b2d8e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Entrevue guidée</button><button data-cours="z124" data-forme="Captation audio" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#5b2d8e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation audio</button><button data-cours="z124" data-forme="Captation vidéo" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#5b2d8e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Captation vidéo</button><button data-cours="z124" data-forme="Affiche" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#5b2d8e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Affiche</button><button data-cours="z124" data-forme="Jeu de rôle" onclick="buildGrilleProd(this.dataset.cours,this.dataset.forme)" style="padding:6px 14px;border-radius:4px;border:none;background:#5b2d8e;color:white;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Jeu de rôle</button></div>
       <div id="grille-prod-container-z124" style="display:none"></div>
     </div>
-    <div class="btn-row no-print" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)"><button class="btn" onclick="go('cours-z124')">← Retour au cours</button></div></div>
+    
+    <div class="btn-row" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z124')">← Retour à PPS-Z124-2</button>
+    </div>
+  </div>
+</section>
+<section class="panel" id="panel-ressources-z101">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Ressources · PPS-Z101-3</div>
+    <div class="page-hero-title" style="color:#004983">Ressources et documents</div>
+    <div class="page-hero-sub">Références officielles MEQ, outils pédagogiques, ressources communautaires et documents maison partagés.</div>
+  </div>
+  <div class="page-content">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:1rem">Ressources de référence</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:2rem"><a href="https://cdn-contenu.quebec.ca/cdn-contenu/education/formation-generale-adultes/programmes/FGA-integration-sociale-programme-participation-sociale.pdf" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-meq">MEQ</span>
+      <div><div class="ressource-title">Programme Participation sociale — MEQ 2022</div><div class="ressource-desc">Programme d'études officiel</div></div>
+    </a><a href="https://cdn-contenu.quebec.ca/cdn-contenu/education/formation-generale-adultes/definitions-domaine-evaluation/participation-sociale/" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-meq">MEQ</span>
+      <div><div class="ressource-title">DDE PPS-Z101-3 — Projection vers l'avenir</div><div class="ressource-desc">Définition du domaine d'évaluation prescrite</div></div>
+    </a><a href="https://www.uqtr.ca/laridape" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-outil">Outil</span>
+      <div><div class="ressource-title">O-ÉL-2 Mon empreinte d'apprentissage — UQTR</div><div class="ressource-desc">Massé et al. (2022), LaRIDAPE, UQTR</div></div>
+    </a><a href="https://www.fse.ulaval.ca/recherche/labrri/mooc-plan-intervention" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-outil">Outil</span>
+      <div><div class="ressource-title">Plan d'intervention autodéterminé — Université Laval</div><div class="ressource-desc">Duchaine, Gaudreau & Bernier (2022)</div></div>
+    </a><a href="https://drive.google.com/drive/folders/1swrVHBQS_f1pPyCdbmTqlr215ch_8ftH" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-drive">Drive</span>
+      <div><div class="ressource-title">Drive partagé PPS — Z101</div><div class="ressource-desc">Ressources partagées du comité régional</div></div>
+    </a></div>
+    
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem">Documents maison — CSSDLJ</div>
+    <div class="doc-upload-zone">
+      <div style="font-size:14px;font-weight:500;color:var(--ink2);margin-bottom:.4rem">Documents à venir</div>
+      <div style="font-size:13px">Les activités, exemples de productions et outils maison seront ajoutés ici.<br>Accédez directement au <a href="https://drive.google.com/drive/folders/14pyfwI0THvjx-8ncGs0Df2kF8Z15WEUS" target="_blank" style="color:#004983">Drive partagé PPS</a> pour les fichiers existants.</div>
+    </div>
+    
+    <div class="btn-row" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z101')">← Retour à PPS-Z101-3</button>
+    </div>
+  </div>
+</section>
+<section class="panel" id="panel-ressources-z113">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Ressources · PPS-Z113-3</div>
+    <div class="page-hero-title" style="color:#007a47">Ressources et documents</div>
+    <div class="page-hero-sub">Références officielles MEQ, outils pédagogiques, ressources communautaires et documents maison partagés.</div>
+  </div>
+  <div class="page-content">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:1rem">Ressources de référence</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:2rem"><a href="https://cdn-contenu.quebec.ca/cdn-contenu/education/formation-generale-adultes/programmes/FGA-integration-sociale-programme-participation-sociale.pdf" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-meq">MEQ</span>
+      <div><div class="ressource-title">Programme Participation sociale — MEQ 2022</div><div class="ressource-desc">Programme d'études officiel</div></div>
+    </a><a href="https://www.ciussssl-sj.gouv.qc.ca/repertoire-ressources" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-communaute">Communauté</span>
+      <div><div class="ressource-title">Répertoire des ressources communautaires — CIUSSS SLSJ</div><div class="ressource-desc">Ressources de soutien social, région SLSJ</div></div>
+    </a><a href="https://fga.uqam.ca" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-outil">Outil</span>
+      <div><div class="ressource-title">Habiletés sociales — UQAM (ressource FGA)</div><div class="ressource-desc">Références sur les habiletés sociales en contexte FGA</div></div>
+    </a><a href="https://drive.google.com/drive/folders/1swrVHBQS_f1pPyCdbmTqlr215ch_8ftH" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-drive">Drive</span>
+      <div><div class="ressource-title">Drive partagé PPS — Z113</div><div class="ressource-desc">Ressources partagées du comité régional</div></div>
+    </a></div>
+    
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem">Documents maison — CSSDLJ</div>
+    <div class="doc-upload-zone">
+      <div style="font-size:14px;font-weight:500;color:var(--ink2);margin-bottom:.4rem">Documents à venir</div>
+      <div style="font-size:13px">Les activités, exemples de productions et outils maison seront ajoutés ici.<br>Accédez directement au <a href="https://drive.google.com/drive/folders/14pyfwI0THvjx-8ncGs0Df2kF8Z15WEUS" target="_blank" style="color:#007a47">Drive partagé PPS</a> pour les fichiers existants.</div>
+    </div>
+    
+    <div class="btn-row" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z113')">← Retour à PPS-Z113-3</button>
+    </div>
+  </div>
+</section>
+<section class="panel" id="panel-ressources-z124">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow">Ressources · PPS-Z124-2</div>
+    <div class="page-hero-title" style="color:#5b2d8e">Ressources et documents</div>
+    <div class="page-hero-sub">Références officielles MEQ, outils pédagogiques, ressources communautaires et documents maison partagés.</div>
+  </div>
+  <div class="page-content">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:1rem">Ressources de référence</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:2rem"><a href="https://cdn-contenu.quebec.ca/cdn-contenu/education/formation-generale-adultes/programmes/FGA-integration-sociale-programme-participation-sociale.pdf" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-meq">MEQ</span>
+      <div><div class="ressource-title">Programme Participation sociale — MEQ 2022</div><div class="ressource-desc">Programme d'études officiel</div></div>
+    </a><a href="https://www.cssdlj.qc.ca" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-communaute">Communauté</span>
+      <div><div class="ressource-title">Répertoire communautaire de Jonquière</div><div class="ressource-desc">Organismes et ressources communautaires du secteur</div></div>
+    </a><a href="https://www.benevoles.ca" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-communaute">Communauté</span>
+      <div><div class="ressource-title">Bénévolat Québec</div><div class="ressource-desc">Plateforme nationale de bénévolat — recherche par région</div></div>
+    </a><a href="https://drive.google.com/drive/folders/1Q7sut-5ZhA8A1sIAkZMjt_2YaFw8b8ot" target="_blank" class="ressource-card" style="text-decoration:none">
+      <span class="ressource-type rt-drive">Drive</span>
+      <div><div class="ressource-title">Drive partagé PPS — Z124</div><div class="ressource-desc">Ressources partagées du comité régional</div></div>
+    </a></div>
+    
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem">Documents maison — CSSDLJ</div>
+    <div class="doc-upload-zone">
+      <div style="font-size:14px;font-weight:500;color:var(--ink2);margin-bottom:.4rem">Documents à venir</div>
+      <div style="font-size:13px">Les activités, exemples de productions et outils maison seront ajoutés ici.<br>Accédez directement au <a href="https://drive.google.com/drive/folders/14pyfwI0THvjx-8ncGs0Df2kF8Z15WEUS" target="_blank" style="color:#5b2d8e">Drive partagé PPS</a> pour les fichiers existants.</div>
+    </div>
+    
+    <div class="btn-row" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <button class="btn" onclick="go('cours-z124')">← Retour à PPS-Z124-2</button>
+    </div>
+  </div>
 </section>
 </main>
 </div>
@@ -1488,9 +1796,9 @@ textarea{min-height:90px}
 
 // ===== NAVIGATION SOUS-SECTIONS COURS =====
 const COURS_NAV_MAP = {
-  'cours-z101':'z101','apercu':'z101','savoirs-z101':'z101','cours':'z101','productions-z101':'z101','grille':'z101',
-  'cours-z113':'z113','apercu-z113':'z113','grille-z113':'z113','savoirs-z113':'z113','productions-z113':'z113',
-  'cours-z124':'z124','apercu-z124':'z124','grille-z124':'z124','savoirs-z124':'z124','productions-z124':'z124',
+  'cours-z101':'z101','apercu':'z101','savoirs-z101':'z101','cours':'z101','productions-z101':'z101','grille':'z101','ressources-z101':'z101',
+  'cours-z113':'z113','apercu-z113':'z113','grille-z113':'z113','savoirs-z113':'z113','productions-z113':'z113','ressources-z113':'z113',
+  'cours-z124':'z124','apercu-z124':'z124','grille-z124':'z124','savoirs-z124':'z124','productions-z124':'z124','ressources-z124':'z124',
 };
 
 function updateNavSections(id) {
