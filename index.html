@@ -352,9 +352,13 @@ textarea{min-height:90px}
   .app{display:block}
   .main{max-width:100%}
   .panel{display:none!important}
-  #panel-onepager{display:block!important}
+  .panel.active{display:block!important}
   .op-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:var(--ink)!important;color:#fff!important}
-  .page-hero,.page-content{padding:.75rem}
+  .page-hero{padding:.75rem 1rem}
+  .page-content{padding:.75rem 1rem}
+  .prod-card-pro{break-inside:avoid}
+  .grille-crit{break-inside:avoid}
+  .echelon{break-inside:avoid}
 }
 @media(max-width:900px){
   .app{grid-template-columns:1fr}
@@ -3108,9 +3112,9 @@ const GRILLE_PROD_DATA = {"Entrevue guidée": {"z101": {"0": ["Ne répond pas au
 
 const ECHELONS_PROD = ['Très peu développée','Peu développée','Acceptable','Assurée','Marquée'];
 const CRIT_LABELS_FULL = {
-  'z101': ['Détermination rigoureuse de ses réalités personnelles et sociales', "Reconnaissance réaliste de son potentiel d\'action", 'Élaboration méthodique du projet de participation sociale'],
-  'z113': ['Reconnaissance juste de ses besoins relationnels', 'Élargissement réaliste de son réseau social', 'Maintien actif de relations sociales saines'],
-  'z124': ['Reconnaissance juste des ressources de sa collectivité', 'Participation active à la vie de sa collectivité']
+  'z101': ['Réalités personnelles et sociales', "Potentiel d'action", 'Élaboration du projet'],
+  'z113': ['Besoins relationnels', 'Réseau social', 'Relations saines'],
+  'z124': ['Ressources de la collectivité', 'Participation citoyenne']
 };
 const CRIT_COLORS_FULL = ['#004983','#007a47','#9a6e00'];
 const CRIT_BG_FULL = ['#EEF4FC','#EAF4EE','#FDF8EE'];
