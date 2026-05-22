@@ -2652,7 +2652,7 @@ function buildCapacites() {
           <input type="range" min="1" max="3" value="2" id="cap_${ci}_${ii}" oninput="updateCap(${ci},${ii},this.value)" style="width:100px;accent-color:${cat.color}">
           <span id="capv_${ci}_${ii}" style="font-size:13px;font-weight:700;color:${cat.color};width:28px;text-align:right">2</span>
         </div>`).join('')}
-        <div style="font-size:11px;color:var(--ink3);margin-top:5px;padding-top:4px;border-top:1px dashed var(--border)">1 = Très difficile &nbsp;·&nbsp; 2 = Capable &nbsp;·&nbsp; 3 = Vraiment bon</div>
+        <div style="font-size:12px;font-weight:500;color:var(--ink2);margin-top:8px;padding:.5rem .75rem;border-radius:6px;background:var(--paper2);border:1px solid var(--border);display:flex;gap:1.25rem"><span style="color:var(--rouge)">1 = Très difficile</span><span style="color:var(--or)">2 = Capable</span><span style="color:var(--vert)">3 = Vraiment bon</span></div>
       </div>
     </div>`).join('');
   drawRadarCap(); updateCapProfile();
