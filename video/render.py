@@ -177,12 +177,12 @@ def s_titre(t, fi, rng):
                amp=2 + 7 * glitchy, split=8)
     sub = "au CFGA de la Jonquière"
     n = int(clamp(tt / 1.0) * len(sub))
-    d.text((W / 2, 455), sub[:n], font=F("type", 54), fill=(230, 220, 200), anchor="mm")
+    d.text((W / 2, 455), sub[:n], font=F("type", 68), fill=(230, 220, 200), anchor="mm")
     if tt > 1.2:
         s2 = "Saguenay · un lundi comme les autres"
         n2 = int(clamp((tt - 1.2) / 1.1) * len(s2))
-        d.text((W / 2, 515), s2[:n2] + ("_" if int(t * 4) % 2 else ""), font=F("vt", 44),
-               fill=(120, 255, 140), anchor="mm")
+        d.text((W / 2, 515), s2[:n2] + ("_" if int(t * 4) % 2 else ""), font=F("vt", 56),
+               fill=(170, 255, 180), anchor="mm")
     return img
 
 
@@ -872,34 +872,34 @@ def s_examen(t, fi, rng):
     for y in range(140, PH, 45):
         d.line([(0, y), (PW, y)], fill=(180, 200, 230), width=1)
     d.line([(80, 0), (80, PH)], fill=(230, 120, 120), width=2)
-    d.text((100, 50), "ÉPREUVE FINALE — FRANÇAIS, 5e secondaire", font=F("type", 28), fill=(20, 20, 20), anchor="lm")
+    d.text((100, 50), "ÉPREUVE FINALE — FRANÇAIS", font=F("type", 38), fill=(20, 20, 20), anchor="lm")
     d.text((100, 95), "Nom :", font=F("type", 22), fill=(20, 20, 20), anchor="lm")
     d.text((170, 95), "????", font=F("hand", 40), fill=(70, 70, 85), anchor="lm")
     d.text((PW - 40, 95), "Durée : illimitée", font=F("type", 22), fill=(20, 20, 20), anchor="rm")
-    d.text((100, 160), "1. Conjuguez le verbe « partir » au futur simple.", font=F("type", 22), fill=(20, 20, 20), anchor="lm")
-    d.text((100, 360), "2. Depuis combien de temps êtes-vous ici ?", font=F("type", 22), fill=(20, 20, 20), anchor="lm")
+    d.text((100, 160), "1. Conjuguez « partir » au futur.", font=F("type", 32), fill=(20, 20, 20), anchor="lm")
+    d.text((100, 360), "2. Depuis quand êtes-vous ici ?", font=F("type", 34), fill=(20, 20, 20), anchor="lm")
     for k, opt in enumerate(OPTIONS):
         y = 410 + k * 46
         d.ellipse((115, y - 12, 139, y + 12), outline=(20, 20, 20), width=2)
         if t > 2.0 + k * 0.35:
             d.ellipse((118, y - 9, 136, y + 9), fill=(50, 50, 60))
-        d.text((155, y), opt, font=F("type", 22), fill=(20, 20, 20), anchor="lm")
+        d.text((155, y), opt, font=F("type", 30), fill=(20, 20, 20), anchor="lm")
     if t > 3.6:
         prng = np.random.default_rng(9)
         n = int((t - 3.6) * 25)
         pts = [(prng.uniform(110, 600), prng.uniform(395, 560)) for _ in range(min(n, 80) + 2)]
         d.line(pts, fill=(60, 60, 70), width=3)
-    d.text((100, 640), "3. Signez ici pour confirmer votre présence :", font=F("type", 22), fill=(20, 20, 20), anchor="lm")
+    d.text((100, 640), "3. Signez ici :", font=F("type", 34), fill=(20, 20, 20), anchor="lm")
     d.line([(380, 725), (700, 725)], fill=(20, 20, 20), width=2)
-    d.text((100, 790), "4. Question bonus : où est la sortie ?", font=F("type", 22), fill=(20, 20, 20), anchor="lm")
+    d.text((100, 790), "4. Bonus : où est la sortie ?", font=F("type", 34), fill=(20, 20, 20), anchor="lm")
     pen = None
     for t0, x, y, txt, fn, col in EXAM_WRITE:
         if t < t0:
             continue
         n = min(len(txt), int((t - t0) * 18))
-        d.text((x, y), txt[:n], font=F(fn, 46), fill=col, anchor="lm")
+        d.text((x, y), txt[:n], font=F(fn, 56), fill=col, anchor="lm")
         if n < len(txt):
-            pen = (x + F(fn, 46).getlength(txt[:n]), y + 10)
+            pen = (x + F(fn, 56).getlength(txt[:n]), y + 10)
     if t > 4.0:
         n = int((t - 4.0) * 6)
         for k in range(min(n, 8)):
@@ -1403,10 +1403,10 @@ def osd(img, t, name, local, rng):
     d.text((W - 42, 46), f"CAM {cam:02d}", font=F("vt", 44), fill=(255, 255, 255), anchor="rm", stroke_width=2,
            stroke_fill=(0, 0, 0))
     day = "JOUR 04813" if (name == "rewind" and local > 5.5) else "JOUR 04812"
-    d.text((42, 100), f"{day}  {osd_clock(name, local)}", font=F("vt", 36), fill=(255, 255, 255), anchor="lm",
+    d.text((42, 128), f"{day}  {osd_clock(name, local)}", font=F("vt", 36), fill=(255, 255, 255), anchor="lm",
            stroke_width=2, stroke_fill=(0, 0, 0))
     if name == "rewind":
-        d.text((W - 42, 100), "<< RETOUR", font=F("vt", 36), fill=(255, 255, 255), anchor="rm",
+        d.text((W - 42, 128), "<< RETOUR", font=F("vt", 36), fill=(255, 255, 255), anchor="rm",
                stroke_width=2, stroke_fill=(0, 0, 0))
 
 
@@ -1462,8 +1462,16 @@ def subtitles(img, t, name, local):
                 y += 56
             break
     # le lieu et l'heure, bien lisibles, au début de chaque scène
-    if name in HEADINGS and local < (3.2 if name != "pause2" else 2.0):
-        _box_text(img, (W / 2, 62), HEADINGS[name], F("sans", 36), (255, 235, 120), pad=(16, 10), alpha=200)
+    if name in HEADINGS:
+        big = local < 2.5
+        _box_text(img, (W / 2, 66 if big else 50), HEADINGS[name], F("sans", 46 if big else 34),
+                  (255, 235, 120), pad=(20, 12), alpha=215)
+    # la musique, quand personne ne parle
+    from common import MUSIC_LINES
+    speaking = any(a <= t < b for a, b, _, _ in cached("vo_chunks", _vo_chunks))
+    for a, b, txt in MUSIC_LINES:
+        if a <= t < b and not speaking:
+            _box_text(img, (W / 2, H - 40), txt, F("sans", 38), (255, 220, 120), alpha=190)
 
 
 # ----------------------------------------------------------- POST-EFFETS ---
