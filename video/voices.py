@@ -1,5 +1,6 @@
 """Génère les répliques (voix québécoises MBROLA ca1/ca2) dans build/vo_*.wav"""
 import subprocess, wave, os
+from common import VO_LINES
 LINES = {
  "intro":  ("mb-ca1", 120, 35, "Bonjour à tous. Bienvenue au CFGA de la Jonquière. Une autre belle journée."),
  "trace":  ("mb-ca2", 115, 30, "Laissez votre trace. Elle restera ici. Avec vous."),
@@ -13,7 +14,9 @@ LINES = {
  "demain": ("mb-ca2", 100, 30, "À demain."),
 }
 os.makedirs("build", exist_ok=True)
-for k,(v,s,p,txt) in LINES.items():
+TEXT = {k: txt for k, _, _, txt in VO_LINES}
+for k,(v,s,p,_) in LINES.items():
+    txt = TEXT[k]
     out=f"build/vo_{k}.wav"
     subprocess.run(["espeak-ng","-v",v,"-s",str(s),"-p",str(p),"-g","4",txt,"-w",out],check=True)
     w=wave.open(out); print(k, round(w.getnframes()/w.getframerate(),2), w.getframerate())

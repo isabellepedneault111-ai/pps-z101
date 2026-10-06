@@ -10,7 +10,7 @@ aucune image, aucun son ni aucune séquence préenregistrée. Œuvre de fiction.
 | Heure | Scène | Ce qui cloche |
 |---|---|---|
 | — | Mire « PAS DE SIGNAL » → titre | « ORDINAIRE » devient « ÉTERNELLE » |
-| 08:24 | Arrivée | Le bâtiment sur pilotis : le stationnement est dessous, on voit les voitures entre les piliers. Le soleil est un œil, la neige tombe vers le haut |
+| 08:24 | Arrivée | D'abord la **vraie photo** du bâtiment (caméra de surveillance), puis sa reconstitution dessinée qui bascule : ciel rouge, soleil-œil, visages empilés dans les fenêtres, phares rouges entre les piliers du stationnement, une passante de plus en plus proche |
 | 08:25 | La murale « JE LAISSE MA TRACE » (**vraies images**) | Les fenêtres du bâtiment peint s'allument, des phares s'allument dessous, SORTIE devient ENTRÉE, une nouvelle trace s'écrit : « … et elle me garde. » Les lettres vertes pourrissent en rouge |
 | 08:41 | Corridor, 2e étage | Toutes les portes sont « B-104 », la silhouette avance à chaque panne |
 | 09:05 | Mathématiques | 2 + 2 = 5, tous les élèves se retournent d'un coup |
@@ -20,10 +20,15 @@ aucune image, aucun son ni aucune séquence préenregistrée. Œuvre de fiction.
 | 13:15 | Examen | « Depuis combien de temps êtes-vous ici ? » — À REPRENDRE |
 | 13:45 → 14:55 | La cloche | L'horloge saute d'une pause à l'autre ; SORTIE devient ENTRÉE |
 | ??:?? | Retour | L'horloge recule jusqu'à 08:24 ; JOUR 04812 → 04813 |
-| — | Fin | « Inscriptions ouvertes en tout temps. Pour toujours. » |
+| — | Fin | Le logo redessiné : son cercle vert, ouvert, se referme et rougit. « Inscriptions ouvertes en tout temps. Pour toujours. » |
 
 Musique : *Daisy Bell* (Harry Dacre, 1892, domaine public), en boîte à musique désaccordée —
 la chanson que chante HAL 9000 pendant qu'on le débranche.
+
+## Lisibilité
+
+- Toutes les paroles sont **sous-titrées** (qui parle + texte), dessinées après les effets VHS pour rester nettes.
+- Les voix sont mixées sur une piste à part : le reste de la trame baisse automatiquement quand quelqu'un parle.
 
 ## Comment c'est fait
 

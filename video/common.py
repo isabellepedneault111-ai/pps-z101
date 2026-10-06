@@ -69,7 +69,7 @@ MURALE_ROT = 3.0
 
 # Événements absolus qui font monter le niveau de « glitch »
 EVENTS = [
-    (ev("arrivee", 2.5), 0.5), (ev("arrivee", 4.6), 0.5), (ev("arrivee", 6.2), 0.4),
+    (ev("arrivee", 1.5), 1.6), (ev("arrivee", 4.6), 0.5), (ev("arrivee", 6.2), 0.4),
     (ev("murale", MURALE_LIGHTS), 0.6), (ev("murale", MURALE_EXIT), 0.8),
     (ev("maths", MATHS_TURN), 1.4),
     (ev("diner", DINER_LONG), 1.0),
@@ -81,9 +81,9 @@ EVENTS = [
 
 
 def glitch_level(t):
-    g = 0.12 + 0.35 * (t / DUR)
+    g = 0.08 + 0.25 * (t / DUR)
     for c in CUTS:
-        g += 1.3 * math.exp(-((t - c) / 0.10) ** 2)
+        g += 1.0 * math.exp(-((t - c) / 0.07) ** 2)
     for et, amp in EVENTS:
         g += amp * math.exp(-((t - et) / 0.12) ** 2)
     if 49.0 <= t < 55.0:
@@ -141,3 +141,21 @@ def osd_clock(name, local):
     else:
         return "--:--:--"
     return f"{s // 3600:02d}:{(s // 60) % 60:02d}:{s % 60:02d}"
+
+
+# Répliques parlées : (clé, début, qui parle, texte) — sous-titrées à l'écran.
+# Le texte est aussi celui que lit la voix de synthèse (voices.py).
+VO_LINES = [
+    ("intro", 1.6, "INTERPHONE", "Bonjour à tous. Bienvenue au CFGA de la Jonquière. Une autre belle journée."),
+    ("trace", 9.2, "UNE VOIX", "Laissez votre trace. Elle restera ici. Avec vous."),
+    ("corr", 15.6, "INTERPHONE", "Rappel. Le corridor du deuxième étage est un peu plus long aujourd'hui."),
+    ("maths", 20.9, "L'ENSEIGNANT", "Qui peut me dire combien font deux plus deux? Personne? Encore."),
+    ("froid", 28.6, "INTERPHONE", "Température extérieure: moins quarante. Restez en dedans."),
+    ("diner", 34.1, "INTERPHONE", "C'est l'heure du dîner. Bon appétit, là."),
+    ("exam", 38.7, "UNE VOIX", "Vous avez tout le temps. Tout. Le. Temps."),
+    ("cloche", 45.0, "INTERPHONE", "C'est la pause. Merci de ne pas quitter l'établissement."),
+    ("hier", 49.5, "INTERPHONE", "Comme hier. Comme demain. Comme hier."),
+    ("demain", 57.2, "UNE VOIX", "À demain."),
+]
+# facteur de ralentissement appliqué à la voix dans audio.py (pour la durée affichée)
+VO_SLOW = {"trace": 0.93, "maths": 0.9, "exam": 0.92, "demain": 0.72}

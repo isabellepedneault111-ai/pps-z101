@@ -18,24 +18,32 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 rng = np.random.default_rng(1974)
 L = np.zeros(N)
 R = np.zeros(N)
+VL = np.zeros(N)   # piste des voix (mixée à part, avec atténuation du reste)
+VR = np.zeros(N)
 T = np.arange(N) / SR
 S = {name: a for name, a, b in SCENES}
 
 
-def add(sig, start, gain=1.0, pan=0.0):
+def addv(sig, start, gain=1.0, pan=0.0):
+    """Comme add(), mais sur la piste des voix."""
+    add(sig, start, gain, pan, bus=(VL, VR))
+
+
+def add(sig, start, gain=1.0, pan=0.0, bus=None):
     """Ajoute un signal mono (ou (n,2)) à partir de `start` secondes."""
+    BL, BR = bus if bus is not None else (L, R)
     i = int(start * SR)
     if i >= N:
         return
     if sig.ndim == 1:
         n = min(len(sig), N - i)
         gl, gr = gain * np.sqrt((1 - pan) / 2), gain * np.sqrt((1 + pan) / 2)
-        L[i:i + n] += sig[:n] * gl * 1.41
-        R[i:i + n] += sig[:n] * gr * 1.41
+        BL[i:i + n] += sig[:n] * gl * 1.41
+        BR[i:i + n] += sig[:n] * gr * 1.41
     else:
         n = min(len(sig), N - i)
-        L[i:i + n] += sig[:n, 0] * gain
-        R[i:i + n] += sig[:n, 1] * gain
+        BL[i:i + n] += sig[:n, 0] * gain
+        BR[i:i + n] += sig[:n, 1] * gain
 
 
 def filt(x, kind, f, order=4):
@@ -85,13 +93,14 @@ def load_vo(key):
 
 # --------------------------------------------------------------- VOIX ------
 def intercom(x, seed=0):
-    y = filt(x, "bandpass", [320, 3600])
-    y = np.tanh(y * 4) * 0.6
-    low = filt(resample(x, 0.86), "bandpass", [200, 2500]) * 0.32  # double plus lent qui « décroche »
+    # haut-parleur d'école, mais intelligible : bande large, saturation légère
+    y = filt(x, "bandpass", [220, 5500])
+    y = np.tanh(y * 1.6) * 0.85
+    low = filt(resample(x, 0.86), "bandpass", [200, 2500]) * 0.10  # double plus lent, discret
     out = np.zeros(len(low))
     out[:len(y)] += y
     out += low
-    return reverb(out, 1.8, 0.35, seed)
+    return reverb(out, 1.4, 0.14, seed)
 
 
 def chime(start, gain=0.5):
@@ -112,48 +121,48 @@ VO = [  # (clé, temps, gain, chime?)
 for key, st, g, ch in VO:
     if ch:
         chime(st - 0.8)
-    add(intercom(load_vo(key), len(key)), st, g)
+    addv(intercom(load_vo(key), len(key)), st, g)
 
 # murale : « Laissez votre trace » — chuchoté, tout près, sans interphone
 x = load_vo("trace")
 x2 = resample(x, 0.93)
 env = np.abs(filt(np.abs(x2), "lowpass", 40))
-v = x2 * 0.5 + filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 3.5
-add(reverb(v, 0.8, 0.2, 9), 9.2, 0.8, 0.35)
+v = x2 * 0.9 + filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 1.2
+addv(reverb(v, 0.8, 0.12, 9), 9.2, 0.9, 0.15)
 
 # maths : l'enseignant, grave, proche, avec un murmure doublé
 x = load_vo("maths")
 low = resample(x, 0.9)
-y = reverb(np.tanh(filt(low, "lowpass", 3000) * 2) * 0.7, 1.0, 0.25, 3)
-add(y, 20.9, 0.9, -0.15)
+y = reverb(np.tanh(filt(low, "bandpass", [120, 5000]) * 1.3) * 0.9, 1.0, 0.15, 3)
+addv(y, 20.9, 1.0, -0.1)
 wh = filt(rng.normal(0, 1, len(low)), "bandpass", [1500, 6000]) * np.abs(filt(low, "lowpass", 30)) * 3
-add(wh, 21.05, 0.5, 0.6)
+add(wh, 21.05, 0.2, 0.6)
 
 # examen : chuchotement qui passe d'une oreille à l'autre
 x = load_vo("exam")
 x2 = resample(x, 0.92)
 env = np.abs(filt(np.abs(x2), "lowpass", 40))
 whisper = filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 4
-v = x2 * 0.45 + whisper * 0.8
-pan = np.sin(np.arange(len(v)) / SR * 2.2)
+v = x2 * 0.9 + whisper * 0.35
+pan = 0.45 * np.sin(np.arange(len(v)) / SR * 2.2)
 st = np.stack([v * np.sqrt((1 - pan) / 2), v * np.sqrt((1 + pan) / 2)], 1) * 1.3
 st = st[:int((S["cloche"] - 38.7) * SR)]
 st[-2000:] *= np.linspace(1, 0, 2000)[:, None]
-add(st, 38.7, 0.9)
+addv(st, 38.7, 0.85)
 
 # rewind : « Comme hier. Comme demain. » en canon déformé
 x = load_vo("hier")
-for k, (f, g, p, d) in enumerate(((1.0, 0.8, 0, 0.0), (0.75, 0.5, -0.8, 0.25), (1.3, 0.35, 0.8, 0.5),
-                                  (0.6, 0.45, 0.3, 0.9))):
-    y = intercom(resample(x, f), k + 20)
+addv(intercom(x, 20), 49.5, 1.0)  # la voix principale reste claire
+for k, (f, g, p, d) in enumerate(((0.75, 0.22, -0.8, 0.35), (1.3, 0.15, 0.8, 0.6), (0.6, 0.2, 0.3, 1.0))):
+    y = intercom(resample(x, f), k + 21)
     add(y, 49.5 + d, g, p)
 y = intercom(load_vo("intro")[::-1], 40)
-add(y[:int(5.3 * SR)], 49.6, 0.35, -0.4)
+add(y[:int(5.3 * SR)], 49.6, 0.15, -0.4)
 
 # fin : « À demain. » — grave, sec, tout près de l'oreille
 x = resample(load_vo("demain"), 0.72)
 x = np.tanh(filt(x, "lowpass", 4500) * 1.5)
-add(reverb(x, 0.6, 0.12), 57.2, 1.0)
+addv(reverb(x, 0.6, 0.12), 57.2, 1.0)
 add(filt(rng.normal(0, 1, len(x)), "bandpass", [2000, 7000]) * np.abs(filt(x, "lowpass", 40)) * 2, 57.25, 0.4, 0.7)
 
 # ----------------------------------------------------------- AMBIANCES -----
@@ -388,10 +397,20 @@ add(reverse_swell(0.5), 59.25 - 0.5, 0.25)
 add(impact(0.6, 35), 59.3, 0.5)
 
 # ------------------------------------------------------------ MASTER -------
-mix_ = np.stack([L, R], 1)
-mix_ = filt(mix_.T, "highpass", 25, 2).T
-mix_ = np.tanh(mix_ * 1.4) / np.tanh(1.4)
-mix_ = mix_ / np.max(np.abs(mix_)) * 0.93
+fx = np.stack([L, R], 1)
+fx = filt(fx.T, "highpass", 25, 2).T
+fx = np.tanh(fx * 1.4) / np.tanh(1.4)
+fx = fx / np.max(np.abs(fx)) * 0.7
+vo = np.stack([VL, VR], 1)
+vo = filt(vo.T, "highpass", 140, 2).T
+vo = vo / np.max(np.abs(vo)) * 0.95
+# quand quelqu'un parle, tout le reste baisse (≈ -12 dB)
+env = filt(np.abs(vo).max(1), "lowpass", 5, 2)
+duck = 1 - 0.75 * np.clip(env * 6, 0, 1)
+duck = np.minimum(duck, np.roll(duck, -int(0.08 * SR)))  # anticipe légèrement
+mix_ = fx * duck[:, None] + vo
+mix_ = np.tanh(mix_ * 1.1) / np.tanh(1.1)
+mix_ = mix_ / np.max(np.abs(mix_)) * 0.95
 mix_[int(59.92 * SR):] = 0
 fade = int(0.02 * SR)
 mix_[int(59.92 * SR) - fade:int(59.92 * SR)] *= np.linspace(1, 0, fade)[:, None]
