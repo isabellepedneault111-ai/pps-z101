@@ -17,7 +17,7 @@ SCENES4 = [
     ("murale",  10.5, 15.0, 1.0),
     ("corridor", 15.0, 20.5, 6.5 / 5.5),
     ("maths",    20.5, 26.5, 7.0 / 6.0),
-    ("machine",  26.5, 31.0, 5.0 / 4.5),
+    ("cafe",     26.5, 31.0, 5.0 / 4.5),
     ("pause2",   31.0, 33.0, 1.0),
     ("diner",    33.0, 38.5, 6.0 / 5.5),
     ("examen",   38.5, 43.5, 6.5 / 5.0),
@@ -74,20 +74,20 @@ EVENTS = [
     (ev("maths", MATHS_TURN), 1.4),
     (ev("diner", DINER_LONG), 1.0),
     (ev("examen", EXAM_STAMP), 1.0),
-    (ev("machine", MACHINE_DROP[1]), 0.7),
+    (ev("cafe", MACHINE_DROP[1]), 0.4),
     (START["cloche"], 1.6), (ev("cloche", CLOCHE_EXIT_FLIP), 1.0),
     (55.0, 2.0),
 ] + [(ev("corridor", b), 1.2) for b in CORR_BLACKOUTS]
 
 
 def glitch_level(t):
-    g = 0.08 + 0.25 * (t / DUR)
+    g = 0.05 + 0.15 * (t / DUR)
     for c in CUTS:
-        g += 1.0 * math.exp(-((t - c) / 0.07) ** 2)
+        g += 0.9 * math.exp(-((t - c) / 0.05) ** 2)
     for et, amp in EVENTS:
-        g += amp * math.exp(-((t - et) / 0.12) ** 2)
+        g += 0.6 * amp * math.exp(-((t - et) / 0.08) ** 2)
     if 49.0 <= t < 55.0:
-        g += 0.15 + 0.45 * ((t - 49.0) / 6.0) ** 2
+        g += 0.1 + 0.3 * ((t - 49.0) / 6.0) ** 2
     if t >= 55.3:
         g *= 0.5
     return g
@@ -121,20 +121,19 @@ def heart_pulse(t):
 # jusqu'à 12 h 45, pauses 13 h 45 et 14 h 55.
 CLOCK_START = {
     "arrivee": (8, 24, 12), "murale": (8, 25, 0), "corridor": (8, 41, 3), "maths": (9, 5, 0),
-    "machine": (9, 25, 0), "pause2": (10, 45, 0), "diner": (12, 0, 0), "examen": (13, 15, 0),
+    "cafe": (9, 25, 0), "pause2": (10, 45, 0), "diner": (12, 0, 0), "examen": (13, 15, 0),
 }
 
 
 def osd_clock(name, local):
     if name == "rewind":
-        # 14:55 -> 08:24 à reculons
-        a = 14 * 3600 + 55 * 60
+        # 15:55 -> 08:24 à reculons
+        a = 15 * 3600 + 55 * 60
         b = 8 * 3600 + 24 * 60
         k = min(1.0, (local / 5.6) ** 2)
         s = int(a + (b - a) * k)
     elif name == "cloche":
-        # la cloche de 13 h 45... puis c'est déjà 14 h 55
-        s = (13 * 3600 + 44 * 60 + 58 + int(local)) if local < 1.9 else (14 * 3600 + 55 * 60 + int(local - 1.9))
+        s = 15 * 3600 + 54 * 60 + 58 + int(local)
     elif name in CLOCK_START:
         h, m, s0 = CLOCK_START[name]
         s = h * 3600 + m * 60 + s0 + int(local)
@@ -149,13 +148,13 @@ VO_LINES = [
     ("intro", 1.6, "INTERPHONE", "Bonjour à tous. Bienvenue au CFGA de la Jonquière. Une autre belle journée."),
     ("trace", 9.2, "UNE VOIX", "Laissez votre trace. Elle restera ici. Avec vous."),
     ("corr", 15.6, "INTERPHONE", "Rappel. Le corridor du deuxième étage est un peu plus long aujourd'hui."),
-    ("maths", 20.9, "L'ENSEIGNANT", "Qui peut me dire combien font deux plus deux? Personne? Encore."),
+    ("maths", 20.9, "L'ENSEIGNANTE", "Combien font deux plus deux? Personne? Encore."),
     ("froid", 28.6, "INTERPHONE", "Température extérieure: moins quarante. Restez en dedans."),
     ("diner", 34.1, "INTERPHONE", "C'est l'heure du dîner. Bon appétit, là."),
     ("exam", 38.7, "UNE VOIX", "Vous avez tout le temps. Tout. Le. Temps."),
-    ("cloche", 45.0, "INTERPHONE", "C'est la pause. Merci de ne pas quitter l'établissement."),
+    ("cloche", 45.0, "INTERPHONE", "Fin des cours. Merci de ne pas quitter l'établissement."),
     ("hier", 49.5, "INTERPHONE", "Comme hier. Comme demain. Comme hier."),
     ("demain", 57.2, "UNE VOIX", "À demain."),
 ]
 # facteur de ralentissement appliqué à la voix dans audio.py (pour la durée affichée)
-VO_SLOW = {"trace": 0.93, "maths": 0.9, "exam": 0.92, "demain": 0.72}
+VO_SLOW = {"demain": 0.85, "maths": 0.88}

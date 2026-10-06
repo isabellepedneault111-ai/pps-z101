@@ -125,14 +125,14 @@ for key, st, g, ch in VO:
 
 # murale : « Laissez votre trace » — chuchoté, tout près, sans interphone
 x = load_vo("trace")
-x2 = resample(x, 0.93)
+x2 = x
 env = np.abs(filt(np.abs(x2), "lowpass", 40))
 v = x2 * 0.9 + filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 1.2
 addv(reverb(v, 0.8, 0.12, 9), 9.2, 0.9, 0.15)
 
 # maths : l'enseignant, grave, proche, avec un murmure doublé
 x = load_vo("maths")
-low = resample(x, 0.9)
+low = resample(x, 0.88)
 y = reverb(np.tanh(filt(low, "bandpass", [120, 5000]) * 1.3) * 0.9, 1.0, 0.15, 3)
 addv(y, 20.9, 1.0, -0.1)
 wh = filt(rng.normal(0, 1, len(low)), "bandpass", [1500, 6000]) * np.abs(filt(low, "lowpass", 30)) * 3
@@ -140,7 +140,7 @@ add(wh, 21.05, 0.2, 0.6)
 
 # examen : chuchotement qui passe d'une oreille à l'autre
 x = load_vo("exam")
-x2 = resample(x, 0.92)
+x2 = x
 env = np.abs(filt(np.abs(x2), "lowpass", 40))
 whisper = filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 4
 v = x2 * 0.9 + whisper * 0.35
@@ -160,7 +160,7 @@ y = intercom(load_vo("intro")[::-1], 40)
 add(y[:int(5.3 * SR)], 49.6, 0.15, -0.4)
 
 # fin : « À demain. » — grave, sec, tout près de l'oreille
-x = resample(load_vo("demain"), 0.72)
+x = resample(load_vo("demain"), 0.85)
 x = np.tanh(filt(x, "lowpass", 4500) * 1.5)
 addv(reverb(x, 0.6, 0.12), 57.2, 1.0)
 add(filt(rng.normal(0, 1, len(x)), "bandpass", [2000, 7000]) * np.abs(filt(x, "lowpass", 40)) * 2, 57.25, 0.4, 0.7)
@@ -196,8 +196,8 @@ R += wind2 / np.max(np.abs(wind2)) * wl
 hum = sum(np.sin(2 * np.pi * 60 * h * T) * a for h, a in ((1, 0.5), (2, 1.0), (3, 0.6), (4, 0.4), (6, 0.25)))
 hum = np.tanh(hum * 1.5)
 hl = np.zeros(N)
-for a, b, lv in ((S["murale"], S["corridor"], 0.07), (S["corridor"], S["maths"], 0.16), (S["maths"], S["machine"], 0.10),
-                  (S["machine"], S["diner"], 0.09), (S["diner"], S["examen"], 0.05), (S["examen"], S["cloche"], 0.11),
+for a, b, lv in ((S["murale"], S["corridor"], 0.07), (S["corridor"], S["maths"], 0.16), (S["maths"], S["cafe"], 0.10),
+                  (S["cafe"], S["diner"], 0.09), (S["diner"], S["examen"], 0.05), (S["examen"], S["cloche"], 0.11),
                   (S["cloche"], S["rewind"], 0.06)):
     hl[(T >= a) & (T < b)] = lv
 crack = (rng.random(N // 480) < 0.06).repeat(480)
@@ -254,7 +254,7 @@ def play_musicbox(notes, start, beat, slow, detune_amt, gain, seed=0, droop=0.0,
 
 play_musicbox(DAISY_1, 0.95, 0.15, 0.02, 0.12, 0.24, seed=1)
 # pause de 9 h 25... puis exactement la même mélodie, au même endroit, à 10 h 45
-play_musicbox(DAISY_2 + DAISY_3, S["machine"] + 0.1, 0.17, 0.05, 0.35, 0.24, seed=2, droop=0.08, end=S["pause2"])
+play_musicbox(DAISY_2 + DAISY_3, S["cafe"] + 0.1, 0.17, 0.05, 0.35, 0.24, seed=2, droop=0.08, end=S["pause2"])
 play_musicbox(DAISY_2, S["pause2"], 0.17, 0.05, 0.35, 0.26, seed=2, droop=0.08, end=S["diner"])
 # rewind : à l'envers, de plus en plus vite
 t_ = S["rewind"] + 0.2
@@ -348,11 +348,11 @@ for t0, dur in ((0.3, 2.6), (3.4, 1.0), (4.0, 1.4), (4.3, 1.0)):
 add(impact(1.0, 90), ev("examen", EXAM_STAMP), 0.9)
 
 # machine : compresseur, moteur de la spirale, chute de l'objet
-add(np.tanh(sum(np.sin(2 * np.pi * 58 * h * tt(6.5)) / h for h in range(1, 6)) * 2) * 0.25, S["machine"], 0.3)
+add(np.tanh(sum(np.sin(2 * np.pi * 58 * h * tt(6.5)) / h for h in range(1, 6)) * 2) * 0.25, S["cafe"], 0.3)
 d = tt((MACHINE_DROP[1] - MACHINE_DROP[0]) / 1.1)
 mot = np.sign(np.sin(2 * np.pi * (90 + 30 * np.sin(2 * np.pi * 3 * d)) * d)) * 0.3
-add(filt(mot, "lowpass", 900), ev("machine", MACHINE_DROP[0]), 0.4)
-add(impact(0.8, 120), ev("machine", MACHINE_DROP[1]) - 0.05, 0.7)
+add(filt(mot, "lowpass", 900), ev("cafe", MACHINE_DROP[0]), 0.4)
+add(impact(0.8, 120), ev("cafe", MACHINE_DROP[1]) - 0.05, 0.7)
 
 # la cloche de 15:59 : sonnerie électrique saturée
 bd = 2.6
@@ -400,13 +400,13 @@ add(impact(0.6, 35), 59.3, 0.5)
 fx = np.stack([L, R], 1)
 fx = filt(fx.T, "highpass", 25, 2).T
 fx = np.tanh(fx * 1.4) / np.tanh(1.4)
-fx = fx / np.max(np.abs(fx)) * 0.7
+fx = fx / np.max(np.abs(fx)) * 0.55
 vo = np.stack([VL, VR], 1)
 vo = filt(vo.T, "highpass", 140, 2).T
 vo = vo / np.max(np.abs(vo)) * 0.95
 # quand quelqu'un parle, tout le reste baisse (≈ -12 dB)
 env = filt(np.abs(vo).max(1), "lowpass", 5, 2)
-duck = 1 - 0.75 * np.clip(env * 6, 0, 1)
+duck = 1 - 0.85 * np.clip(env * 6, 0, 1)
 duck = np.minimum(duck, np.roll(duck, -int(0.08 * SR)))  # anticipe légèrement
 mix_ = fx * duck[:, None] + vo
 mix_ = np.tanh(mix_ * 1.1) / np.tanh(1.1)

@@ -221,7 +221,9 @@ def blink(t, times, dur=0.28):
 # fenêtres sombres verticales, aile basse en pierre à gauche, rez-de-chaussée en
 # retrait sur piliers — le stationnement est dessous, on voit les voitures entre les piliers.
 BX0, BX1, BTOP, BMID, GROUND = 250, 1170, 168, 468, 566
-STRIPS = [300 + i * 103 for i in range(9)]          # fenêtres verticales
+WCOLS = [292 + i * 96 for i in range(10)]           # colonnes de fenêtres
+WROWS = [(206, 292), (336, 424)]                    # une fenêtre étroite par étage
+WINS = [(x, y0, x + 30, y1) for (y0, y1) in WROWS for x in WCOLS]
 RPIL = [330 + i * 92 for i in range(10)]             # piliers du rez-de-chaussée
 PARKED = [(x, 540, 0.42) for x in range(360, 1140, 92)]
 PHOTO = os.path.join(HERE, "sources", "batiment.jpg")
@@ -258,10 +260,6 @@ def draw_logo(img, cx, cy, size, close=0.0, lit=0.0, t=0.0):
                 d.rounded_rectangle(box, radius=max(1, int(4 * sc)), fill=(255, 255, 255))
     d.text(P(248, 105), "CFGA", font=F("sans", 70 * sc), fill=(25, 25, 25), anchor="mm")
     d.text(P(185, 322), "DE LA JONQUIÈRE", font=F("inter", 34 * sc), fill=(40, 40, 40), anchor="mm")
-
-
-def _strip_rect(x):
-    return (x, 196, x + 40, 446)
 
 
 def arrivee_layers():
@@ -312,12 +310,14 @@ def arrivee_layers():
     lay_arr[BTOP:BMID, BX0:BX1, :3] *= sh
     lay = Image.fromarray(np.clip(lay_arr, 0, 255).astype(np.uint8))
     d = ImageDraw.Draw(lay)
-    for x in STRIPS:
-        x0, y0, x1, y1 = _strip_rect(x)
-        d.rectangle((x0, y0, x1, y1), fill=(42, 52, 66, 255))
-        for y in range(y0 + 62, y1, 62):
-            d.line([(x0, y), (x1, y)], fill=(120, 125, 130, 255), width=3)
-        d.polygon([(x0 + 4, y0 + 4), (x0 + 18, y0 + 4), (x0 + 4, y0 + 80)], fill=(90, 110, 140, 255))
+    # bandeau horizontal entre les étages
+    d.rectangle((BX0, 306, BX1, 322), fill=(214, 210, 197, 255))
+    d.line([(BX0, 322), (BX1, 322)], fill=(170, 166, 154, 255), width=2)
+    for x0, y0, x1, y1 in WINS:
+        d.rectangle((x0 - 3, y0 - 3, x1 + 3, y1 + 3), fill=(190, 186, 175, 255))
+        d.rectangle((x0, y0, x1, y1), fill=(40, 48, 58, 255))
+        d.line([(x0, (y0 + y1) // 2), (x1, (y0 + y1) // 2)], fill=(95, 100, 105, 255), width=2)
+        d.polygon([(x0 + 3, y0 + 3), (x0 + 13, y0 + 3), (x0 + 3, y0 + 30)], fill=(85, 105, 135, 255))
     # enseigne blanche sous l'avant-toit, avec le logo
     d.rectangle((560, BMID - 2, 720, BMID + 40), fill=(245, 245, 245, 255), outline=(120, 120, 120, 255), width=2)
     draw_logo(lay, 588, BMID + 19, 40)
@@ -381,16 +381,16 @@ def s_arrivee(t, fi, rng):
         do.ellipse((x, y, x + 380, y + 24), fill=c + (90,))
     img.paste(ov, (0, 0), ov)
     d = ImageDraw.Draw(img)
-    # dans chaque fenêtre verticale, des visages empilés apparaissent
-    nf = int(clamp((t - 3.0) / 2.0) * 4)
-    for i, x in enumerate(STRIPS):
-        x0, y0, x1, y1 = _strip_rect(x)
-        for j in range(nf):
-            fy = y0 + 30 + j * 62
-            fx = (x0 + x1) / 2 + (4 if t > 5.2 else 0)
-            d.ellipse((fx - 11, fy - 14, fx + 11, fy + 14), fill=(225, 215, 195))
-            d.ellipse((fx - 7, fy - 5, fx - 2, fy), fill=(0, 0, 0))
-            d.ellipse((fx + 2, fy - 5, fx + 7, fy), fill=(0, 0, 0))
+    # un visage apparaît dans chaque fenêtre, une à la fois
+    nf = int(clamp((t - 2.8) / 2.2) * len(WINS))
+    order = sorted(range(len(WINS)), key=lambda i: hsh(i, 77))
+    for i in order[:nf]:
+        x0, y0, x1, y1 = WINS[i]
+        fx, fy = (x0 + x1) / 2 + (3 if t > 5.2 else 0), y0 + 26
+        d.ellipse((fx - 11, fy - 14, fx + 11, fy + 14), fill=(225, 215, 195))
+        d.ellipse((fx - 7, fy - 5, fx - 2, fy), fill=(0, 0, 0))
+        d.ellipse((fx + 2, fy - 5, fx + 7, fy), fill=(0, 0, 0))
+    for x0, y0, x1, y1 in WINS:
         if lid > 0:
             d.rectangle((x0, y0, x1, y0 + (y1 - y0) * lid), fill=(10, 0, 4))
     # le stationnement : phares entre les piliers (rouges à la fin)
@@ -521,7 +521,7 @@ def s_murale(t, fi, rng):
 
 def s_pause2(t, fi, rng):
     # 10 h 45 : exactement la même pause qu'à 9 h 25
-    return s_machine(3.6 + t * 0.4, fi, rng)
+    return s_cafe(3.6 + t * 0.4, fi, rng)
 
 
 # ------------------------------------------------------------- CORRIDOR ----
@@ -1095,6 +1095,97 @@ def _led_strip(msg):
     return s
 
 
+# ----------------------------------------------------------------- CAFÉ ----
+DRINKS = [  # (normal, prix, version « tordue »)
+    ("Espresso", "1,50 $", "Espoir — ÉPUISÉ"),
+    ("Allongé", "1,75 $", "Très, très allongé"),
+    ("Cappuccino", "2,25 $", "Cappuccino"),
+    ("Latte", "2,25 $", "Latte — trop tard"),
+    ("Moka", "2,50 $", "Moka (sans sortie)"),
+    ("Chocolat chaud", "2,00 $", "Chocolat froid"),
+    ("Thé", "1,50 $", "Thé... ou pas"),
+    ("Café filtre", "1,75 $", "Déca — inutile"),
+]
+
+
+def s_cafe(t, fi, rng):
+    def bg():
+        a = vgrad(W, H, [(0, (70, 66, 78)), (0.74, (95, 90, 100)), (0.75, (60, 52, 50)), (1, (40, 34, 32))])
+        return to_img(a)
+
+    img = cached("cafe_bg", bg).copy()
+    d = ImageDraw.Draw(img)
+    vip_sign(d, t, 190, 230)
+    # comptoir
+    d.rectangle((0, 600, W, 640), fill=(150, 140, 125))
+    d.rectangle((0, 640, W, H), fill=(80, 70, 60))
+    # la machine à café
+    d.rounded_rectangle((390, 20, 890, 660), radius=16, fill=(28, 28, 32), outline=(10, 10, 12), width=4)
+    d.rectangle((390, 40, 410, 640), fill=(175, 175, 180))
+    d.rectangle((870, 40, 890, 640), fill=(175, 175, 180))
+    d.text((640, 52), "BOISSONS CHAUDES", font=F("sans", 26), fill=(235, 225, 205), anchor="mm")
+    # écran tactile
+    sx0, sy0, sx1, sy1 = 430, 78, 850, 420
+    d.rectangle((sx0, sy0, sx1, sy1), fill=(15, 30, 45))
+    twist = t > 3.4
+    pressed = 2 if t > 0.9 else -1
+    top = "Pause : 10 min — Bonne pause !" if t < 1.9 else ("Préparation : 100 %" if t < 3.4 else "100 % … 100 % … 100 %")
+    d.rectangle((sx0, sy0, sx1, sy0 + 40), fill=(30, 60, 90) if not twist else (110, 0, 10))
+    d.text(((sx0 + sx1) / 2, sy0 + 20), top, font=F("sans", 22), fill=(255, 255, 255), anchor="mm")
+    if 1.9 <= t:
+        d.rectangle((sx0 + 20, sy0 + 46, sx1 - 20, sy0 + 56), fill=(60, 220, 120) if not twist else (230, 30, 30))
+    for i, (name, price, bad) in enumerate(DRINKS):
+        r, c = divmod(i, 2)
+        bx0 = sx0 + 14 + c * 205
+        by0 = sy0 + 64 + r * 70
+        on = i == pressed
+        d.rounded_rectangle((bx0, by0, bx0 + 192, by0 + 62), radius=10,
+                            fill=(230, 170, 60) if on else (45, 75, 105), outline=(120, 160, 200), width=2)
+        d.ellipse((bx0 + 10, by0 + 15, bx0 + 42, by0 + 47), fill=(240, 235, 225))
+        d.ellipse((bx0 + 15, by0 + 20, bx0 + 37, by0 + 42), fill=(110, 70, 40))
+        label = bad if (twist and hsh(i, int(t * 3)) < 0.9) else name
+        f = F("sans", 19 if len(label) < 15 else 15)
+        d.text((bx0 + 50, by0 + 22), label, font=f, fill=(255, 255, 255) if not on else (20, 20, 20), anchor="lm")
+        d.text((bx0 + 50, by0 + 46), price if not (twist and "ÉPUISÉ" in label) else "",
+               font=F("sans", 16), fill=(200, 230, 255) if not on else (40, 40, 40), anchor="lm")
+    # niche de distribution
+    d.rounded_rectangle((500, 440, 780, 640), radius=10, fill=(12, 12, 14))
+    d.rectangle((620, 440, 660, 462), fill=(150, 150, 155))
+    d.rectangle((520, 622, 760, 634), fill=(90, 90, 95))
+    # le café coule... et ne s'arrête plus
+    fill = clamp((t - MACHINE_DROP[0]) / 1.4)
+    liquid = mix((110, 65, 30), (25, 0, 0), clamp((t - 3.4) / 0.8))
+    if t > MACHINE_DROP[0]:
+        d.rectangle((636, 462, 644, 610), fill=liquid)
+    cx0, cx1, cy0, cy1 = 595, 685, 545, 622
+    d.polygon([(cx0, cy0), (cx1, cy0), (cx1 - 10, cy1), (cx0 + 10, cy1)], fill=(245, 242, 235))
+    if fill > 0:
+        ly = cy1 - (cy1 - cy0 - 6) * fill
+        d.polygon([(cx0 + 10 * (cy1 - ly) / (cy1 - cy0) + 3, ly), (cx1 - 10 * (cy1 - ly) / (cy1 - cy0) - 3, ly),
+                   (cx1 - 12, cy1 - 3), (cx0 + 12, cy1 - 3)], fill=liquid)
+    if t > 3.4:
+        over = clamp((t - 3.4) / 1.6)
+        for k, x in enumerate((600, 628, 655, 680)):
+            ln = over * (30 + 25 * k)
+            d.line([(x, cy0), (x - 3, cy0 + ln)], fill=liquid, width=7)
+        d.ellipse((560 - 120 * over, 622, 720 + 120 * over, 636), fill=liquid)
+        d.ellipse((560 - 160 * over, 662, 720 + 200 * over, 662 + 30 * over), fill=liquid)
+    # vapeur
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    do = ImageDraw.Draw(ov)
+    if fill > 0.2:
+        for k in range(3):
+            pts = [(615 + k * 25 + 10 * math.sin(t * 3 + y * 0.05 + k), y) for y in range(540, 465, -6)]
+            do.line(pts, fill=(255, 255, 255, 70), width=4)
+    img.paste(ov, (0, 0), ov)
+    d = ImageDraw.Draw(img)
+    d.rectangle((800, 480, 860, 530), fill=(60, 60, 65))
+    d.text((830, 505), "CARTE", font=F("sans", 12), fill=(220, 220, 220), anchor="mm")
+    s = 1 + 0.03 * t / 5
+    cw, ch = W / s, H / s
+    return img.crop((int(640 - cw / 2), int(H - ch), int(640 + cw / 2), H)).resize((W, H), Image.BILINEAR)
+
+
 # --------------------------------------------------------------- CLOCHE ----
 def blocks(base):
     a = np.zeros((H, W, 3), np.float32) + np.array(base, np.float32)
@@ -1125,7 +1216,7 @@ def s_cloche(t, fi, rng):
         hx = cx + 120 + rng.normal(0, 14)
         d.line([(cx + 40, cy + 110), (hx, cy + 150)], fill=(40, 40, 40), width=10)
         d.ellipse((hx - 18, cy + 132, hx + 18, cy + 168), fill=(60, 60, 60))
-        shaky_text(d, (640, 120), "DRRRRRRRING", F("anton", 130), (255, 230, 0), rng, amp=10,
+        shaky_text(d, (640, 170), "DRRRRRING", F("anton", 90), (255, 230, 0), rng, amp=10,
                    stroke=6, stroke_fill=(200, 0, 0))
         return img
     tt = t - 1.9
@@ -1187,21 +1278,19 @@ def s_cloche(t, fi, rng):
 # --------------------------------------------------------------- REWIND ----
 SCENE_FUNCS = {}
 INSERTS = []
-_tt = 0.15
-while _tt < 5.6:
+_tt = 0.4
+while _tt < 5.4:
     INSERTS.append(_tt)
-    _tt += 0.45 - 0.33 * (_tt / 5.6)
+    _tt += 0.8 - 0.35 * (_tt / 5.6)
 
 
 def s_rewind(t, fi, rng):
     for k, it in enumerate(INSERTS):
-        if it <= t < it + 2.0 / FPS:
+        if it <= t < it + 4.0 / FPS:
             prng = np.random.default_rng(k + 100)
-            name = ["arrivee", "murale", "corridor", "maths", "diner", "examen", "machine", "cloche"][k % 8]
+            name = ["arrivee", "murale", "corridor", "maths", "diner", "examen", "cafe", "cloche"][k % 8]
             src = SCENE_FUNCS[name](prng.uniform(2.5, 5.8), fi, prng)
-            if k % 3 == 0:
-                src = ImageOps.invert(src)
-            elif k % 3 == 1:
+            if k % 2 == 1:
                 a = np.asarray(src, np.float32)
                 a = a.mean(-1, keepdims=True) * np.array([1.4, 0.2, 0.3])
                 src = to_img(a)
@@ -1278,16 +1367,17 @@ def s_fin(t, fi, rng):
 
 
 SCENE_FUNCS.update({
-    "titre": s_titre, "arrivee": s_arrivee, "murale": s_murale, "pause2": s_pause2, "corridor": s_corridor, "maths": s_maths,
+    "titre": s_titre, "arrivee": s_arrivee, "murale": s_murale, "pause2": s_pause2, "cafe": s_cafe, "corridor": s_corridor, "maths": s_maths,
     "diner": s_diner, "examen": s_examen, "machine": s_machine, "cloche": s_cloche,
     "rewind": s_rewind, "fin": s_fin,
 })
 
 HEADINGS = {
-    "arrivee": "08:24 · ARRIVÉE", "murale": "08:25 · JE LAISSE MA TRACE", "corridor": "08:41 · CORRIDOR, 2e ÉTAGE",
-    "maths": "09:05 · MATHÉMATIQUES", "machine": "09:25 · PAUSE — SALLE V.I.P.", "pause2": "10:45 · PAUSE — SALLE V.I.P.",
-    "diner": "12:00 · DÎNER — SALLE V.I.P.", "examen": "13:15 · EXAMEN", "cloche": "14:55 · PAUSE",
-    "rewind": "??:?? · ????",
+    "arrivee": "08 h 24 · Arrivée", "murale": "08 h 25 · La murale « Je laisse ma trace »",
+    "corridor": "08 h 41 · Corridor du 2e étage", "maths": "09 h 05 · Mathématiques",
+    "cafe": "09 h 25 · Pause — salle V.I.P.", "pause2": "10 h 45 · Pause — salle V.I.P. (encore)",
+    "diner": "12 h 00 · Dîner — salle V.I.P.", "examen": "13 h 15 · Examen",
+    "cloche": "15 h 55 · Fin des cours", "rewind": "?? h ?? · Demain",
 }
 CAPTIONS = {
     "arrivee": [(0.3, 3.6, "Le stationnement est plein."), (3.6, 7, "Il l'est toujours.")],
@@ -1300,7 +1390,7 @@ CAPTIONS = {
     "examen": [(0.3, 3.2, "Prenez tout votre temps."), (3.2, 6.5, "Il prendra le vôtre.")],
     "cloche": [(0.3, 1.9, "13 h 45. La cloche."), (1.9, 3.4, "14 h 55. Déjà ?"), (3.4, 6, "Personne ne sort.")],
 }
-CAM = {"arrivee": 1, "murale": 4, "corridor": 3, "maths": 7, "machine": 9, "pause2": 9, "diner": 12, "examen": 13,
+CAM = {"arrivee": 1, "murale": 4, "corridor": 3, "maths": 7, "cafe": 9, "pause2": 9, "diner": 12, "examen": 13,
        "cloche": 1, "rewind": 0}
 
 
@@ -1313,14 +1403,12 @@ def osd(img, t, name, local, rng):
     d.text((W - 42, 46), f"CAM {cam:02d}", font=F("vt", 44), fill=(255, 255, 255), anchor="rm", stroke_width=2,
            stroke_fill=(0, 0, 0))
     day = "JOUR 04813" if (name == "rewind" and local > 5.5) else "JOUR 04812"
-    d.text((42, H - 36), f"{day}  {osd_clock(name, local)}", font=F("vt", 40), fill=(255, 255, 255), anchor="ls",
+    d.text((42, 100), f"{day}  {osd_clock(name, local)}", font=F("vt", 36), fill=(255, 255, 255), anchor="lm",
            stroke_width=2, stroke_fill=(0, 0, 0))
-    d.text((W - 42, H - 36), "LECTURE >" if name != "rewind" else "<< RETOUR", font=F("vt", 40),
-           fill=(255, 255, 255), anchor="rs", stroke_width=2, stroke_fill=(0, 0, 0))
-    h0 = 1.9 if name == "cloche" else 0.0
-    if h0 <= local < h0 + 2.2:
-        d.text((W / 2, 52), HEADINGS[name], font=F("anton", 44), fill=(255, 245, 120), anchor="mm",
-               stroke_width=4, stroke_fill=(0, 0, 0))
+    if name == "rewind":
+        d.text((W - 42, 100), "<< RETOUR", font=F("vt", 36), fill=(255, 255, 255), anchor="rm",
+               stroke_width=2, stroke_fill=(0, 0, 0))
+
 
 
 def _vo_chunks():
@@ -1357,26 +1445,25 @@ def subtitles(img, t, name, local):
     # ce qui est dit (bas de l'écran)
     for a, b, who, txt in cached("vo_chunks", _vo_chunks):
         if a <= t < b:
-            f = F("sans", 34)
+            f = F("sans", 42)
             words, lines, cur = txt.split(), [], ""
             for w_ in words:
                 test = (cur + " " + w_).strip()
-                if f.getlength(test) > 1050:
+                if f.getlength(test) > 1120:
                     lines.append(cur)
                     cur = w_
                 else:
                     cur = test
             lines.append(cur)
-            y = H - 82 - 46 * (len(lines) - 1)
-            _box_text(img, (W / 2, y - 44), who, F("sans", 20), (255, 210, 60), pad=(10, 4), alpha=200)
+            y = H - 40 - 56 * (len(lines) - 1)
+            _box_text(img, (W / 2, y - 56), who, F("sans", 24), (255, 210, 60), pad=(10, 5), alpha=210)
             for ln in lines:
-                _box_text(img, (W / 2, y), ln, f, (255, 255, 255))
-                y += 46
+                _box_text(img, (W / 2, y), ln, f, (255, 255, 255), alpha=200)
+                y += 56
             break
-    # ce qui se passe (haut de l'écran, sous le titre de la scène)
-    for a, b, txt in CAPTIONS.get(name, []):
-        if a <= local < b:
-            _box_text(img, (W / 2, 128), txt, F("vt", 46), (255, 245, 170), alpha=150)
+    # le lieu et l'heure, bien lisibles, au début de chaque scène
+    if name in HEADINGS and local < (3.2 if name != "pause2" else 2.0):
+        _box_text(img, (W / 2, 62), HEADINGS[name], F("sans", 36), (255, 235, 120), pad=(16, 10), alpha=200)
 
 
 # ----------------------------------------------------------- POST-EFFETS ---
@@ -1385,7 +1472,7 @@ def _post_setup():
     r = np.hypot((xx - W / 2) / (W / 2), (yy - H / 2) / (H / 2))
     vig = (1 - 0.32 * np.clip(r - 0.45, 0, None) ** 1.6)[..., None].astype(np.float32)
     scan = np.ones((H, 1, 1), np.float32)
-    scan[1::3] = 0.92
+    scan[1::3] = 0.96
     return vig * scan
 
 
@@ -1395,29 +1482,24 @@ def post(img, t, fi, g):
     s = np.asarray(small, np.float32)
     s = np.clip(s - 140, 0, None) * 1.7
     bloom = np.asarray(to_img(s).filter(ImageFilter.GaussianBlur(6)).resize((W, H), Image.BILINEAR), np.float32)
-    a = np.asarray(img, np.float32) + bloom * 0.45
+    a = np.asarray(img, np.float32) + bloom * 0.3
     # saturation « bruyante »
     m = a.mean(-1, keepdims=True)
-    a = m + (a - m) * 1.2
+    a = m + (a - m) * 1.12
     # déchirures horizontales
-    for _ in range(int(rng.poisson(0.3 + 3.5 * max(0.0, g - 0.3)))):
+    for _ in range(int(rng.poisson(1.5 * max(0.0, g - 0.8)))):
         y = int(rng.integers(0, H))
-        h = int(rng.integers(2, int(6 + 40 * g)))
-        a[y:y + h] = np.roll(a[y:y + h], int(rng.normal(0, 4 + 60 * g)), axis=1)
+        h = int(rng.integers(2, 20))
+        a[y:y + h] = np.roll(a[y:y + h], int(rng.normal(0, 30 * g)), axis=1)
     # barre de tracking VHS qui descend
-    ty = int((t * 160) % (H + 120)) - 60
-    if 0 <= ty < H - 30:
-        a[ty:ty + 14] = a[ty:ty + 14] * 0.8 + rng.random((14, W, 1)).astype(np.float32) * 50
     # aberration chromatique
-    k = int(1 + 4 * g + rng.random() * 2 * g)
+    k = min(4, int(1 + 2 * g))
     a[..., 0] = np.roll(a[..., 0], k, axis=1)
     a[..., 2] = np.roll(a[..., 2], -k, axis=1)
     # grain
-    a += rng.normal(0, 3 + 7 * g, (H, W, 1)).astype(np.float32)
+    a += rng.normal(0, 2 + 2 * g, (H, W, 1)).astype(np.float32)
     a *= cached("vigscan", _post_setup)
-    a *= 1 + rng.normal(0, 0.012 + 0.02 * g)
-    if g > 1.3 and rng.random() < 0.25:
-        a = 255 - a
+    a *= 1 + rng.normal(0, 0.006)
     return np.clip(a, 0, 255).astype(np.uint8)
 
 

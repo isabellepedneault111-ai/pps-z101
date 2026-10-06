@@ -14,11 +14,11 @@ aucune image, aucun son ni aucune séquence préenregistrée. Œuvre de fiction.
 | 08:25 | La murale « JE LAISSE MA TRACE » (**vraies images**) | Les fenêtres du bâtiment peint s'allument, des phares s'allument dessous, SORTIE devient ENTRÉE, une nouvelle trace s'écrit : « … et elle me garde. » Les lettres vertes pourrissent en rouge |
 | 08:41 | Corridor, 2e étage | Toutes les portes sont « B-104 », la silhouette avance à chaque panne |
 | 09:05 | Mathématiques | 2 + 2 = 5, tous les élèves se retournent d'un coup |
-| 09:25 | Pause — salle V.I.P. | Machine distributrice ; l'enseigne V.I.P. devient « Vous · Ici · Pour toujours » |
+| 09:25 | Pause — salle V.I.P. | Machine à café (espresso, latte, cappuccino, moka…) : « 100 % … 100 % … », le café déborde, Espresso devient « Espoir — ÉPUISÉ » ; l'enseigne V.I.P. devient « Vous · Ici · Pour toujours » |
 | 10:45 | Pause — salle V.I.P. | Exactement la même pause, la même image, la même mélodie |
 | 12:00 | Dîner — salle V.I.P. | « Le dîner finit à 12 h 45. Pour les autres. » |
 | 13:15 | Examen | « Depuis combien de temps êtes-vous ici ? » — À REPRENDRE |
-| 13:45 → 14:55 | La cloche | L'horloge saute d'une pause à l'autre ; SORTIE devient ENTRÉE |
+| 15:55 | Fin des cours | La cloche sonne ; SORTIE devient ENTRÉE ; personne ne sort |
 | ??:?? | Retour | L'horloge recule jusqu'à 08:24 ; JOUR 04812 → 04813 |
 | — | Fin | Le logo redessiné : son cercle vert, ouvert, se referme et rougit. « Inscriptions ouvertes en tout temps. Pour toujours. » |
 
@@ -37,8 +37,9 @@ la chanson que chante HAL 9000 pendant qu'on le débranche.
   (bloom, déchirures, aberration chromatique, grain, barre de tracking) ; rendu parallèle envoyé à `ffmpeg`.
 - `audio.py` : trame sonore synthétisée (drone avec triton, néons à 60 Hz, cœur, cloche électrique,
   *Daisy Bell* à la boîte à musique désaccordée, rejouée à l'envers au retour, micro-ondes, tic-tac, grincement de craie).
-- `voices.py` : voix d'interphone en **français québécois** (eSpeak NG + voix MBROLA `ca1`/`ca2`),
-  ensuite traitées (filtre téléphone, double ralenti, réverbération, chuchotement, canon inversé).
+- `voices.py` : voix neuronales **Piper** (hors ligne, voix `fr-siwis-medium` téléchargée depuis les
+  versions GitHub de rhasspy/piper, dans `build/piper/`), légèrement traitées en interphone.
+  Les textes des répliques sont dans `common.py` (`VO_LINES`) et sont sous-titrés à l'écran.
 
 La scène de la murale utilise la vidéo `IMG_8538.mov` (fournie) : extraire 4,6 s à partir de 0,6 s
 en PNG 1280×720 / 24 i/s dans `build/murale/`, puis calculer le suivi de caméra (`offs.npy`, corrélation de phase).
@@ -46,8 +47,8 @@ en PNG 1280×720 / 24 i/s dans `build/murale/`, puis calculer le suivi de camér
 ### Regénérer
 
 ```bash
-sudo apt-get install espeak-ng mbrola mbrola-ca1 mbrola-ca2 ffmpeg
-pip install numpy pillow scipy
+sudo apt-get install espeak-ng ffmpeg
+pip install numpy pillow scipy piper-tts
 python3 prep_murale.py && python3 voices.py && python3 audio.py && python3 render.py
 ffmpeg -i build/video_seule.mp4 -i build/audio.wav -c:v libx264 -b:v 6M -c:a aac -shortest cfga_journee_ordinaire.mp4
 python3 render.py --preview 8 20 44   # images-test dans build/preview/
