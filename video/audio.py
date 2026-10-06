@@ -8,8 +8,9 @@ import wave
 import numpy as np
 from scipy.signal import butter, fftconvolve, sosfilt
 
-from common import (BEATS, CORR_BLACKOUTS, CUTS, DINER_BEEPS, DINER_LONG, DUR,
-                    EXAM_STAMP, MACHINE_DROP, MATHS_TURN, SCENES)
+from common import (BEATS, CLOCHE_EXIT_FLIP, CORR_BLACKOUTS, CUTS, DINER_BEEPS,
+                    DINER_LONG, DUR, EXAM_STAMP, MACHINE_DROP, MATHS_TURN,
+                    MURALE_LIGHTS, MURALE_EXIT, SCENES, ev)
 
 SR = 48000
 N = int(DUR * SR)
@@ -103,29 +104,30 @@ def chime(start, gain=0.5):
 
 VO = [  # (clé, temps, gain, chime?)
     ("intro", 1.6, 0.85, True),
-    ("corr", 12.9, 0.8, True),
-    ("diner", 26.7, 0.8, True),
-    ("cloche", 44.2, 0.85, True),
+    ("corr", 15.6, 0.8, True),
+    ("froid", 28.6, 0.8, True),
+    ("diner", 34.1, 0.8, True),
+    ("cloche", 45.0, 0.85, False),
 ]
 for key, st, g, ch in VO:
     if ch:
         chime(st - 0.8)
     add(intercom(load_vo(key), len(key)), st, g)
 
-# froid : coupée par la cloche de 15:59
-chime(38.3)
-x = intercom(load_vo("froid"), 5)
-x = x[:int((S["cloche"] - 38.9) * SR)]
-x[-2000:] *= np.linspace(1, 0, 2000)
-add(x, 38.9, 0.8)
+# murale : « Laissez votre trace » — chuchoté, tout près, sans interphone
+x = load_vo("trace")
+x2 = resample(x, 0.93)
+env = np.abs(filt(np.abs(x2), "lowpass", 40))
+v = x2 * 0.5 + filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 3.5
+add(reverb(v, 0.8, 0.2, 9), 9.2, 0.8, 0.35)
 
 # maths : l'enseignant, grave, proche, avec un murmure doublé
 x = load_vo("maths")
-low = resample(x, 0.8)
+low = resample(x, 0.9)
 y = reverb(np.tanh(filt(low, "lowpass", 3000) * 2) * 0.7, 1.0, 0.25, 3)
-add(y, 19.2, 0.9, -0.15)
+add(y, 20.9, 0.9, -0.15)
 wh = filt(rng.normal(0, 1, len(low)), "bandpass", [1500, 6000]) * np.abs(filt(low, "lowpass", 30)) * 3
-add(wh, 19.35, 0.5, 0.6)
+add(wh, 21.05, 0.5, 0.6)
 
 # examen : chuchotement qui passe d'une oreille à l'autre
 x = load_vo("exam")
@@ -135,7 +137,9 @@ whisper = filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 4
 v = x2 * 0.45 + whisper * 0.8
 pan = np.sin(np.arange(len(v)) / SR * 2.2)
 st = np.stack([v * np.sqrt((1 - pan) / 2), v * np.sqrt((1 + pan) / 2)], 1) * 1.3
-add(st, 32.0, 0.9)
+st = st[:int((S["cloche"] - 38.7) * SR)]
+st[-2000:] *= np.linspace(1, 0, 2000)[:, None]
+add(st, 38.7, 0.9)
 
 # rewind : « Comme hier. Comme demain. » en canon déformé
 x = load_vo("hier")
@@ -183,13 +187,15 @@ R += wind2 / np.max(np.abs(wind2)) * wl
 hum = sum(np.sin(2 * np.pi * 60 * h * T) * a for h, a in ((1, 0.5), (2, 1.0), (3, 0.6), (4, 0.4), (6, 0.25)))
 hum = np.tanh(hum * 1.5)
 hl = np.zeros(N)
-for a, b, lv in ((12.0, 18.5, 0.16), (18.5, 25.5, 0.10), (25.5, 38.0, 0.05), (38.0, 43.0, 0.11), (43.0, 49.0, 0.06)):
+for a, b, lv in ((S["murale"], S["corridor"], 0.07), (S["corridor"], S["maths"], 0.16), (S["maths"], S["machine"], 0.10),
+                  (S["machine"], S["diner"], 0.09), (S["diner"], S["examen"], 0.05), (S["examen"], S["cloche"], 0.11),
+                  (S["cloche"], S["rewind"], 0.06)):
     hl[(T >= a) & (T < b)] = lv
 crack = (rng.random(N // 480) < 0.06).repeat(480)
 crack = np.pad(crack, (0, N - len(crack)))
 hl *= np.where(crack, 0.15, 1.0)
 for b in CORR_BLACKOUTS:  # la panne : silence total du néon
-    hl[(T >= S["corridor"] + b) & (T < S["corridor"] + b + 0.14)] = 0
+    hl[(T >= ev("corridor", b)) & (T < ev("corridor", b) + 0.12)] = 0
 L += hum * hl
 R += hum * hl
 
@@ -208,35 +214,46 @@ for b in BEATS:
     add(hb * 0.7, b + 0.18, g)
 
 # ------------------------------------------------- BOÎTE À MUSIQUE ---------
-# « Frère Jacques » en fa mineur, désaccordée
-NOTE = {"F": 0, "G": 2, "Ab": 3, "Bb": 5, "C": 7, "Db": 8, "C-": -5}
-MEL = ["F", "G", "Ab", "F", "F", "G", "Ab", "F", "Ab", "Bb", "C", None, "Ab", "Bb", "C", None,
-       "C", "Db", "C", "Bb", "Ab", "F", None, None, "C", "Db", "C", "Bb", "Ab", "F", None, None,
-       "F", "C-", "F", None, "F", "C-", "F", None]
+# « Daisy Bell » (Harry Dacre, 1892 — domaine public), la chanson que chante
+# l'ordinateur HAL 9000 quand on le débranche. (demi-tons depuis do, temps)
+DAISY_1 = [(7, 3), (4, 3), (0, 3), (-5, 3), (-3, 1), (-1, 1), (0, 1), (-3, 2), (0, 1), (-5, 6)]
+DAISY_2 = [(2, 3), (7, 3), (4, 3), (0, 3), (-3, 1), (-1, 1), (0, 1), (2, 2), (4, 1), (2, 6)]
+DAISY_3 = [(4, 1), (5, 1), (4, 1), (2, 1), (7, 2), (4, 1), (2, 1), (0, 5), (2, 1), (4, 2), (0, 1), (-3, 2), (0, 1),
+           (-3, 1), (-5, 5)]
+DAISY_4 = [(-5, 1), (0, 2), (4, 1), (2, 2), (-5, 1), (0, 2), (4, 1), (2, 1), (4, 1), (5, 1), (7, 1), (4, 1), (0, 1),
+           (2, 2), (-5, 1), (0, 6)]
 
 
-def musicbox_note(semi, detune=0.0, dur=1.6):
-    f = 698.46 * 2 ** ((semi + detune) / 12)
+def musicbox_note(semi, detune=0.0, dur=1.8):
+    f = 1046.5 * 2 ** ((semi + detune) / 12)
     d = tt(dur)
     s = np.sin(2 * np.pi * f * d) + 0.3 * np.sin(2 * np.pi * f * 4.02 * d) * np.exp(-d * 12) + 0.15 * np.sin(2 * np.pi * f * 2.0 * d)
-    return s * env_ad(len(d), 0.002, 0.35)
+    return s * env_ad(len(d), 0.002, 0.45)
 
 
-def play_musicbox(start, end, step0, slow, detune_amt, gain, idx0=0):
-    t, k, step = start, idx0, step0
-    while t < end:
-        n = MEL[k % len(MEL)]
-        if n is not None:
-            nn = musicbox_note(NOTE[n], rng.normal(0, detune_amt) - 0.6 * slow * (t - start))
-            add(reverb(nn, 1.5, 0.35, k), t, gain, rng.uniform(-0.5, 0.5))
-        t += step
-        step *= 1 + slow * 0.03
-        k += 1
+def play_musicbox(notes, start, beat, slow, detune_amt, gain, seed=0, droop=0.0, end=DUR):
+    r = np.random.default_rng(seed)
+    t = start
+    for k, (semi, beats) in enumerate(notes):
+        if t >= end:
+            break
+        nn = musicbox_note(semi, r.normal(0, detune_amt) - droop * (t - start))
+        add(reverb(nn, 1.5, 0.35, k), t, gain, r.uniform(-0.5, 0.5))
+        t += beat * beats * (1 + slow * (t - start))
+    return t
 
 
-play_musicbox(1.25, 5.0, 0.3, 0.2, 0.15, 0.22)
-play_musicbox(38.0, 43.0, 0.32, 0.9, 0.5, 0.25, idx0=16)
-play_musicbox(55.6, 59.6, 0.45, 2.0, 0.6, 0.2, idx0=0)
+play_musicbox(DAISY_1, 0.95, 0.15, 0.02, 0.12, 0.24, seed=1)
+# pause de 9 h 25... puis exactement la même mélodie, au même endroit, à 10 h 45
+play_musicbox(DAISY_2 + DAISY_3, S["machine"] + 0.1, 0.17, 0.05, 0.35, 0.24, seed=2, droop=0.08, end=S["pause2"])
+play_musicbox(DAISY_2, S["pause2"], 0.17, 0.05, 0.35, 0.26, seed=2, droop=0.08, end=S["diner"])
+# rewind : à l'envers, de plus en plus vite
+t_ = S["rewind"] + 0.2
+for k, (semi, beats) in enumerate((DAISY_1 + DAISY_2)[::-1]):
+    add(musicbox_note(semi, -0.3), t_, 0.12, 0.6 if k % 2 else -0.6)
+    t_ += 0.11 * beats * max(0.25, 1 - k / 22)
+# fin : « ...built for two », qui ralentit et se désaccorde comme une machine qu'on débranche
+play_musicbox(DAISY_4[7:], 55.5, 0.2, 0.12, 0.25, 0.26, seed=4, droop=0.35)
 
 # ---------------------------------------------------------- EFFETS --------
 def glitch_burst(dur=0.18):
@@ -275,38 +292,42 @@ def reverse_swell(dur=0.8):
 
 # corridor : chaque panne = la silhouette avance (souffle inversé + impact)
 for b in CORR_BLACKOUTS:
-    a = S["corridor"] + b
+    a = ev("corridor", b)
     add(reverse_swell(0.6), a - 0.6, 0.35)
     add(impact(1.2, 70), a, 0.7)
 
 # maths : craie (tic-tic) puis grincement, puis le craquement des nuques
-for t0 in np.arange(S["maths"] + 0.05, S["maths"] + 4.8, 1 / 9):
+for t0 in [ev("maths", u) for u in np.arange(0.05, 4.8, 1 / 9)]:
     d = tt(0.03)
     add(filt(rng.normal(0, 1, len(d)), "bandpass", [2500, 6000]) * env_ad(len(d), 0.001, 0.008), t0, 0.25, 0.3)
-for t0 in (S["maths"] + 1.4, S["maths"] + 5.0):
+for t0 in (ev("maths", 1.4), ev("maths", 5.0)):
     d = tt(0.7)
     f = 3200 + 900 * np.sin(2 * np.pi * 23 * d) + 600 * d
     s = np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.6 + 0.4 * np.sin(2 * np.pi * 7 * d)) * np.sin(np.pi * d / 0.7)
     add(np.tanh(s * 2) * 0.6, t0, 0.22, 0.2)
-turn = S["maths"] + MATHS_TURN
+turn = ev("maths", MATHS_TURN)
 for k in range(22):
     d = tt(0.02)
     c = filt(rng.normal(0, 1, len(d)), "bandpass", [1200, 5000]) * env_ad(len(d), 0.0005, 0.004)
     add(c, turn - 0.1 + k * 0.012 + rng.uniform(0, 0.01), 0.9, rng.uniform(-0.9, 0.9))
 add(impact(1.6, 55), turn, 0.85)
 
+# murale : les fenêtres s'allument (bourdonnement), SORTIE -> ENTRÉE (impact)
+add(reverse_swell(0.5), ev("murale", MURALE_LIGHTS) - 0.5, 0.3)
+add(impact(0.9, 80), ev("murale", MURALE_EXIT), 0.6)
+
 # dîner : micro-ondes, bips, puis le long BIP dissonant
-mw = filt(rng.normal(0, 1, int(6 * SR)), "lowpass", 400) * 0.3 + np.sin(2 * np.pi * 120 * tt(6)) * 0.4
+mw = filt(rng.normal(0, 1, int(5.5 * SR)), "lowpass", 400) * 0.3 + np.sin(2 * np.pi * 120 * tt(5.5)) * 0.4
 add(mw, S["diner"], 0.18)
 for b in DINER_BEEPS:
-    add(np.sign(np.sin(2 * np.pi * 2000 * tt(0.12))) * 0.3, S["diner"] + b, 0.4)
+    add(np.sign(np.sin(2 * np.pi * 2000 * tt(0.12))) * 0.3, ev("diner", b), 0.4)
 lb = sum(np.sign(np.sin(2 * np.pi * f * tt(1.6))) for f in (1990, 2020, 2117, 1500, 1588))
 lb = lb / 5 * np.minimum(1, tt(1.6) / 0.01)
-add(filt(lb, "lowpass", 5000) * np.linspace(1, 0.6, len(lb)), S["diner"] + DINER_LONG, 0.4)
-add(impact(1.2, 50), S["diner"] + DINER_LONG, 0.6)
+add(filt(lb, "lowpass", 5000) * np.linspace(1, 0.6, len(lb)), ev("diner", DINER_LONG), 0.4)
+add(impact(1.2, 50), ev("diner", DINER_LONG), 0.6)
 
 # examen : tic-tac lourd, crayon, tampon
-for k, t0 in enumerate(np.arange(S["examen"], S["examen"] + 6.5, 0.5)):
+for k, t0 in enumerate(np.arange(S["examen"], S["cloche"], 0.5)):
     d = tt(0.05)
     f = 2400 if k % 2 == 0 else 1800
     s = np.sin(2 * np.pi * f * d) * env_ad(len(d), 0.0005, 0.01)
@@ -314,15 +335,15 @@ for k, t0 in enumerate(np.arange(S["examen"], S["examen"] + 6.5, 0.5)):
 for t0, dur in ((0.3, 2.6), (3.4, 1.0), (4.0, 1.4), (4.3, 1.0)):
     n = int(dur * SR)
     sc = filt(rng.normal(0, 1, n), "bandpass", [1500, 7000]) * (0.4 + 0.6 * np.abs(np.sin(2 * np.pi * 7 * np.arange(n) / SR)))
-    add(sc * 0.4, S["examen"] + t0, 0.25, 0.35)
-add(impact(1.0, 90), S["examen"] + EXAM_STAMP, 0.9)
+    add(sc * 0.4, ev("examen", t0), 0.25, 0.35)
+add(impact(1.0, 90), ev("examen", EXAM_STAMP), 0.9)
 
 # machine : compresseur, moteur de la spirale, chute de l'objet
-add(np.tanh(sum(np.sin(2 * np.pi * 58 * h * tt(5)) / h for h in range(1, 6)) * 2) * 0.25, S["machine"], 0.3)
-d = tt(MACHINE_DROP[1] - MACHINE_DROP[0])
+add(np.tanh(sum(np.sin(2 * np.pi * 58 * h * tt(6.5)) / h for h in range(1, 6)) * 2) * 0.25, S["machine"], 0.3)
+d = tt((MACHINE_DROP[1] - MACHINE_DROP[0]) / 1.1)
 mot = np.sign(np.sin(2 * np.pi * (90 + 30 * np.sin(2 * np.pi * 3 * d)) * d)) * 0.3
-add(filt(mot, "lowpass", 900), S["machine"] + MACHINE_DROP[0], 0.4)
-add(impact(0.8, 120), S["machine"] + MACHINE_DROP[1] - 0.05, 0.7)
+add(filt(mot, "lowpass", 900), ev("machine", MACHINE_DROP[0]), 0.4)
+add(impact(0.8, 120), ev("machine", MACHINE_DROP[1]) - 0.05, 0.7)
 
 # la cloche de 15:59 : sonnerie électrique saturée
 bd = 2.6
@@ -336,7 +357,7 @@ for k in range(int(bd * 24)):
 bell = np.tanh(car * clap * 2.5) * np.minimum(1, (bd - d) / 0.2)
 add(bell, S["cloche"], 0.55, -0.1)
 add(bell, S["cloche"] + 0.013, 0.45, 0.4)
-add(impact(1.6, 45), S["cloche"] + 4.2, 0.6)
+add(impact(1.6, 45), ev("cloche", CLOCHE_EXIT_FLIP), 0.6)
 
 # rewind : tic-tac qui s'emballe, montée (riser), puis claque
 t0, step = S["rewind"], 0.25

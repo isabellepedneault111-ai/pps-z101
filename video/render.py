@@ -15,7 +15,8 @@ from multiprocessing import Pool
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
-from common import (CLOCHE_EXIT_FLIP, CORR_BLACK_LEN, CORR_BLACKOUTS,
+from common import ev as ev_abs
+from common import (MURALE_EXIT, MURALE_LIGHTS, MURALE_ROT, CLOCHE_EXIT_FLIP, CORR_BLACK_LEN, CORR_BLACKOUTS,
                     CORR_FIG_Z, DINER_BEEPS, DINER_LONG, DUR, EXAM_STAMP, FPS,
                     MACHINE_DROP, MATHS_TURN, H, W, glitch_level, heart_pulse,
                     osd_clock, scene_at)
@@ -184,9 +185,13 @@ def s_titre(t, fi, rng):
 
 
 # -------------------------------------------------------------- ARRIVÉE ----
-BX0, BX1, BY0, BY1 = 230, 1010, 300, 560
-WIN_ROWS = [330, 430]
-WIN_COLS = [270 + i * 80 for i in range(9)]
+# Le bâtiment repose sur des piliers : le stationnement est dessous, à l'intérieur.
+BX0, BX1, BY0, BY1 = 170, 1110, 236, 470   # bloc des étages
+GROUND = 595
+WIN_ROWS = [262, 366]
+WIN_COLS = [BX0 + 20 + i * 84 for i in range(11)]
+PILLARS = [int(BX0 + 10 + i * (BX1 - BX0 - 20) / 6) for i in range(7)]
+PARKED = [(x, 548, 0.42) for x in range(250, 1080, 78)] + [(x, 572, 0.6) for x in range(215, 1100, 112)]
 
 
 def arrivee_static():
@@ -196,44 +201,43 @@ def arrivee_static():
     d = ImageDraw.Draw(img)
     rng = np.random.default_rng(3)
     # Monts-Valin en silhouette
-    pts = [(0, 560)]
+    pts = [(0, GROUND)]
     for x in range(0, W + 40, 40):
         y = 470 - 60 * math.sin(x * 0.004) - 35 * math.sin(x * 0.011 + 1) - rng.random() * 18
         pts.append((x, y))
-    pts.append((W, 560))
+    pts.append((W, GROUND))
     d.polygon(pts, fill=(45, 8, 45))
     # cheminées de l'aluminerie
-    for sx, top in ((1100, 140), (1168, 175), (1225, 210)):
-        for k, y in enumerate(range(top, 560, 30)):
+    for sx, top in ((1150, 120), (1205, 160), (1252, 200)):
+        for k, y in enumerate(range(top, GROUND, 30)):
             d.rectangle((sx - 11, y, sx + 11, y + 30),
                         fill=(200, 30, 30) if k % 2 == 0 else (230, 220, 210))
-    # sol / stationnement
-    d.rectangle((0, 555, W, H), fill=(38, 34, 40))
-    for x in range(-600, W + 600, 120):
-        d.line([(640 + (x - 640) * 0.45, 560), (x, H)], fill=(200, 190, 120), width=3)
-    # bâtiment en brique
-    d.rectangle((BX0, BY0, BX1, BY1), fill=(112, 42, 30))
+    # terrain enneigé devant
+    d.rectangle((0, GROUND - 5, W, H), fill=(78, 70, 84))
+    for _ in range(60):
+        x, y = rng.uniform(0, W), rng.uniform(GROUND, H)
+        d.ellipse((x - 60, y - 6, x + 60, y + 6), fill=(150, 140, 160))
+    for x in (520, 760):
+        d.line([(x, GROUND), (x + (x - 640) * 2.5, H)], fill=(45, 40, 50), width=14)
+    # l'intérieur du stationnement, sous le bâtiment
+    d.rectangle((BX0, BY1, BX1, GROUND), fill=(16, 14, 20))
+    d.rectangle((BX0, BY1, BX1, BY1 + 16), fill=(52, 52, 62))
+    d.rectangle((600, 500, 680, GROUND - 22), fill=(40, 10, 14))
+    for x, y, sc in PARKED:
+        w, h = 150 * sc, 62 * sc
+        d.rounded_rectangle((x - w / 2, y - h / 2, x + w / 2, y + h / 2), radius=int(14 * sc), fill=(150, 140, 125))
+        d.polygon([(x - w * 0.35, y - h / 2), (x + w * 0.35, y - h / 2),
+                   (x + w * 0.26, y - h * 1.15), (x - w * 0.26, y - h * 1.15)], fill=(30, 30, 40))
+    # les étages : façade bleue, comme sur la murale
+    d.rectangle((BX0, BY0, BX1, BY1), fill=(48, 78, 160))
     b = np.asarray(img, np.float32).copy()
     yy, xx = np.mgrid[BY0:BY1, BX0:BX1]
-    mortar = ((yy % 12) == 0) | (((xx + (yy // 12 % 2) * 14) % 28) == 0)
-    b[BY0:BY1, BX0:BX1][mortar] *= 0.55
-    b[BY0:BY1, BX0:BX1] *= (0.85 + 0.3 * rng.random((BY1 - BY0, BX1 - BX0, 1)))
+    panel = ((yy - BY0) % 52 == 0) | ((xx - BX0) % 84 == 0)
+    b[BY0:BY1, BX0:BX1][panel] *= 0.7
+    b[BY0:BY1, BX0:BX1] *= (0.9 + 0.2 * rng.random((BY1 - BY0, BX1 - BX0, 1)))
     img = to_img(b)
     d = ImageDraw.Draw(img)
-    d.rectangle((BX0 - 10, BY0 - 14, BX1 + 10, BY0 + 4), fill=(60, 50, 55))
-    # entrée
-    d.rectangle((575, 455, 665, BY1), fill=(30, 10, 12))
-    d.rectangle((560, 440, 680, 458), fill=(70, 60, 60))
-    # voitures identiques
-    for row, (y, s, xs) in enumerate(((598, 0.55, range(600, 1280, 105)),
-                                      (668, 0.95, range(640, 1300, 190)))):
-        for x in xs:
-            w, h = 150 * s, 62 * s
-            d.rounded_rectangle((x - w / 2, y - h / 2, x + w / 2, y + h / 2),
-                                radius=int(14 * s), fill=(150, 140, 125))
-            d.polygon([(x - w * 0.35, y - h / 2), (x + w * 0.35, y - h / 2),
-                       (x + w * 0.26, y - h * 1.15), (x - w * 0.26, y - h * 1.15)],
-                      fill=(30, 30, 40))
+    d.rectangle((BX0 - 12, BY0 - 16, BX1 + 12, BY0 + 2), fill=(30, 40, 70))
     return img
 
 
@@ -279,7 +283,7 @@ def s_arrivee(t, fi, rng):
         x = (k * 260 + t * (15 + 6 * k)) % (W + 600) - 300
         do.ellipse((x, y, x + 420, y + 26), fill=(30, 0, 20, 110))
     # panaches de fumée qui s'enroulent
-    for sx, top in ((1100, 140), (1168, 175), (1225, 210)):
+    for sx, top in ((1150, 120), (1205, 160), (1252, 200)):
         for i in range(36):
             age = (t * 0.25 + i / 36) % 1
             px = sx - age * 520 + 40 * math.sin(age * 9 + sx)
@@ -289,61 +293,65 @@ def s_arrivee(t, fi, rng):
             do.ellipse((px - r, py - r, px + r, py + r), fill=(120, 90, 100, al))
     img.paste(ov, (0, 0), ov)
     # le soleil est un œil
-    sun = eye_img(80, (-18 + 6 * math.sin(t), 14), lid)
+    sun = eye_img(72, (-18 + 6 * math.sin(t), 14), lid)
     halo = Image.new("RGBA", (400, 400), (0, 0, 0, 0))
     ImageDraw.Draw(halo).ellipse((40, 40, 360, 360), fill=(255, 200, 120, 70))
     halo = halo.filter(ImageFilter.GaussianBlur(30))
-    img.paste(halo, (840 - 200, 175 - 200), halo)
-    img.paste(sun, (840 - 80, 175 - 80), sun)
+    img.paste(halo, (900 - 200, 120 - 200), halo)
+    img.paste(sun, (900 - 72, 120 - 72), sun)
     d = ImageDraw.Draw(img)
     # fenêtres : des silhouettes identiques, qui clignent ensemble
     tilt = clamp((t - 3.6) * 4)
     for wy in WIN_ROWS:
         for wx in WIN_COLS:
-            if wy == 430 and wx == 590:
-                continue
+            ww, wh = 48, 72
             gl = (225, 255, 90) if (fi // 3 + wx) % 17 else (255, 255, 200)
-            d.rectangle((wx, wy, wx + 56, wy + 62), fill=gl)
-            hx, hy = wx + 28 + 6 * tilt, wy + 26 + 3 * tilt
+            d.rectangle((wx, wy, wx + ww, wy + wh), fill=gl)
+            hx, hy = wx + ww / 2 + 6 * tilt, wy + 30 + 3 * tilt
             d.ellipse((hx - 9, hy - 11, hx + 9, hy + 11), fill=(10, 10, 5))
-            d.polygon([(wx + 10, wy + 62), (wx + 46, wy + 62), (wx + 40, wy + 40), (wx + 16, wy + 40)],
+            d.polygon([(wx + 8, wy + wh), (wx + ww - 8, wy + wh), (wx + ww - 12, wy + 46), (wx + 12, wy + 46)],
                       fill=(10, 10, 5))
             if lid > 0:
-                d.rectangle((wx, wy, wx + 56, wy + 62 * lid), fill=(15, 0, 5))
-            d.rectangle((wx, wy, wx + 56, wy + 62), outline=(40, 20, 20), width=3)
-            d.line([(wx + 28, wy), (wx + 28, wy + 62)], fill=(40, 20, 20), width=2)
-    # porte : lueur rouge qui respire
-    p = heart_pulse(t + 5.0)
-    d.rectangle((582, 465, 658, BY1), fill=(int(120 + 135 * p), 0, 10))
-    # phares de toutes les voitures (rouges à la fin)
+                d.rectangle((wx, wy, wx + ww, wy + wh * lid), fill=(15, 0, 5))
+            d.rectangle((wx, wy, wx + ww, wy + wh), outline=(20, 25, 45), width=4)
+    # porte du fond du stationnement : lueur rouge qui respire
+    p = heart_pulse(t / (7.0 / 6.0) + 4.5)
+    d.rectangle((606, 506, 674, GROUND - 22), fill=(int(120 + 135 * p), 0, 10))
+    # néons du stationnement, qui grésillent
+    for k in range(6):
+        x0 = PILLARS[k] + 40
+        on = hsh(k, int(t * 12)) > 0.25
+        d.rectangle((x0, BY1 + 18, x0 + 70, BY1 + 23), fill=(235, 255, 230) if on else (50, 55, 50))
+    # phares de toutes les voitures, vus entre les piliers (rouges à la fin)
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     do = ImageDraw.Draw(ov)
     hl = (255, 240, 150) if t < 5.0 else (255, 20, 20)
-    for y, s, xs in ((598, 0.55, range(600, 1280, 105)), (668, 0.95, range(640, 1300, 190))):
-        for x in xs:
-            for sgn in (-1, 1):
-                cx, cy = x + sgn * 52 * s, y - 2
-                for rr, al in ((40 * s, 50), (22 * s, 110), (9 * s, 255)):
-                    do.ellipse((cx - rr, cy - rr, cx + rr, cy + rr), fill=hl + (al,))
+    for x, y, sc in PARKED:
+        for sgn in (-1, 1):
+            cx, cy = x + sgn * 52 * sc, y - 2
+            for rr, al in ((40 * sc, 50), (22 * sc, 110), (9 * sc, 255)):
+                do.ellipse((cx - rr, cy - rr, cx + rr, cy + rr), fill=hl + (al,))
     img.paste(ov, (0, 0), ov)
     d = ImageDraw.Draw(img)
-    # l'enseigne
-    d.rectangle((150, 600, 165, 720), fill=(70, 70, 80))
-    d.rectangle((520, 600, 535, 720), fill=(70, 70, 80))
-    d.rectangle((95, 575, 590, 660), fill=(18, 32, 95), outline=(240, 240, 255), width=4)
+    # les piliers
+    for x in PILLARS:
+        d.rectangle((x - 17, BY1, x + 17, GROUND + 4), fill=(72, 100, 185))
+        d.rectangle((x - 17, BY1, x - 9, GROUND + 4), fill=(110, 140, 220))
+        d.rectangle((x + 10, BY1, x + 17, GROUND + 4), fill=(40, 60, 120))
+    # l'enseigne sur le toit
+    d.rectangle((400, 180, 880, 234), fill=(18, 32, 95), outline=(240, 240, 255), width=4)
     label = "CFGA DE LA JONQUIÈRE"
-    font = F("anton", 46)
-    x = 342 - font.getlength(label) / 2
+    font = F("anton", 40)
+    x = 640 - font.getlength(label) / 2
     bad = rng.integers(0, len(label)) if rng.random() < 0.5 else -1
     for i, ch in enumerate(label):
-        d.text((x, 612), ch, font=font, fill=(255, 30, 30) if i == bad else (250, 250, 255), anchor="lm")
+        d.text((x, 207), ch, font=font, fill=(255, 30, 30) if i == bad else (250, 250, 255), anchor="lm")
         x += font.getlength(ch)
-    d.text((342, 645), "Formation générale des adultes", font=F("sans", 15), fill=(200, 210, 255), anchor="mm")
-    for k, dx in enumerate((150, 300, 470)):
-        ln = clamp((t - 1.0 - k * 0.6) / 4) * 70
+    for k, dx in enumerate((450, 600, 820)):
+        ln = clamp((t - 1.0 - k * 0.6) / 4) * 26
         if ln > 0:
-            d.line([(dx, 660), (dx, 660 + ln)], fill=(150, 0, 10), width=5)
-            d.ellipse((dx - 5, 656 + ln, dx + 5, 668 + ln), fill=(150, 0, 10))
+            d.line([(dx, 234), (dx, 234 + ln)], fill=(150, 0, 10), width=5)
+            d.ellipse((dx - 5, 230 + ln, dx + 5, 242 + ln), fill=(150, 0, 10))
     # neige qui tombe vers le haut
     prng = np.random.default_rng(11)
     px = prng.random(420) * W
@@ -357,8 +365,84 @@ def s_arrivee(t, fi, rng):
     # caméra : lente poussée
     s = 1 + 0.13 * (t / 7)
     cw, ch = W / s, H / s
-    cx, cy = 600 + 20 * t + rng.normal(0, 1.5), 400 + rng.normal(0, 1.5)
+    cx, cy = 610 + 12 * t + rng.normal(0, 1.5), 390 + rng.normal(0, 1.5)
     return img.crop((int(cx - cw / 2), int(cy - ch / 2), int(cx + cw / 2), int(cy + ch / 2))).resize((W, H), Image.BILINEAR)
+
+
+# --------------------------------------------------------------- MURALE ----
+# Vraies images (vidéo IMG_8538 fournie) : la murale « JE LAISSE MA TRACE ».
+MUR_DIR = os.path.join(HERE, "build", "murale")
+MUR_WIN_X = [392, 422, 453, 485, 516, 546, 576, 608, 641, 673, 705]
+MUR_WIN_Y = [(485, 517), (522, 550)]
+MUR_GAPS = [(382, 450), (467, 535), (552, 622), (640, 710)]
+
+
+def mur_offsets():
+    o = np.load(os.path.join(MUR_DIR, "offs.npy")).astype(np.float32)
+    k = np.ones(7) / 7
+    pad = np.pad(o, ((3, 3), (0, 0)), mode="edge")
+    return np.stack([np.convolve(pad[:, i], k, "valid") for i in range(2)], 1)
+
+
+def s_murale(t, fi, rng):
+    files = cached("mur_files", lambda: sorted(f for f in os.listdir(MUR_DIR) if f.endswith(".png")))
+    i = min(len(files) - 1, int(t * 24))
+    img = Image.open(os.path.join(MUR_DIR, files[i])).convert("RGB")
+    ox, oy = cached("mur_offs", mur_offsets)[i]
+    a = np.asarray(img, np.float32)
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    green = (g - b > 50) & (g >= r - 5) & (g > 90)
+    # étalonnage : néons verdâtres, noirs écrasés, murs blancs éteints
+    a = np.clip((a - 30) * 1.1, 0, None) * 0.72
+    a = a * np.array([0.85, 1.0, 0.9])
+    # les lettres vertes pourrissent en rouge sang
+    rot = clamp((t - MURALE_ROT) / 1.2) * (0.6 + 0.4 * heart_pulse(ev_abs("murale", t)))
+    if rot > 0:
+        lum = a[green].mean(-1, keepdims=True)
+        a[green] = a[green] * (1 - rot) + lum * np.array([1.9, 0.12, 0.18]) * rot
+    img = to_img(a)
+    d = ImageDraw.Draw(img)
+    # les fenêtres du bâtiment peint s'allument... et quelqu'un y attend
+    if t >= MURALE_LIGHTS:
+        lid = blink(t, [2.2, 3.5], 0.3)
+        for y0, y1 in MUR_WIN_Y:
+            for x in MUR_WIN_X:
+                x0, x1 = x - 8 + ox, x + 8 + ox
+                yy0, yy1 = y0 + oy, y1 + oy
+                d.rectangle((x0, yy0, x1, yy1), fill=(230, 255, 90))
+                cx = (x0 + x1) / 2
+                d.ellipse((cx - 4, yy0 + 6, cx + 4, yy0 + 15), fill=(10, 10, 5))
+                d.rectangle((cx - 6, yy0 + 17, cx + 6, yy1), fill=(10, 10, 5))
+                if lid > 0:
+                    d.rectangle((x0, yy0, x1, yy0 + (yy1 - yy0) * lid), fill=(10, 0, 4))
+        # des phares s'allument dans le stationnement sous le bâtiment
+        for k, (g0, g1) in enumerate(MUR_GAPS):
+            if t > MURALE_LIGHTS + 0.3 + k * 0.25:
+                cx, cy = (g0 + g1) / 2 + ox, 588 + oy
+                col = (255, 240, 150) if t < MURALE_ROT else (255, 30, 30)
+                for sg in (-1, 1):
+                    d.ellipse((cx + sg * 13 - 5, cy - 4, cx + sg * 13 + 5, cy + 4), fill=col)
+    # SORTIE -> ENTRÉE
+    if t > MURALE_EXIT or (t > MURALE_EXIT - 0.4 and rng.random() < 0.5):
+        d.rectangle((0 + ox, 58 + oy, 98 + ox, 96 + oy), fill=(15, 5, 5))
+        d.text((49 + ox, 77 + oy), "ENTRÉE", font=F("anton", 30), fill=(255, 40, 30), anchor="mm")
+    # une nouvelle « trace » s'écrit toute seule
+    msg = "... et elle me garde."
+    n = int(clamp((t - 2.6) / 1.3) * len(msg))
+    if n > 0:
+        layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(layer).text((150 + ox, 440 + oy), msg[:n], font=F("hand", 76), fill=(255, 235, 90, 255),
+                                   anchor="lm")
+        layer = layer.rotate(3, center=(400, 440), resample=Image.BICUBIC)
+        img.paste(layer, (0, 0), layer)
+    s = 1 + 0.06 * t / 4.5
+    cw, ch = W / s, H / s
+    return img.crop((0, int(380 - ch / 2), int(cw), int(380 + ch / 2))).resize((W, H), Image.BILINEAR)
+
+
+def s_pause2(t, fi, rng):
+    # 10 h 45 : exactement la même pause qu'à 9 h 25
+    return s_machine(3.6 + t * 0.4, fi, rng)
 
 
 # ------------------------------------------------------------- CORRIDOR ----
@@ -661,14 +745,15 @@ def s_diner(t, fi, rng):
                 bx, by = x + 200 + c_ * 16, y + 62 + r_ * 22
                 d.rectangle((bx, by, bx + 12, by + 14), fill=(170, 170, 165))
     # affichette
-    paste_rot_text(img, (640, 60), "UN PLAT À LA FOIS S.V.P. MERCI! :)",
-                   F("hand", 54), (20, 20, 20, 255), 2)
+    vip_sign(d, t, 330, 55, w=300)
+    paste_rot_text(img, (900, 62), "UN PLAT À LA FOIS S.V.P. :)",
+                   F("hand", 44), (20, 20, 20, 255), 2)
     d = ImageDraw.Draw(img)
     if phase3:
         for k in range(5):
             ln = clamp((t - DINER_LONG) * 0.7) * (40 + 15 * k)
-            x = 820 + k * 9
-            d.line([(x, 70), (x, 70 + ln)], fill=(150, 0, 0), width=3)
+            x = 1040 + k * 9
+            d.line([(x, 75), (x, 75 + ln)], fill=(150, 0, 0), width=3)
     # la file d'attente : des dos qui se balancent ensemble
     sway = 14 * math.sin(t * 1.4)
     for k, x in enumerate((180, 470, 800, 1110)):
@@ -832,6 +917,7 @@ def s_machine(t, fi, rng):
 
     img = cached("mach_bg", bg).copy()
     d = ImageDraw.Draw(img)
+    vip_sign(d, t, 160, 150)
     d.rounded_rectangle((380, 30, 905, 705), radius=18, fill=(125, 12, 22), outline=(60, 0, 8), width=6)
     head = "CONSOLATIONS" if (int(t * 5) % 7 == 0 or t > 3.8) else "COLLATIONS"
     d.rectangle((400, 45, 885, 105), fill=(20, 0, 5))
@@ -908,6 +994,18 @@ def s_machine(t, fi, rng):
     s = 1 + 0.12 * t / 5
     cw, ch = W / s, H / s
     return img.crop((int(640 - cw / 2), int(380 - ch / 2), int(640 + cw / 2), int(380 + ch / 2))).resize((W, H), Image.BILINEAR)
+
+
+def vip_sign(d, t, cx, cy, w=280):
+    """Enseigne de la salle V.I.P. — Vous Ici, Pour toujours."""
+    bad = hsh(int(t * 6), 3) < 0.18 or (t > 3.0 and hsh(int(t * 4), 9) < 0.5)
+    d.rectangle((cx - w / 2, cy - 38, cx + w / 2, cy + 38), fill=(20, 20, 30) if not bad else (90, 0, 10),
+                outline=(230, 190, 60), width=4)
+    if not bad:
+        d.text((cx, cy), "SALLE V.I.P.", font=F("anton", 46), fill=(240, 200, 70), anchor="mm")
+    else:
+        d.text((cx, cy - 14), "VOUS · ICI ·", font=F("anton", 26), fill=(255, 230, 220), anchor="mm")
+        d.text((cx, cy + 15), "POUR TOUJOURS", font=F("anton", 26), fill=(255, 230, 220), anchor="mm")
 
 
 def _led_strip(msg):
@@ -1020,7 +1118,7 @@ def s_rewind(t, fi, rng):
     for k, it in enumerate(INSERTS):
         if it <= t < it + 2.0 / FPS:
             prng = np.random.default_rng(k + 100)
-            name = ["arrivee", "corridor", "maths", "diner", "examen", "machine", "cloche"][k % 7]
+            name = ["arrivee", "murale", "corridor", "maths", "diner", "examen", "machine", "cloche"][k % 8]
             src = SCENE_FUNCS[name](prng.uniform(2.5, 5.8), fi, prng)
             if k % 3 == 0:
                 src = ImageOps.invert(src)
@@ -1104,26 +1202,30 @@ def s_fin(t, fi, rng):
 
 
 SCENE_FUNCS.update({
-    "titre": s_titre, "arrivee": s_arrivee, "corridor": s_corridor, "maths": s_maths,
+    "titre": s_titre, "arrivee": s_arrivee, "murale": s_murale, "pause2": s_pause2, "corridor": s_corridor, "maths": s_maths,
     "diner": s_diner, "examen": s_examen, "machine": s_machine, "cloche": s_cloche,
     "rewind": s_rewind, "fin": s_fin,
 })
 
 HEADINGS = {
-    "arrivee": "07:59 · ARRIVÉE", "corridor": "08:15 · CORRIDOR B", "maths": "09:00 · MATHÉMATIQUES",
-    "diner": "12:00 · DÎNER", "examen": "13:15 · EXAMEN", "machine": "14:30 · PAUSE",
-    "cloche": "15:59 · LA CLOCHE", "rewind": "??:?? · ????",
+    "arrivee": "08:24 · ARRIVÉE", "murale": "08:25 · JE LAISSE MA TRACE", "corridor": "08:41 · CORRIDOR, 2e ÉTAGE",
+    "maths": "09:05 · MATHÉMATIQUES", "machine": "09:25 · PAUSE — SALLE V.I.P.", "pause2": "10:45 · PAUSE — SALLE V.I.P.",
+    "diner": "12:00 · DÎNER — SALLE V.I.P.", "examen": "13:15 · EXAMEN", "cloche": "14:55 · PAUSE",
+    "rewind": "??:?? · ????",
 }
 CAPTIONS = {
     "arrivee": [(0.3, 3.6, "Le stationnement est plein."), (3.6, 7, "Il l'est toujours.")],
-    "corridor": [(0.3, 3.3, "Le corridor B est un peu plus long aujourd'hui."), (3.3, 6.5, "Ne comptez pas les portes.")],
+    "murale": [(0.3, 2.3, "Laissez votre trace."), (2.3, 4.5, "Elle ne partira jamais. Vous non plus.")],
+    "corridor": [(0.3, 3.3, "Le corridor du 2e étage est un peu plus long aujourd'hui."), (3.3, 6.5, "Ne comptez pas les portes.")],
     "maths": [(0.3, 2.9, "Personne ne lève la main."), (3.1, 7, "Personne ne cligne des yeux.")],
-    "diner": [(0.3, 3.0, "La file pour les micro-ondes avance."), (3.0, 6, "Pas vous.")],
+    "machine": [(0.3, 2.6, "Dix minutes de pause."), (2.6, 5, "La machine a tout ce qu'il vous faut. Presque.")],
+    "pause2": [(0.0, 2.0, "Encore la même pause.")],
+    "diner": [(0.3, 3.0, "Le dîner finit à 12 h 45."), (3.0, 6, "Pour les autres.")],
     "examen": [(0.3, 3.2, "Prenez tout votre temps."), (3.2, 6.5, "Il prendra le vôtre.")],
-    "machine": [(0.3, 2.6, "La machine a tout ce qu'il vous faut."), (2.6, 5, "Presque tout.")],
-    "cloche": [(0.3, 2.8, "Tout le monde se lève."), (2.8, 6, "Personne ne sort.")],
+    "cloche": [(0.3, 1.9, "13 h 45. La cloche."), (1.9, 3.4, "14 h 55. Déjà ?"), (3.4, 6, "Personne ne sort.")],
 }
-CAM = {"arrivee": 1, "corridor": 3, "maths": 7, "diner": 12, "examen": 13, "machine": 9, "cloche": 1, "rewind": 0}
+CAM = {"arrivee": 1, "murale": 4, "corridor": 3, "maths": 7, "machine": 9, "pause2": 9, "diner": 12, "examen": 13,
+       "cloche": 1, "rewind": 0}
 
 
 def osd(img, t, name, local, rng):
