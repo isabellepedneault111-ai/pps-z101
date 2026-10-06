@@ -145,9 +145,9 @@ def osd_clock(name, local):
 # Répliques parlées : (clé, début, qui parle, texte) — sous-titrées à l'écran.
 # Le texte est aussi celui que lit la voix de synthèse (voices.py).
 VO_LINES = [
-    ("intro", 1.6, "INTERPHONE", "Bonjour à tous. Bienvenue au CFGA de la Jonquière. Une autre belle journée."),
-    ("trace", 9.2, "UNE VOIX", "Laissez votre trace. Elle restera ici. Avec vous."),
-    ("corr", 15.6, "INTERPHONE", "Rappel. Le corridor du deuxième étage est un peu plus long aujourd'hui."),
+    ("intro", 5.6, "INTERPHONE", "Bonjour à tous. Bienvenue au CFGA de la Jonquière. Une autre belle journée."),
+    ("trace", 11.2, "UNE VOIX", "Laissez votre trace. Elle restera ici. Avec vous."),
+    ("corr", 16.0, "INTERPHONE", "Rappel. Le corridor du deuxième étage est un peu plus long aujourd'hui."),
     ("maths", 20.9, "L'ENSEIGNANTE", "Combien font deux plus deux? Personne? Encore."),
     ("froid", 28.6, "INTERPHONE", "Température extérieure: moins quarante. Restez en dedans."),
     ("diner", 34.1, "INTERPHONE", "C'est l'heure du dîner. Bon appétit, là."),
@@ -158,3 +158,10 @@ VO_LINES = [
 ]
 # facteur de ralentissement appliqué à la voix dans audio.py (pour la durée affichée)
 VO_SLOW = {"demain": 0.85, "maths": 0.88}
+
+# Moments où « Daisy Bell » joue sans voix par-dessus (affichés à l'écran)
+MUSIC_LINES = [
+    (0.3, 5.4, "♪ Daisy, Daisy, give me your answer, do… ♪"),
+    (26.6, 28.5, "♪ I'm half crazy, all for the love of you… ♪"),
+    (55.3, 57.1, "♪ …upon the seat of a bicycle built for two ♪"),
+]

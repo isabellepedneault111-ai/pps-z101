@@ -18,6 +18,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 rng = np.random.default_rng(1974)
 L = np.zeros(N)
 R = np.zeros(N)
+ML = np.zeros(N)   # piste de la musique (Daisy Bell)
+MR = np.zeros(N)
 VL = np.zeros(N)   # piste des voix (mixée à part, avec atténuation du reste)
 VR = np.zeros(N)
 T = np.arange(N) / SR
@@ -112,8 +114,8 @@ def chime(start, gain=0.5):
 
 
 VO = [  # (clé, temps, gain, chime?)
-    ("intro", 1.6, 0.85, True),
-    ("corr", 15.6, 0.8, True),
+    ("intro", 5.6, 0.85, True),
+    ("corr", 16.0, 0.8, True),
     ("froid", 28.6, 0.8, True),
     ("diner", 34.1, 0.8, True),
     ("cloche", 45.0, 0.85, False),
@@ -128,7 +130,7 @@ x = load_vo("trace")
 x2 = x
 env = np.abs(filt(np.abs(x2), "lowpass", 40))
 v = x2 * 0.9 + filt(rng.normal(0, 1, len(x2)), "bandpass", [900, 7000]) * env * 1.2
-addv(reverb(v, 0.8, 0.12, 9), 9.2, 0.9, 0.15)
+addv(reverb(v, 0.8, 0.12, 9), 11.2, 0.9, 0.15)
 
 # maths : l'enseignant, grave, proche, avec un murmure doublé
 x = load_vo("maths")
@@ -233,11 +235,20 @@ DAISY_4 = [(-5, 1), (0, 2), (4, 1), (2, 2), (-5, 1), (0, 2), (4, 1), (2, 1), (4,
            (2, 2), (-5, 1), (0, 6)]
 
 
-def musicbox_note(semi, detune=0.0, dur=1.8):
-    f = 1046.5 * 2 ** ((semi + detune) / 12)
+def musicbox_note(semi, detune=0.0, dur=1.8, sustain=0.6):
+    """Boîte à musique (attaque claire) + petit orgue désaccordé (corps) — registre médium."""
+    f = 523.25 * 2 ** ((semi + detune) / 12)
     d = tt(dur)
-    s = np.sin(2 * np.pi * f * d) + 0.3 * np.sin(2 * np.pi * f * 4.02 * d) * np.exp(-d * 12) + 0.15 * np.sin(2 * np.pi * f * 2.0 * d)
-    return s * env_ad(len(d), 0.002, 0.45)
+    box = (np.sin(2 * np.pi * f * d) + 0.35 * np.sin(2 * np.pi * f * 2 * d)
+           + 0.25 * np.sin(2 * np.pi * f * 4.02 * d) * np.exp(-d * 10)) * env_ad(len(d), 0.002, 0.7)
+    org = (np.sin(2 * np.pi * f * 0.997 * d) + 0.5 * np.sin(2 * np.pi * f * 2.003 * d)
+           + 0.3 * np.sin(2 * np.pi * f * 0.5 * d))
+    org *= np.clip(d / 0.03, 0, 1) * np.clip((sustain + 0.15 - d) / 0.15, 0, 1)
+    return box + 0.45 * org
+
+
+def addm(sig, start, gain=1.0, pan=0.0):
+    add(sig, start, gain, pan, bus=(ML, MR))
 
 
 def play_musicbox(notes, start, beat, slow, detune_amt, gain, seed=0, droop=0.0, end=DUR):
@@ -246,23 +257,27 @@ def play_musicbox(notes, start, beat, slow, detune_amt, gain, seed=0, droop=0.0,
     for k, (semi, beats) in enumerate(notes):
         if t >= end:
             break
-        nn = musicbox_note(semi, r.normal(0, detune_amt) - droop * (t - start))
-        add(reverb(nn, 1.5, 0.35, k), t, gain, r.uniform(-0.5, 0.5))
-        t += beat * beats * (1 + slow * (t - start))
+        step = beat * beats * (1 + slow * (t - start))
+        nn = musicbox_note(semi, r.normal(0, detune_amt) - droop * (t - start), sustain=step * 0.92)
+        addm(reverb(nn, 1.4, 0.25, k), t, gain, r.uniform(-0.3, 0.3))
+        t += step
     return t
 
 
-play_musicbox(DAISY_1, 0.95, 0.15, 0.02, 0.12, 0.24, seed=1)
-# pause de 9 h 25... puis exactement la même mélodie, au même endroit, à 10 h 45
-play_musicbox(DAISY_2 + DAISY_3, S["cafe"] + 0.1, 0.17, 0.05, 0.35, 0.24, seed=2, droop=0.08, end=S["pause2"])
-play_musicbox(DAISY_2, S["pause2"], 0.17, 0.05, 0.35, 0.26, seed=2, droop=0.08, end=S["diner"])
+# Titre : « Daisy, Daisy, give me your answer, do » — seule, bien audible
+play_musicbox(DAISY_1, 0.2, 0.22, 0.0, 0.08, 1.0, seed=1)
+# pause de 9 h 25 : « I'm half crazy, all for the love of you »
+play_musicbox(DAISY_2 + DAISY_3, S["cafe"] + 0.05, 0.2, 0.03, 0.25, 0.9, seed=2, droop=0.06, end=S["pause2"])
+# 10 h 45 : exactement la même mélodie, au même endroit
+play_musicbox(DAISY_2, S["pause2"], 0.2, 0.03, 0.25, 0.9, seed=2, droop=0.06, end=S["diner"])
 # rewind : à l'envers, de plus en plus vite
 t_ = S["rewind"] + 0.2
 for k, (semi, beats) in enumerate((DAISY_1 + DAISY_2)[::-1]):
-    add(musicbox_note(semi, -0.3), t_, 0.12, 0.6 if k % 2 else -0.6)
+    addm(musicbox_note(semi, -0.3, sustain=0.1), t_, 0.5, 0.6 if k % 2 else -0.6)
     t_ += 0.11 * beats * max(0.25, 1 - k / 22)
-# fin : « ...built for two », qui ralentit et se désaccorde comme une machine qu'on débranche
-play_musicbox(DAISY_4[7:], 55.5, 0.2, 0.12, 0.25, 0.26, seed=4, droop=0.35)
+# fin : « But you'll look sweet upon the seat of a bicycle built for two »,
+# qui ralentit et se désaccorde comme HAL qu'on débranche
+play_musicbox(DAISY_4, 55.2, 0.17, 0.09, 0.15, 1.0, seed=4, droop=0.3)
 
 # ---------------------------------------------------------- EFFETS --------
 def glitch_burst(dur=0.18):
@@ -408,7 +423,21 @@ vo = vo / np.max(np.abs(vo)) * 0.95
 env = filt(np.abs(vo).max(1), "lowpass", 5, 2)
 duck = 1 - 0.85 * np.clip(env * 6, 0, 1)
 duck = np.minimum(duck, np.roll(duck, -int(0.08 * SR)))  # anticipe légèrement
-mix_ = fx * duck[:, None] + vo
+mu = np.stack([ML, MR], 1)
+mu = mu / np.max(np.abs(mu)) * 0.8
+duck_m = 1 - 0.35 * np.clip(env * 6, 0, 1)
+# pendant les passages de Daisy Bell, les effets s'effacent (≈ -10 dB)
+from common import MUSIC_LINES  # noqa: E402
+gate = np.zeros(N)
+for a_, b_, _ in MUSIC_LINES:
+    gate[int(a_ * SR):int(b_ * SR)] = 1
+gate = filt(gate, "lowpass", 3, 1)
+duck = duck * (1 - 0.7 * gate)
+mix_ = fx * duck[:, None] + mu * duck_m[:, None] + vo
+for a_, b_ in ((0.3, 5.4), (26.6, 28.5), (55.3, 57.0)):
+    sl = slice(int(a_ * SR), int(b_ * SR))
+    db = lambda z: round(float(20 * np.log10(np.sqrt((z[sl] ** 2).mean()) + 1e-9)), 1)
+    print(f"Daisy {a_}-{b_}: musique {db(mu * duck_m[:, None])} dB / reste {db(fx * duck[:, None])} dB")
 mix_ = np.tanh(mix_ * 1.1) / np.tanh(1.1)
 mix_ = mix_ / np.max(np.abs(mix_)) * 0.95
 mix_[int(59.92 * SR):] = 0
